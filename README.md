@@ -1,8 +1,13 @@
 # Eta ToolKit
 
+## Descriptions
+
+Eta toolkit is a simple toolkit meant to develop cross platform applications. 
+It aspires to support Windows, Linux, and Mac OS but currently is being 
+developed on windows using visual studio 2019.
+
 
 ## Project Structure
-
 
 ### eta
 
@@ -18,3 +23,8 @@ tests for eta.
 
 A simple application built using eta
 
+## Dependencies
+
+- Opengl 3.3 or later
+- glfw
+- glew
