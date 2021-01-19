@@ -1,6 +1,6 @@
 set(SOURCE_FILES
 	application.cpp
-)
+ "window.cpp" "RunOnUIThread.cpp")
 
 find_package(glfw3 3.3 REQUIRED)
 
