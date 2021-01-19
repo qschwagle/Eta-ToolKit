@@ -3,6 +3,8 @@
 #include <string>
 #include <vector>
 
+#include "renderer/drawable_factory.h"
+
 struct GLFWwindow;
 
 namespace etk {
@@ -28,5 +30,6 @@ private:
 	long mHeight;
 	long mWidth;
 	std::string mTitle;
+	std::unique_ptr<renderer::DrawableFactory> mDrawableFactory{ nullptr };
 };
 }

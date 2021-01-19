@@ -4,7 +4,7 @@
 
 #include <exception>
 
-#include "RunOnUIThread.h"
+#include "run_on_ui_thread.h"
 
 void etk::Application::Init(int argc, char** argv)
 {

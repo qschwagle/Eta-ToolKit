@@ -4,7 +4,7 @@
 int main(int argc, char** argv)
 {
 	etk::Application app;
-	etk::Window win;
+	app.CreateWindow("Image Viewer");
 	app.Init(argc, argv);
 	return app.Run();
 }

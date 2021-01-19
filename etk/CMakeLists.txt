@@ -1,6 +1,8 @@
 set(SOURCE_FILES
 	application.cpp
- "window.cpp" "RunOnUIThread.cpp")
+	window.cpp 
+	run_on_ui_thread.cpp 
+	renderer/opengl/gl_factory.cpp "renderer/opengl/gl_filled_rectangle.cpp" "renderer/opengl/gl_character.cpp" "renderer/opengl/gl_image.cpp")
 
 find_package(glfw3 3.3 REQUIRED)
 
@@ -8,6 +10,11 @@ find_package(glfw3 3.3 REQUIRED)
 add_library(${PROJECT_NAME} STATIC ${SOURCE_FILES} "widget.h")
 
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 17)
+
+
+IF(MSVC)
+	target_compile_options(${PROJECT_NAME} PRIVATE "/Wall")
+ENDIF()
 
 target_link_libraries(${PROJECT_NAME} PUBLIC glfw)
 
