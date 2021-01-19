@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
+project(etk)
 
 add_subdirectory(etk)
 add_subdirectory(imageviewer)
 add_subdirectory(tests)
 
-project(etk)
