@@ -7,6 +7,8 @@ namespace renderer {
 namespace opengl {
 class GLWindowBackground : public etk::renderer::WindowBackground {
 public:
+	void Draw() override;
+
 };
 }
 }
