@@ -8,7 +8,11 @@ set(SOURCE_FILES
 	renderer/opengl/gl_image.cpp
 	renderer/opengl/gl_text.cpp
 	renderer/opengl/gl_rectangle.cpp
-	renderer/opengl/gl_window_background.cpp "scene.cpp")
+	renderer/opengl/gl_window_background.cpp 
+	scene.cpp 
+	button.cpp 
+	renderer/opengl/gl_shader_program.cpp
+	renderer/opengl/gl_filled_rectangle_program.cpp)
 
 find_package(glfw3 3.3 REQUIRED)
 

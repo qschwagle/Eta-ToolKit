@@ -1,5 +1,69 @@
 #include "gl_filled_rectangle.h"
 
+#include "gl_filled_rectangle_program.h"
+
+#include<glm/gtc/matrix_transform.hpp>
+#include<glm/gtc/type_ptr.hpp>
+
+#include <string>
+
+#include<GL/glew.h>
+#include<GLFW/glfw3.h>
+
+etk::renderer::opengl::GLFilledRectangle::GLFilledRectangle()
+{
+    auto& program = etk::renderer::opengl::GLFilledRectangleProgram::GetInstance()->GetProgram();
+    program.Use();
+
+	glGenVertexArrays(1, &mVAO);
+	glBindVertexArray(mVAO);
+
+	glGenBuffers(1, &mVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, mVBO);
+
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 2, NULL, GL_DYNAMIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+}
+
+etk::renderer::opengl::GLFilledRectangle::~GLFilledRectangle()
+{
+    glDeleteBuffers(1, &mVBO);
+    glDeleteVertexArrays(1, &mVAO);
+}
+
 void etk::renderer::opengl::GLFilledRectangle::Draw()
 {
+    const glm::vec2& pos = GetPos();
+
+    auto& program = etk::renderer::opengl::GLFilledRectangleProgram::GetInstance()->GetProgram();
+    program.Use();
+
+    glBindVertexArray(mVAO);
+    float vertices[6][2] = {
+        { pos.x, pos.y + GetHeight() },
+        { pos.x, pos.y },
+        { pos.x + GetWidth() , pos.y },
+        { pos.x, pos.y + GetHeight() },
+        { pos.x + GetWidth() , pos.y },
+        { pos.x + GetWidth(), pos.y + GetHeight() }
+    };
+	GLint uniProjView = program.GetUniformLoc(std::string("proj"));
+    glm::mat4 proj = glm::ortho(0.0f, 1920.0f, -1080.0f, 0.0f, 0.1f, 100.0f);
+    program.SetUniformMat4fv(uniProjView, glm::value_ptr(proj));
+
+    glm::mat4 model{ 1.0f };
+    model = glm::scale(model, glm::vec3(1.0f, -1.0f, 1.0f));
+
+	GLint modelId = program.GetUniformLoc(std::string("model"));
+    program.SetUniformMat4fv(modelId, glm::value_ptr(model));
+
+	GLint colorUniform = program.GetUniformLoc(std::string("color"));
+    program.SetUniform3fv(colorUniform, GetColor().GetFloatPtr());
+
+    glBindBuffer(GL_ARRAY_BUFFER, mVBO);
+	glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
 }

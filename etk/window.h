@@ -32,6 +32,7 @@ public:
 
 	void SetScene(std::shared_ptr<Scene> scene) {
 		mScene = scene;
+		scene->SetDrawableFactory(mDrawableFactory);
 	}
 
 private:

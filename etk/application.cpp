@@ -14,6 +14,7 @@ void etk::Application::Init(int argc, char** argv)
 		i.second->Init();
 	}
 	mInitialized = true;
+
 }
 
 int etk::Application::Run(void)

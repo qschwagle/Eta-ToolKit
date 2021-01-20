@@ -7,7 +7,12 @@ namespace renderer {
 namespace opengl {
 class GLFilledRectangle : public etk::renderer::FilledRectangle {
 public:
+	GLFilledRectangle();
+	~GLFilledRectangle();
 	void Draw() override;
+private:
+	unsigned int mVAO;
+	unsigned int mVBO;
 };
 
 }

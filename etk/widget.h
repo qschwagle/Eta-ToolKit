@@ -2,12 +2,24 @@
 
 #include <glm/glm.hpp>
 
+#include <memory>
+
+#include "renderer/drawable_factory.h"
+
 namespace etk {
 class Widget {
 public:
 	Widget() = default;
 	Widget(const Widget&) = delete;
 	Widget& operator=(const Widget&) = delete;
+
+	class Border {
+	public:
+		float GetWidth() const {
+			return 0;
+		}
+	private:
+	};
 
 	virtual void Draw() {}
 
@@ -38,7 +50,7 @@ public:
 
 	const glm::vec4& GetPadding() const 
 	{
-		return mMargin;
+		return mPadding;
 	}
 
 	/// <summary>
@@ -63,13 +75,9 @@ public:
 		return height;
 	}
 
-	class Border {
-	public:
-		float GetWidth() const {
-			return 0;
-		}
-	private:
-	};
+	virtual void SetDrawableFactory(std::weak_ptr<etk::renderer::DrawableFactory> factory) {
+		mDrawableFactory = factory;
+	}
 
 protected:
 	/// <summary>
@@ -86,6 +94,18 @@ protected:
 	/// <param name="height"></param>
 	void SetInternalHeight(float height) {
 		mInternalHeight = height;
+	}
+
+	const float GetInternalHeight() const {
+		return mInternalHeight;
+	}
+
+	const float GetInternalWidth() const {
+		return mInternalWidth;
+	}
+
+	std::weak_ptr<etk::renderer::DrawableFactory> GetDrawableFactory() {
+		return mDrawableFactory;
 	}
 
 private:
@@ -110,5 +130,7 @@ private:
 	/// border
 	/// </summary>
 	std::unique_ptr<Border> mBorder{ nullptr };
+
+	std::weak_ptr<etk::renderer::DrawableFactory> mDrawableFactory;
 };
 }
