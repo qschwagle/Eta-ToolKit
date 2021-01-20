@@ -1,14 +1,13 @@
 #pragma once
 
-#include "../image.h"
+#include "../rectangle.h"
 
 namespace etk {
 namespace renderer {
 namespace opengl {
-class GLImage : public etk::renderer::Image {
+class GLRectangle : public etk::renderer::Rectangle {
 public:
 	void Draw() override;
-
 };
 }
 }

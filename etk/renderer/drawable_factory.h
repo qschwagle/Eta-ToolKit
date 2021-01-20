@@ -19,12 +19,12 @@ public:
 	DrawableFactory& operator=(const DrawableFactory&) = delete;
 
 	virtual void Init() = 0;
-	virtual std::unique_ptr<Character> createCharacter() = 0;
-	virtual std::unique_ptr<FilledRectangle> createFilledRectangle() = 0;
-	virtual std::unique_ptr<Image> createImage() = 0;
-	virtual std::unique_ptr<Rectangle> createRectangle() = 0;
-	virtual std::unique_ptr<Text> createText() = 0;
-	virtual std::unique_ptr<WindowBackground> createBackground() = 0;
+	virtual std::unique_ptr<Character> CreateCharacter() = 0;
+	virtual std::unique_ptr<FilledRectangle> CreateFilledRectangle() = 0;
+	virtual std::unique_ptr<Image> CreateImage() = 0;
+	virtual std::unique_ptr<Rectangle> CreateRectangle() = 0;
+	virtual std::unique_ptr<Text> CreateText() = 0;
+	virtual std::unique_ptr<WindowBackground> CreateBackground() = 0;
 };
 }
 }

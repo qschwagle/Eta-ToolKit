@@ -2,9 +2,14 @@
 
 #include "../filled_rectangle.h"
 
-namespace etk::renderer::opengl {
+namespace etk {
+namespace renderer {
+namespace opengl {
 class GLFilledRectangle : public etk::renderer::FilledRectangle {
-
+public:
+	void Draw() override;
 };
 
+}
+}
 }

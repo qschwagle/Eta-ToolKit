@@ -2,7 +2,13 @@ set(SOURCE_FILES
 	application.cpp
 	window.cpp 
 	run_on_ui_thread.cpp 
-	renderer/opengl/gl_factory.cpp "renderer/opengl/gl_filled_rectangle.cpp" "renderer/opengl/gl_character.cpp" "renderer/opengl/gl_image.cpp")
+	renderer/opengl/gl_factory.cpp 
+	renderer/opengl/gl_filled_rectangle.cpp
+	renderer/opengl/gl_character.cpp
+	renderer/opengl/gl_image.cpp
+	renderer/opengl/gl_text.cpp
+	renderer/opengl/gl_rectangle.cpp
+	renderer/opengl/gl_window_background.cpp "scene.cpp")
 
 find_package(glfw3 3.3 REQUIRED)
 

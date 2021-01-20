@@ -2,7 +2,7 @@
 
 #include <etk/application.h>
 
-#include <etk/RunOnUIThread.h>
+#include <etk/run_on_ui_thread.h>
 
 #include <memory>
 

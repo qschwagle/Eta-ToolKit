@@ -3,12 +3,13 @@
 #include <glm/glm.hpp>
 
 namespace etk {
-
 class Widget {
 public:
 	Widget() = default;
 	Widget(const Widget&) = delete;
 	Widget& operator=(const Widget&) = delete;
+
+	virtual void Draw() {}
 
 private:
 	/// <summary>

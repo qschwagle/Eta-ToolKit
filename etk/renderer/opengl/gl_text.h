@@ -1,11 +1,11 @@
 #pragma once
 
-#include "../image.h"
+#include "../text.h"
 
 namespace etk {
 namespace renderer {
 namespace opengl {
-class GLImage : public etk::renderer::Image {
+class GLText : public etk::renderer::Text {
 public:
 	void Draw() override;
 
