@@ -107,7 +107,7 @@ private:
 	glm::vec4 mPadding{ 0.0f, 0.0f, 0.0f, 0.0f };
 
 	/// <summary>
-	/// 
+	/// border
 	/// </summary>
 	std::unique_ptr<Border> mBorder{ nullptr };
 };
