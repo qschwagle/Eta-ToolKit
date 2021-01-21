@@ -10,7 +10,7 @@
 #include<GL/glew.h>
 #include<GLFW/glfw3.h>
 
-etk::renderer::opengl::GLFilledRectangle::GLFilledRectangle()
+etk::renderer::opengl::GLFilledRectangle::GLFilledRectangle(std::weak_ptr<DrawableContext> context) : etk::renderer::FilledRectangle(context)
 {
     auto& program = etk::renderer::opengl::GLFilledRectangleProgram::GetInstance()->GetProgram();
     program.Use();
@@ -34,6 +34,14 @@ etk::renderer::opengl::GLFilledRectangle::~GLFilledRectangle()
 
 void etk::renderer::opengl::GLFilledRectangle::Draw()
 {
+
+    if (GetContext().expired()) {
+        throw std::exception("etk::renderer::opengl::GLFilledRectangle::Draw(): Tried to draw object without context");
+        return;
+    }
+
+    auto context = GetContext().lock();
+
     const glm::vec2& pos = GetPos();
 
     auto& program = etk::renderer::opengl::GLFilledRectangleProgram::GetInstance()->GetProgram();
@@ -49,7 +57,7 @@ void etk::renderer::opengl::GLFilledRectangle::Draw()
         { pos.x + GetWidth(), pos.y + GetHeight() }
     };
 	GLint uniProjView = program.GetUniformLoc(std::string("proj"));
-    glm::mat4 proj = glm::ortho(0.0f, 1920.0f, -1080.0f, 0.0f, 0.1f, 100.0f);
+    glm::mat4 proj = glm::ortho(0.0f, static_cast<float>(context->GetWidth()), -1.0f*static_cast<float>(context->GetHeight()), 0.0f, 0.1f, 100.0f);
     program.SetUniformMat4fv(uniProjView, glm::value_ptr(proj));
 
     glm::mat4 model{ 1.0f };

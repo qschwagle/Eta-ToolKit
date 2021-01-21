@@ -15,6 +15,7 @@ public:
 	std::unique_ptr<Rectangle> CreateRectangle() override;
 	std::unique_ptr<Text> CreateText() override;
 	std::unique_ptr<WindowBackground> CreateBackground() override;
+	std::weak_ptr<DrawableContext> GetContext() override;
 };
 }
 }

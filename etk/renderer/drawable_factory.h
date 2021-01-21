@@ -7,8 +7,8 @@
 #include "image.h"
 #include "rectangle.h"
 #include "text.h"
-
 #include "window_background.h"
+#include "drawable_context.h"
 
 namespace etk {
 namespace renderer {
@@ -25,6 +25,17 @@ public:
 	virtual std::unique_ptr<Rectangle> CreateRectangle() = 0;
 	virtual std::unique_ptr<Text> CreateText() = 0;
 	virtual std::unique_ptr<WindowBackground> CreateBackground() = 0;
+	virtual std::weak_ptr<DrawableContext> GetContext() {
+		return mContext;
+	};
+
+protected:
+	void SetContext(std::shared_ptr<DrawableContext> context) {
+		mContext = context;
+	}
+
+private:
+	std::shared_ptr<DrawableContext> mContext{ nullptr };
 };
 }
 }

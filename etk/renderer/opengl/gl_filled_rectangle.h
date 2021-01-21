@@ -7,7 +7,7 @@ namespace renderer {
 namespace opengl {
 class GLFilledRectangle : public etk::renderer::FilledRectangle {
 public:
-	GLFilledRectangle();
+	GLFilledRectangle(std::weak_ptr<DrawableContext> context);
 	~GLFilledRectangle();
 	void Draw() override;
 private:
