@@ -39,3 +39,9 @@ void etk::renderer::opengl::GLDrawableContext::Clear()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 }
+
+void etk::renderer::opengl::GLDrawableContext::UpdateDimensions(const int width, const int height)
+{
+	glViewport(0, 0, width, height);
+	etk::renderer::DrawableContext::UpdateDimensions(width, height);
+}

@@ -4,6 +4,19 @@
 
 #include <exception>
 
+
+static void glfw_framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
+	etk::Window* win = reinterpret_cast<etk::Window*>(glfwGetWindowUserPointer(window));
+	win->FrameBufferChanged(width, height);
+}
+
+static void glfw_content_scale_changed_callback(GLFWwindow* window, float xScale, float yScale)
+{
+	etk::Window* win = reinterpret_cast<etk::Window*>(glfwGetWindowUserPointer(window));
+	win->ContentScaleChanged(xScale, yScale);
+}
+
 etk::Window::Window(int id,  std::string title, long width, long height, std::shared_ptr<etk::renderer::DrawableFactory> factory) : 
 	mId{ id }, 
 	mWidth{ width }, 
@@ -23,12 +36,30 @@ void etk::Window::Init()
 		throw std::exception("Could not create window");
 	}
 	glfwMakeContextCurrent(mWin);
+	glfwSetWindowUserPointer(mWin, this);
+	glfwSetFramebufferSizeCallback(mWin, glfw_framebuffer_size_callback);
+
+	float xScale;
+	float yScale;
+	glfwGetWindowContentScale(mWin, &xScale, &yScale);
+	context->UpdateContentScale(xScale, yScale);
 	context->Init();
 }
 
 void etk::Window::MarkToClose()
 {
 	glfwSetWindowShouldClose(mWin, true);
+}
+
+void etk::Window::FrameBufferChanged(int width, int height)
+{
+	mDrawableFactory->GetContext().lock()->UpdateDimensions(width, height);
+}
+
+void etk::Window::ContentScaleChanged(float xScale, float yScale)
+{
+	mDrawableFactory->GetContext().lock()->UpdateContentScale(xScale, yScale);
+	// this should invalidate all render cache and trigger a rerender of all objects
 }
 
 

@@ -33,6 +33,8 @@ public:
 		}
 	}
 
+	void UpdateDimensions(const int width, const int height) override;
+
 private:
 	std::unordered_map <std::wstring, std::shared_ptr<GLProgramHolder>> mGLProgramHolders;
 };

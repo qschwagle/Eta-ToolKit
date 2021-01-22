@@ -15,8 +15,24 @@ public:
 	void SetHeight(const int h) { mHeight = h;  }
 	int GetWidth() const { return mWidth;  }
 	int GetHeight() const { return mHeight;  }
-	void UpdateDimensions(const int w, const int h) { SetWidth(w); SetHeight(h); }
+	virtual void UpdateDimensions(const int w, const int h) { SetWidth(w); SetHeight(h); }
+
+	virtual void UpdateContentScale(const float xScale, const float yScale) {
+		mContentXScale = xScale;
+		mContentYScale = yScale;
+	}
+
+	float GetContentXScale() const {
+		return mContentXScale;
+	}
+
+	float GetContentYScale() const {
+		return mContentYScale;
+	}
+
 private:
+	float mContentXScale;
+	float mContentYScale;
 	int mWidth;
 	int mHeight;
 };

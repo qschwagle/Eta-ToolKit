@@ -40,6 +40,10 @@ public:
 		sched.lock()->Schedule(func);
 	}
 
+	void FrameBufferChanged(int width, int height);
+
+	void ContentScaleChanged(float xScale, float yScale);
+
 private:
 	const int mId;
 	GLFWwindow* mWin{ nullptr };
