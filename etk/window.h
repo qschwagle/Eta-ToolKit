@@ -35,6 +35,11 @@ public:
 		scene->SetDrawableFactory(mDrawableFactory);
 	}
 
+	void ScheduleFunc(std::function<bool()> func) {
+		auto sched = mDrawableFactory->GetUIScheduler();
+		sched.lock()->Schedule(func);
+	}
+
 private:
 	const int mId;
 	GLFWwindow* mWin{ nullptr };

@@ -2,7 +2,7 @@
 
 #include <etk/application.h>
 
-#include <etk/run_on_ui_thread.h>
+#include <etk/renderer/ui_thread_scheduler.h>
 
 #include <memory>
 
@@ -21,9 +21,8 @@ TEST(ApplicationTest, CreateWindow) {
 	auto app = std::make_shared<etk::Application>();
 	int id = app->CreateWindow("hello world");
 	char* hello[1] = { "app" };
-	auto thread = etk::RunOnUIThread::GetInstance();
 	auto count = std::make_shared<int>(0);
-	thread->ScheduleFunc([count, id, app]()->bool {
+	app->GetWindow(id)->ScheduleFunc([count, id, app]()->bool {
 		if (*count != 2) {
 			(*count)++;
 			return true;

@@ -10,11 +10,13 @@
 #include "window_background.h"
 #include "drawable_context.h"
 
+#include "ui_thread_scheduler.h"
+
 namespace etk {
 namespace renderer {
 class DrawableFactory {
 public:
-	DrawableFactory() {};
+	DrawableFactory() : mThreadSchedueler{ std::make_shared<UIThreadScheduler>() } {};
 	DrawableFactory(const DrawableFactory&) = delete;
 	DrawableFactory& operator=(const DrawableFactory&) = delete;
 
@@ -26,7 +28,12 @@ public:
 	virtual std::unique_ptr<Text> CreateText() = 0;
 	virtual std::unique_ptr<WindowBackground> CreateBackground() = 0;
 	virtual std::weak_ptr<DrawableContext> GetContext() = 0;
+
+	std::weak_ptr<UIThreadScheduler> GetUIScheduler() {
+		return mThreadSchedueler;
+	}
 private:
+	std::shared_ptr<UIThreadScheduler> mThreadSchedueler;
 };
 }
 }

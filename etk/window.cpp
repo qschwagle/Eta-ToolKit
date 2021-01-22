@@ -45,6 +45,8 @@ void etk::Window::SetColor(etk::Color color)
 bool etk::Window::Run()
 {
 	glfwMakeContextCurrent(mWin);
+	auto sched = mDrawableFactory->GetUIScheduler();
+	sched.lock()->Execute();
 	if (glfwWindowShouldClose(mWin)) {
 		return false;
 	}

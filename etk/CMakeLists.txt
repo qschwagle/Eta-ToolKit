@@ -1,7 +1,7 @@
 set(SOURCE_FILES
 	application.cpp
 	window.cpp 
-	run_on_ui_thread.cpp 
+	 
 	renderer/opengl/gl_factory.cpp 
 	renderer/opengl/gl_filled_rectangle.cpp
 	renderer/opengl/gl_character.cpp
@@ -12,7 +12,7 @@ set(SOURCE_FILES
 	scene.cpp 
 	button.cpp 
 	renderer/opengl/gl_shader_program.cpp
-	renderer/opengl/gl_filled_rectangle_program.cpp "renderer/opengl/gl_drawable_context.cpp")
+	renderer/opengl/gl_filled_rectangle_program.cpp "renderer/opengl/gl_drawable_context.cpp" "renderer/ui_thread_scheduler.cpp")
 
 find_package(glfw3 3.3 REQUIRED)
 

@@ -4,8 +4,6 @@
 
 #include <exception>
 
-#include "run_on_ui_thread.h"
-
 void etk::Application::Init(int argc, char** argv)
 {
 	if (!glfwInit())
@@ -20,8 +18,6 @@ void etk::Application::Init(int argc, char** argv)
 int etk::Application::Run(void)
 {
 	while (true) {
-		RunOnUIThread* thread = RunOnUIThread::GetInstance();
-		thread->Execute();
 		std::vector<int> toBeRemoved;
 		for (auto& i : mWindows) {
 			if (!i.second->Run()) {
