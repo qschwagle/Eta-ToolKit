@@ -1,26 +1,32 @@
 #pragma once
 
-#include <mutex>
+#include <memory>
+#include <string>
 
 #include "gl_shader_program.h"
+
+#include "gl_program_holder.h"
+
+#include "gl_object.h"
 
 namespace etk {
 namespace renderer {
 namespace opengl {
-class GLFilledRectangleProgram {
+class GLFilledRectangleProgram : public etk::renderer::opengl::GLProgramHolder, public GLObject {
 public:
-	static GLFilledRectangleProgram* GetInstance();
-
-	GLShaderProgram& GetProgram() { return mProgram;  }
-protected:
-	GLFilledRectangleProgram();
+	GLFilledRectangleProgram(std::weak_ptr<GLDrawableContext> context);
 	~GLFilledRectangleProgram();
+
+	inline static std::wstring GetId() {
+		return L"GL_FILLED_RECTANGLE_PROGRAM";
+	}
+
+	GLShaderProgram* GetProgram() override {
+		return &mProgram;
+	}
+
 private:
 	GLShaderProgram mProgram;
-
-
-	static GLFilledRectangleProgram* mSelf;
-	static std::mutex mLock;
 };
 }
 }

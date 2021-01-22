@@ -7,7 +7,7 @@ namespace etk {
 namespace renderer {
 class FilledRectangle : public etk::renderer::DrawableObject {
 public:
-	FilledRectangle(std::weak_ptr<DrawableContext> context) : etk::renderer::DrawableObject(context), mColor(1.0f, 1.0f, 1.0f) {}
+	FilledRectangle() : mColor(1.0f, 1.0f, 1.0f) {}
 	void SetWidth(const float w) {
 		mWidth = w;
 	}

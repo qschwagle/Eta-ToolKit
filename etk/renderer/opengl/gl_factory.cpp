@@ -18,27 +18,27 @@ void etk::renderer::opengl::GLFactory::Init()
 
 std::unique_ptr<etk::renderer::Character> etk::renderer::opengl::GLFactory::CreateCharacter()
 {
-	return std::make_unique<etk::renderer::opengl::GLCharacter>(GetContext());
+	return std::make_unique<etk::renderer::opengl::GLCharacter>(GetGLDrawableContext());
 }
 
 std::unique_ptr<etk::renderer::FilledRectangle> etk::renderer::opengl::GLFactory::CreateFilledRectangle()
 {
-	return std::make_unique<etk::renderer::opengl::GLFilledRectangle>(GetContext());
+	return std::make_unique<etk::renderer::opengl::GLFilledRectangle>(GetGLDrawableContext());
 }
 
 std::unique_ptr<etk::renderer::Image> etk::renderer::opengl::GLFactory::CreateImage()
 {
-	return std::make_unique<etk::renderer::opengl::GLImage>(GetContext());
+	return std::make_unique<etk::renderer::opengl::GLImage>(GetGLDrawableContext());
 }
 
 std::unique_ptr<etk::renderer::Rectangle> etk::renderer::opengl::GLFactory::CreateRectangle()
 {
-	return std::make_unique<etk::renderer::opengl::GLRectangle>(GetContext());
+	return std::make_unique<etk::renderer::opengl::GLRectangle>(GetGLDrawableContext());
 }
 
 std::unique_ptr<etk::renderer::Text> etk::renderer::opengl::GLFactory::CreateText()
 {
-	return std::make_unique<etk::renderer::opengl::GLText>(GetContext());
+	return std::make_unique<etk::renderer::opengl::GLText>(GetGLDrawableContext());
 }
 
 std::unique_ptr<etk::renderer::WindowBackground> etk::renderer::opengl::GLFactory::CreateBackground()
@@ -48,9 +48,9 @@ std::unique_ptr<etk::renderer::WindowBackground> etk::renderer::opengl::GLFactor
 
 std::weak_ptr<etk::renderer::DrawableContext> etk::renderer::opengl::GLFactory::GetContext()
 {
-	if (etk::renderer::DrawableFactory::GetContext().expired()) {
-		SetContext(std::make_shared<etk::renderer::opengl::GLDrawableContext>());
+	if (GetGLDrawableContext().expired()) {
+		SetContext(std::make_shared<GLDrawableContext>());
 	}
-	return etk::renderer::DrawableFactory::GetContext();
+	return GetGLDrawableContext();
 }
 

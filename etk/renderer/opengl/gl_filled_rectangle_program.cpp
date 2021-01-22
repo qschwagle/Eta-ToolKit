@@ -22,21 +22,7 @@ void main() \n\
 }\
 ";
 
-etk::renderer::opengl::GLFilledRectangleProgram* etk::renderer::opengl::GLFilledRectangleProgram::mSelf{ nullptr };
-std::mutex etk::renderer::opengl::GLFilledRectangleProgram::mLock;
-
-etk::renderer::opengl::GLFilledRectangleProgram* etk::renderer::opengl::GLFilledRectangleProgram::GetInstance()
-{
-	mLock.lock();
-	if (mSelf == nullptr) {
-		mSelf = new GLFilledRectangleProgram();
-	}
-	mLock.unlock();
-	return mSelf;
-
-}
-
-etk::renderer::opengl::GLFilledRectangleProgram::GLFilledRectangleProgram()
+etk::renderer::opengl::GLFilledRectangleProgram::GLFilledRectangleProgram(std::weak_ptr<GLDrawableContext> context) : GLObject(context)
 {
 	mProgram.SetVertSource(vertex_shader_source);
     mProgram.SetFragSource(fragment_shader_source);

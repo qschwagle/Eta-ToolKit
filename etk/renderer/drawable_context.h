@@ -1,5 +1,9 @@
 #pragma once
 
+#include <string>
+
+#include <unordered_map>
+
 namespace etk {
 namespace renderer {
 class DrawableContext {

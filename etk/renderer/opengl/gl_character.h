@@ -2,12 +2,14 @@
 
 #include "../character.h"
 
+#include "gl_object.h"
+
 namespace etk {
 namespace renderer {
 namespace opengl {
-class GLCharacter : public etk::renderer::Character {
+class GLCharacter : public etk::renderer::Character, public GLObject {
 public:
-	GLCharacter(std::weak_ptr<etk::renderer::DrawableContext> context) : etk::renderer::Character(context) {}
+	GLCharacter(std::weak_ptr<GLDrawableContext> context) : GLObject(context) {}
 	void Draw() override;
 
 };

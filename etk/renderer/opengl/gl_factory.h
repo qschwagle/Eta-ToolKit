@@ -2,6 +2,8 @@
 
 #include "../drawable_factory.h"
 
+#include "gl_drawable_context.h"
+
 namespace etk {
 namespace renderer {
 namespace opengl {
@@ -16,6 +18,18 @@ public:
 	std::unique_ptr<Text> CreateText() override;
 	std::unique_ptr<WindowBackground> CreateBackground() override;
 	std::weak_ptr<DrawableContext> GetContext() override;
+
+protected:
+	std::weak_ptr<GLDrawableContext> GetGLDrawableContext() const {
+		return mContext;
+	}
+
+	void SetContext(std::shared_ptr<GLDrawableContext> context) {
+		mContext = context;
+	}
+private:
+	std::shared_ptr<GLDrawableContext> mContext;
+
 };
 }
 }

@@ -10,10 +10,17 @@
 #include<GL/glew.h>
 #include<GLFW/glfw3.h>
 
-etk::renderer::opengl::GLFilledRectangle::GLFilledRectangle(std::weak_ptr<DrawableContext> context) : etk::renderer::FilledRectangle(context)
+etk::renderer::opengl::GLFilledRectangle::GLFilledRectangle(std::weak_ptr<GLDrawableContext> context) : GLObject(context)
 {
-    auto& program = etk::renderer::opengl::GLFilledRectangleProgram::GetInstance()->GetProgram();
-    program.Use();
+    auto c = context.lock();
+    auto weakProgram = c->GetProgramHolder(GLFilledRectangleProgram::GetId());
+    if (weakProgram.expired()) {
+        c->SetProgram(GLFilledRectangleProgram::GetId(), std::make_shared<GLFilledRectangleProgram>(context));
+        weakProgram = c->GetProgramHolder(GLFilledRectangleProgram::GetId());
+    }
+    auto program = weakProgram.lock();
+    program->GetProgram()->Use();
+
 
 	glGenVertexArrays(1, &mVAO);
 	glBindVertexArray(mVAO);
@@ -34,18 +41,19 @@ etk::renderer::opengl::GLFilledRectangle::~GLFilledRectangle()
 
 void etk::renderer::opengl::GLFilledRectangle::Draw()
 {
-
     if (GetContext().expired()) {
         throw std::exception("etk::renderer::opengl::GLFilledRectangle::Draw(): Tried to draw object without context");
         return;
     }
 
-    auto context = GetContext().lock();
-
     const glm::vec2& pos = GetPos();
 
-    auto& program = etk::renderer::opengl::GLFilledRectangleProgram::GetInstance()->GetProgram();
-    program.Use();
+
+    // Does not check if exists since the context should contain it given that it was created with the context
+    // and the constructor was called before Draw()
+    auto context = GetContext().lock();
+    auto program = context->GetProgramHolder(GLFilledRectangleProgram::GetId()).lock()->GetProgram();
+    program->Use();
 
     glBindVertexArray(mVAO);
     float vertices[6][2] = {
@@ -56,18 +64,18 @@ void etk::renderer::opengl::GLFilledRectangle::Draw()
         { pos.x + GetWidth() , pos.y },
         { pos.x + GetWidth(), pos.y + GetHeight() }
     };
-	GLint uniProjView = program.GetUniformLoc(std::string("proj"));
+	GLint uniProjView = program->GetUniformLoc(std::string("proj"));
     glm::mat4 proj = glm::ortho(0.0f, static_cast<float>(context->GetWidth()), -1.0f*static_cast<float>(context->GetHeight()), 0.0f, 0.1f, 100.0f);
-    program.SetUniformMat4fv(uniProjView, glm::value_ptr(proj));
+    program->SetUniformMat4fv(uniProjView, glm::value_ptr(proj));
 
     glm::mat4 model{ 1.0f };
     model = glm::scale(model, glm::vec3(1.0f, -1.0f, 1.0f));
 
-	GLint modelId = program.GetUniformLoc(std::string("model"));
-    program.SetUniformMat4fv(modelId, glm::value_ptr(model));
+	GLint modelId = program->GetUniformLoc(std::string("model"));
+    program->SetUniformMat4fv(modelId, glm::value_ptr(model));
 
-	GLint colorUniform = program.GetUniformLoc(std::string("color"));
-    program.SetUniform3fv(colorUniform, GetColor().GetFloatPtr());
+	GLint colorUniform = program->GetUniformLoc(std::string("color"));
+    program->SetUniform3fv(colorUniform, GetColor().GetFloatPtr());
 
     glBindBuffer(GL_ARRAY_BUFFER, mVBO);
 	glEnableVertexAttribArray(0);
