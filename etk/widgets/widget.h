@@ -54,6 +54,9 @@ public:
 		return mPadding;
 	}
 
+
+	virtual void Invalidate() {};
+
 	/// <summary>
 	/// Internal Width + border + margin + padding
 	/// </summary>

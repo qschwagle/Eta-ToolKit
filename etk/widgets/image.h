@@ -2,6 +2,8 @@
 
 #include "widget.h"
 
+#include "../renderer/generic/image.h"
+
 namespace etk {
 	class Image : public Widget {
 	public:
@@ -14,10 +16,16 @@ namespace etk {
 		void Load(const std::wstring filePath);
 
 		void Draw() override;
+
+		void Invalidate() override {
+			mImageRenderer = nullptr;
+		}
 	private:
 		int mImageHeight{ 0 };
 		int mImageWidth{ 0 };
 		int mChannels{ 0 };
 		unsigned char* mImageData{ nullptr };
+
+		std::unique_ptr<etk::renderer::Image> mImageRenderer;
 };
 }

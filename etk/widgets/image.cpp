@@ -27,7 +27,9 @@ void etk::Image::Load(const std::wstring filePath)
 
 void etk::Image::Draw()
 {
-	auto imageView = GetDrawableFactory().lock()->CreateImage();
-	imageView->LoadImage(mImageData, mImageWidth, mImageHeight, mChannels);
-	imageView->Draw();
+	if (!mImageRenderer) {
+		mImageRenderer = GetDrawableFactory().lock()->CreateImage();
+		mImageRenderer->LoadImage(mImageData, mImageWidth, mImageHeight, mChannels);
+	}
+	mImageRenderer->Draw();
 }
