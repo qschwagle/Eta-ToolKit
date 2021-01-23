@@ -12,6 +12,11 @@ public:
 	GLCharacter(std::weak_ptr<GLDrawableContext> context) : GLObject(context) {}
 	void Draw() override;
 
+	void SetCharacter(wchar_t c) {
+		mCharacter = c;
+	}
+private:
+	wchar_t mCharacter;
 };
 }
 }
