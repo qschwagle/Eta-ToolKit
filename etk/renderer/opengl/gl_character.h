@@ -9,14 +9,15 @@ namespace renderer {
 namespace opengl {
 class GLCharacter : public etk::renderer::Character, public GLObject {
 public:
-	GLCharacter(std::weak_ptr<GLDrawableContext> context) : GLObject(context) {}
+	GLCharacter(std::weak_ptr<GLDrawableContext> context);
+	~GLCharacter();
 	void Draw() override;
 
 	void SetCharacter(wchar_t c) {
 		mCharacter = c;
 	}
 private:
-	wchar_t mCharacter;
+	wchar_t mCharacter{ 0 };
 };
 }
 }
