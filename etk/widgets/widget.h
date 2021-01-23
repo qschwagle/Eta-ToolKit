@@ -4,7 +4,7 @@
 
 #include <memory>
 
-#include "renderer/drawable_factory.h"
+#include "../renderer/generic/drawable_factory.h"
 
 namespace etk {
 class Widget {
@@ -12,6 +12,7 @@ public:
 	Widget() = default;
 	Widget(const Widget&) = delete;
 	Widget& operator=(const Widget&) = delete;
+	virtual ~Widget() {}
 
 	class Border {
 	public:

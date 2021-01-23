@@ -1,13 +1,14 @@
 #pragma once
 
 #include "drawable_object.h"
-#include "../color.h"
+#include "../../color.h"
 
 namespace etk {
 namespace renderer {
 class FilledRectangle : public etk::renderer::DrawableObject {
 public:
 	FilledRectangle() : mColor(1.0f, 1.0f, 1.0f) {}
+	virtual ~FilledRectangle() {}
 	void SetWidth(const float w) {
 		mWidth = w;
 	}

@@ -1,14 +1,13 @@
 #pragma once
 
-#include "../color.h"
+#include "../../color.h"
 
 namespace etk {
 namespace renderer {
 class WindowBackground {
 public:
-	WindowBackground() : mColor(1.0f, 1.0f, 1.0f) {
-
-	}
+	WindowBackground() : mColor(1.0f, 1.0f, 1.0f) { }
+	virtual ~WindowBackground() {}
 	void SetColor(const etk::Color color) {
 		mColor = color;
 	}

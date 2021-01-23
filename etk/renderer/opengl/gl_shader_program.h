@@ -26,4 +26,5 @@ private:
     unsigned int mVertexShader= 0;
     unsigned int mFragmentShader= 0;
     unsigned int mShaderProgram = 0;
+    bool mWasCompiled{ false };
 };

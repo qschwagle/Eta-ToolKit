@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../image.h"
+#include "../generic/image.h"
 
 #include "gl_object.h"
 
@@ -9,9 +9,18 @@ namespace renderer {
 namespace opengl {
 class GLImage : public etk::renderer::Image, public GLObject {
 public:
-	GLImage(std::weak_ptr<GLDrawableContext> context) : GLObject(context) {}
+	GLImage(std::weak_ptr<GLDrawableContext> context);
+	virtual ~GLImage();
 	void Draw() override;
 
+	void LoadImage(unsigned char* data, int width, int height, int channels) override;
+private:
+	int mWidth{ -1 };
+	int mHeight{ -1 };
+	int mChannels{ -1 };
+	unsigned int mTexture;
+	unsigned int mVAO;
+	unsigned int mVBO;
 };
 }
 }

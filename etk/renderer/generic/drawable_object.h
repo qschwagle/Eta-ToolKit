@@ -11,6 +11,7 @@ namespace renderer {
 class DrawableObject {
 public:
 	DrawableObject()=default;
+	virtual ~DrawableObject() {}
 	virtual void Draw() = 0;
 	const glm::vec2& GetPos(void) const { return mPos; }
 	void SetPos(float x, float y) { mPos = glm::vec2(x, y);  }

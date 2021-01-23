@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../character.h"
+#include "../generic/character.h"
 
 #include "gl_object.h"
 
@@ -10,7 +10,7 @@ namespace opengl {
 class GLCharacter : public etk::renderer::Character, public GLObject {
 public:
 	GLCharacter(std::weak_ptr<GLDrawableContext> context);
-	~GLCharacter();
+	virtual ~GLCharacter();
 	void Draw() override;
 
 	void SetCharacter(wchar_t c) {

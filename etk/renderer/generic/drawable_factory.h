@@ -19,6 +19,7 @@ public:
 	DrawableFactory() : mThreadSchedueler{ std::make_shared<UIThreadScheduler>() } {};
 	DrawableFactory(const DrawableFactory&) = delete;
 	DrawableFactory& operator=(const DrawableFactory&) = delete;
+	virtual ~DrawableFactory() {}
 
 	virtual void Init() = 0;
 	virtual std::unique_ptr<Character> CreateCharacter() = 0;

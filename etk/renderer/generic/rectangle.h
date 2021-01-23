@@ -4,10 +4,10 @@
 
 namespace etk {
 namespace renderer {
-class Image : public DrawableObject {
+class Rectangle : public DrawableObject {
 public:
-	Image() {};
-private:
+	Rectangle() = default;
+	virtual ~Rectangle() {}
 };
 }
 }

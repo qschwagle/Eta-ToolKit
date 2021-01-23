@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../text.h"
+#include "../generic/text.h"
 
 #include "gl_object.h"
 

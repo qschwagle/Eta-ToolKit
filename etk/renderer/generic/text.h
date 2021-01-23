@@ -1,12 +1,12 @@
 #pragma once
-
 #include "drawable_object.h"
 
 namespace etk {
 namespace renderer {
-class Rectangle : public DrawableObject {
+class Text : public DrawableObject {
 public:
-	Rectangle() = default;
+	Text() = default;
+	virtual ~Text() {}
 };
 }
 }

@@ -8,6 +8,7 @@ namespace etk {
 namespace renderer {
 class DrawableContext {
 public:
+	virtual ~DrawableContext() {}
 	virtual void WindowInit(int width, int height) = 0;
 	virtual void Init() = 0;
 	virtual void Clear() = 0;

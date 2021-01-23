@@ -4,11 +4,11 @@
 #include <vector>
 #include <memory>
 
-#include "scene.h"
-#include "renderer/drawable_factory.h"
+#include "widgets/scene.h"
+#include "renderer/generic/drawable_factory.h"
 #include "renderer/opengl/gl_factory.h"
 
-#include "renderer/window_background.h"
+#include "renderer/generic/window_background.h"
 
 struct GLFWwindow;
 

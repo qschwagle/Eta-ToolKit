@@ -15,7 +15,7 @@ namespace opengl {
 class GLCharacterProgram: public etk::renderer::opengl::GLProgramHolder, public GLObject {
 public:
 	GLCharacterProgram(std::weak_ptr<GLDrawableContext> context);
-	~GLCharacterProgram();
+	virtual ~GLCharacterProgram();
 	inline static std::wstring GetId() {
 		return L"GL_CHARACTER_PROGRAM";
 	}

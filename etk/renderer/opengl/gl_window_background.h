@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../window_background.h"
+#include "../generic/window_background.h"
 
 namespace etk {
 namespace renderer {

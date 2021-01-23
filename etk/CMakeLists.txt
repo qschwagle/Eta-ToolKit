@@ -9,17 +9,24 @@ set(SOURCE_FILES
 	renderer/opengl/gl_text.cpp
 	renderer/opengl/gl_rectangle.cpp
 	renderer/opengl/gl_window_background.cpp 
-	scene.cpp 
-	button.cpp 
+	widgets/scene.cpp 
+	widgets/button.cpp
 	renderer/opengl/gl_shader_program.cpp
-	renderer/opengl/gl_filled_rectangle_program.cpp "renderer/opengl/gl_drawable_context.cpp" "renderer/ui_thread_scheduler.cpp" "renderer/opengl/gl_character_program.cpp")
+	renderer/opengl/gl_filled_rectangle_program.cpp 
+	renderer/opengl/gl_drawable_context.cpp
+	renderer/generic/ui_thread_scheduler.cpp 
+	renderer/opengl/gl_character_program.cpp
+	renderer/opengl/gl_image_program.cpp
+	widgets/image.cpp)
 
 find_package(glfw3 3.3 REQUIRED)
 
 
-add_library(${PROJECT_NAME} STATIC ${SOURCE_FILES} "widget.h")
+add_library(${PROJECT_NAME} STATIC ${SOURCE_FILES})
 
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 17)
+
+
 
 
 IF(MSVC)
@@ -42,3 +49,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE GLEW::GLEW)
 find_package(glm REQUIRED)
 
 target_link_libraries(${PROJECT_NAME} PUBLIC glm)
+
+
+find_path(STB_INCLUDE_DIRS "stb.h" "stbi_image")
+target_include_directories(${PROJECT_NAME} PRIVATE ${STB_INCLUDE_DIRS})

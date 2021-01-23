@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../drawable_context.h"
+#include "../generic/drawable_context.h"
 
 #include "gl_program_holder.h"
 

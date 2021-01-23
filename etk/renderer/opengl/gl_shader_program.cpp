@@ -8,6 +8,7 @@ GLShaderProgram::GLShaderProgram()
 
 GLShaderProgram::~GLShaderProgram()
 {
+    if(mWasCompiled) glDeleteProgram(mShaderProgram);
 }
 
 bool GLShaderProgram::SetVertSource(std::string& src)
@@ -29,6 +30,7 @@ bool GLShaderProgram::Compile()
     glAttachShader(mShaderProgram, mFragmentShader);
     glLinkProgram(mShaderProgram);
     glGetProgramiv(mShaderProgram, GL_LINK_STATUS, &success);
+    mWasCompiled = true;
     if (!success) {
         glGetProgramInfoLog(mShaderProgram, 512, NULL, infoLog);
         std::cout << "ERROR::SHADER::PROGRAM::COMPILATION_FAILED\n" << infoLog << std::endl;

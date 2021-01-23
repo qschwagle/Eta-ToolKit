@@ -15,7 +15,7 @@ namespace opengl {
 class GLFilledRectangleProgram : public etk::renderer::opengl::GLProgramHolder, public GLObject {
 public:
 	GLFilledRectangleProgram(std::weak_ptr<GLDrawableContext> context);
-	~GLFilledRectangleProgram();
+	virtual ~GLFilledRectangleProgram();
 
 	inline static std::wstring GetId() {
 		return L"GL_FILLED_RECTANGLE_PROGRAM";

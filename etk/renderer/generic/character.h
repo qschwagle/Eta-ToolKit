@@ -7,6 +7,7 @@ namespace renderer {
 class Character : public etk::renderer::DrawableObject {
 public:
 	Character() {}
+	virtual ~Character() {}
 };
 }
 }

@@ -1,6 +1,6 @@
 #include "button.h"
 
-#include "color.h"
+#include "../color.h"
 
 void etk::Button::Draw()
 {

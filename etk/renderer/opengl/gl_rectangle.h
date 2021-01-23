@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../rectangle.h"
+#include "../generic/rectangle.h"
 
 #include "gl_object.h"
 
