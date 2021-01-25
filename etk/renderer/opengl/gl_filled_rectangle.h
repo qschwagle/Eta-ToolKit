@@ -11,7 +11,7 @@ class GLFilledRectangle : public etk::renderer::FilledRectangle, public  GLObjec
 public:
 	GLFilledRectangle(std::weak_ptr<GLDrawableContext> context);
 	virtual ~GLFilledRectangle();
-	void Draw() override;
+	void Draw(glm::vec2 eye) override;
 private:
 	unsigned int mVAO;
 	unsigned int mVBO;

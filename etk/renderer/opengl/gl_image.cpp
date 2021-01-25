@@ -52,7 +52,7 @@ etk::renderer::opengl::GLImage::~GLImage()
 	glDeleteVertexArrays(1, &mVAO);
 }
 
-void etk::renderer::opengl::GLImage::Draw()
+void etk::renderer::opengl::GLImage::Draw(glm::vec2 eye)
 {
     if (GetContext().expired()) {
         throw std::exception("etk::renderer::opengl::GLFilledRectangle::Draw(): Tried to draw object without context");
@@ -65,14 +65,14 @@ void etk::renderer::opengl::GLImage::Draw()
 	program->Use();
 
 	glm::mat4 model(1.0f);
-	//model = glm::translate(model, current);
+	model = glm::translate(model, glm::vec3(GetPos().x, -1.0*GetPos().y, 0.0f));
 	glm::vec3 my_scale{ mWidth, -1.0f* mHeight, 1.0 };
 	model = glm::scale(model, my_scale);
 
 	GLint uniModel = program->GetUniformLoc(std::string("model"));
 	GLint uniProjView = program->GetUniformLoc(std::string("proj_view"));
 	program->SetUniformMat4fv(uniModel, glm::value_ptr(model));
-	auto proj =	glm::ortho( 0.0f, static_cast<float>(GetContext().lock()->GetWidth()), -1.0f*static_cast<float>(GetContext().lock()->GetHeight()), 0.0f);
+	auto proj =	glm::ortho( eye.x, eye.x+static_cast<float>(GetContext().lock()->GetWidth()), -1.0f*(eye.y+static_cast<float>(GetContext().lock()->GetHeight())), -1.0f*eye.y);
 	program->SetUniformMat4fv(uniProjView, glm::value_ptr(proj));
 
 	glBindVertexArray(mVAO);

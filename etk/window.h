@@ -33,6 +33,7 @@ public:
 	void SetScene(std::shared_ptr<Scene> scene) {
 		mScene = scene;
 		scene->SetDrawableFactory(mDrawableFactory);
+		if (mInitialized) scene->Init();
 	}
 
 	void ScheduleFunc(std::function<bool()> func) {
@@ -44,6 +45,15 @@ public:
 
 	void ContentScaleChanged(float xScale, float yScale);
 
+	void ScrollCallback(glm::vec2 point, float xOffset, float yOffset) {
+		const auto height = mDrawableFactory->GetContext().lock()->GetHeight();
+		if (mScene) mScene->OnScroll(glm::vec2(point.x, height+point.y), xOffset, yOffset);
+	}
+
+	const glm::vec2& GetEye() const {
+		return mEye;
+	}
+
 private:
 	const int mId;
 	GLFWwindow* mWin{ nullptr };
@@ -53,5 +63,9 @@ private:
 	std::shared_ptr<renderer::DrawableFactory> mDrawableFactory{ nullptr };
 	std::shared_ptr<etk::Scene> mScene;
 	std::unique_ptr<etk::renderer::WindowBackground> mBackground;
+
+	bool mInitialized{ false };
+	glm::vec2 mEye{ 0.0f,0.0f };
 };
+
 }

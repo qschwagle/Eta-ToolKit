@@ -22,14 +22,22 @@ void etk::Image::Load(const std::wstring filePath)
 	FILE* file = fopen(mbs.c_str(), "rb");
 	if (mImageData) stbi_image_free(mImageData);
 	mImageData  = stbi_load_from_file(file, &mImageWidth, &mImageHeight, &mChannels, 0);
+	SetInternalWidth(mImageWidth);
+	SetInternalHeight(mImageHeight);
 	fclose(file);
 }
 
-void etk::Image::Draw()
+void etk::Image::Draw(const glm::vec2& eye)
 {
 	if (!mImageRenderer) {
 		mImageRenderer = GetDrawableFactory().lock()->CreateImage();
 		mImageRenderer->LoadImage(mImageData, mImageWidth, mImageHeight, mChannels);
 	}
-	mImageRenderer->Draw();
+	mImageRenderer->SetPos(GetPosition().x, GetPosition().y);
+	mImageRenderer->Draw(eye + GetEye());
+}
+
+void etk::Image::SetPosition(const glm::vec2 position)
+{
+	etk::Widget::SetPosition(position);
 }

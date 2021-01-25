@@ -5,9 +5,9 @@ etk::Scene::Scene(std::wstring identifier) : mSelfIdentifier{identifier}
 {
 }
 
-void etk::Scene::Draw()
+void etk::Scene::Draw(const glm::vec2& eye)
 {
-	SingleContainer::Draw();
+	SingleContainer::Draw(eye + GetEye());
 }
 
 bool etk::Scene::SetWidget(std::wstring identifier, std::wstring target, std::shared_ptr<etk::Widget> widget)

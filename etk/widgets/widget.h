@@ -9,10 +9,74 @@
 namespace etk {
 class Widget {
 public:
-	Widget() = default;
+	Widget() : mScroller{ std::make_unique<NoScroller>() } { };
 	Widget(const Widget&) = delete;
 	Widget& operator=(const Widget&) = delete;
 	virtual ~Widget() {}
+
+	bool IsInitialized() const {
+		return mInitialized;
+	}
+
+	virtual void Init() {
+		mInitialized = true;
+	}
+
+	const glm::vec2& GetEye() {
+		return mEye;
+	}
+
+	class Scroller {
+	public:
+		void SetOwner(Widget *w) {
+			mOwner = w;
+		}
+		virtual float ScrollX(float x) {
+			return 0;
+		}
+		virtual float ScrollY(float y) {
+			return  0;
+		}
+		virtual bool ScrollXEnabled(void) {
+			return false;
+		}
+		virtual bool ScrollYEnabled(void) {
+			return false;
+		}
+	protected:
+		Widget* GetOwner() const {
+			return mOwner;
+		}
+
+	private:
+		Widget* mOwner;
+	};
+
+	class HorizontalScroller : public Scroller {
+	public:
+		float ScrollX(float x) override {
+			GetOwner()->AdjustEye(glm::vec2(x * 40.0f, 0));
+			return 0.0f;
+		}
+		bool ScrollXEnabled(void) override {
+			return true;
+		}
+	private:
+	};
+
+	class VerticalScroller : public Scroller {
+	public:
+		float ScrollY(float y) override {
+			GetOwner()->AdjustEye(glm::vec2(0, y * 40.0f));
+			return 0.0f;
+		}
+		bool ScrollYEnabled(void) override {
+			return true;
+		}
+	};
+
+	class NoScroller : public Scroller {
+	};
 
 	class Border {
 	public:
@@ -22,9 +86,9 @@ public:
 	private:
 	};
 
-	virtual void Draw() {}
+	virtual void Draw(const glm::vec2& eye) {}
 
-	void SetPosition(const glm::vec2 pos)
+	virtual void SetPosition(const glm::vec2 pos)
 	{
 		mPos = pos;
 	}
@@ -54,8 +118,8 @@ public:
 		return mPadding;
 	}
 
-
 	virtual void Invalidate() {};
+
 
 	/// <summary>
 	/// Internal Width + border + margin + padding
@@ -83,6 +147,29 @@ public:
 		mDrawableFactory = factory;
 	}
 
+	virtual bool HitInsideBox(const glm::vec2 point) {
+		return GetPosition().x - GetMargin()[3] < point.x && point.x < GetPosition().x + GetInternalWidth() + GetMargin()[1] && GetPosition().y - GetMargin()[0] < point.y && point.y < GetPosition().y + GetInternalHeight() + GetMargin()[2];
+	}
+
+	virtual bool OnScroll(const glm::vec2 point, const float x, const float y) {
+		if (HitInsideBox(point)) {
+			if (x != 0 && mScroller->ScrollXEnabled()) {
+				mScroller->ScrollX(x);
+				return true;
+			}
+			if (y != 0 && mScroller->ScrollYEnabled()) {
+				mScroller->ScrollY(y);
+				return true;
+			}
+			return false;
+		}
+		return false;
+	}
+
+	void SetScroller(std::unique_ptr<Scroller> s) {
+		s->SetOwner(this);
+		mScroller = std::move(s);
+	}
 protected:
 	/// <summary>
 	/// The internal width of the object
@@ -112,6 +199,17 @@ protected:
 		return mDrawableFactory;
 	}
 
+
+
+protected:
+	void SetEye(glm::vec2 eye) {
+		mEye = eye;
+	}
+
+	void AdjustEye(glm::vec2 eye) {
+		mEye += eye;
+	}
+
 private:
 	float mInternalWidth{ 0.0f };
 	float mInternalHeight{ 0.0f };
@@ -136,5 +234,12 @@ private:
 	std::unique_ptr<Border> mBorder{ nullptr };
 
 	std::weak_ptr<etk::renderer::DrawableFactory> mDrawableFactory;
+	
+
+	bool mInitialized{ false };
+
+	std::unique_ptr<Scroller> mScroller;
+
+	glm::vec2 mEye{ 0.0f, 0.0f };
 };
 }

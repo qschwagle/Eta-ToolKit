@@ -4,13 +4,14 @@
 
 #include "gl_program_holder.h"
 
-
 #include<memory>
+
 
 namespace etk {
 namespace renderer {
 namespace opengl {
-class GLDrawableContext : public etk::renderer::DrawableContext {
+class GLCharacter;
+class GLDrawableContext : public etk::renderer::DrawableContext, public std::enable_shared_from_this<GLDrawableContext> {
 public:
 	GLDrawableContext();
 	void WindowInit(int width, int height) override;
@@ -34,6 +35,8 @@ public:
 	}
 
 	void UpdateDimensions(const int width, const int height) override;
+
+	std::shared_ptr<etk::renderer::opengl::GLCharacter> GetCharacter();
 
 private:
 	std::unordered_map <std::wstring, std::shared_ptr<GLProgramHolder>> mGLProgramHolders;

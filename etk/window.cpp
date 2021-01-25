@@ -4,6 +4,16 @@
 
 #include <exception>
 
+static void glfw_on_scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+	etk::Window* win = reinterpret_cast<etk::Window*>(glfwGetWindowUserPointer(window));
+	double x;
+	double y;
+	glfwGetCursorPos(window, &x, &y);
+	win->ScrollCallback(glm::vec2(static_cast<float>(x), static_cast<float>(y)), xoffset, yoffset);
+
+}
+
 
 static void glfw_framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
@@ -38,12 +48,15 @@ void etk::Window::Init()
 	glfwMakeContextCurrent(mWin);
 	glfwSetWindowUserPointer(mWin, this);
 	glfwSetFramebufferSizeCallback(mWin, glfw_framebuffer_size_callback);
+	glfwSetScrollCallback(mWin, glfw_on_scroll_callback);
 
 	float xScale;
 	float yScale;
 	glfwGetWindowContentScale(mWin, &xScale, &yScale);
 	context->UpdateContentScale(xScale, yScale);
 	context->Init();
+	if (mScene) mScene->Init();
+	mInitialized = true;
 }
 
 void etk::Window::MarkToClose()
@@ -84,7 +97,7 @@ bool etk::Window::Run()
 	auto context = mDrawableFactory->GetContext().lock();
 	context->Clear();
 	mBackground->Draw();
-	if (mScene) mScene->Draw();
+	if (mScene) mScene->Draw(GetEye());
 	glfwSwapBuffers(mWin);
 	glfwPollEvents();
 	return true;

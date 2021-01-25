@@ -15,11 +15,13 @@ namespace etk {
 
 		void Load(const std::wstring filePath);
 
-		void Draw() override;
+		void Draw(const glm::vec2& eye) override;
 
 		void Invalidate() override {
 			mImageRenderer = nullptr;
 		}
+
+		void SetPosition(const glm::vec2 position) override;
 	private:
 		int mImageHeight{ 0 };
 		int mImageWidth{ 0 };

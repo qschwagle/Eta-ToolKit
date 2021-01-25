@@ -39,7 +39,7 @@ etk::renderer::opengl::GLFilledRectangle::~GLFilledRectangle()
     glDeleteVertexArrays(1, &mVAO);
 }
 
-void etk::renderer::opengl::GLFilledRectangle::Draw()
+void etk::renderer::opengl::GLFilledRectangle::Draw(glm::vec2 eye)
 {
     if (GetContext().expired()) {
         throw std::exception("etk::renderer::opengl::GLFilledRectangle::Draw(): Tried to draw object without context");
@@ -65,7 +65,7 @@ void etk::renderer::opengl::GLFilledRectangle::Draw()
         { pos.x + GetWidth(), pos.y + GetHeight() }
     };
 	GLint uniProjView = program->GetUniformLoc(std::string("proj"));
-    glm::mat4 proj = glm::ortho(0.0f, static_cast<float>(context->GetWidth()), -1.0f*static_cast<float>(context->GetHeight()), 0.0f, 0.1f, 100.0f);
+    glm::mat4 proj = glm::ortho(eye.x, eye.x+static_cast<float>(context->GetWidth()), -1.0f*(eye.y+static_cast<float>(context->GetHeight())), -1.0f*eye.y, 0.1f, 100.0f);
     program->SetUniformMat4fv(uniProjView, glm::value_ptr(proj));
 
     glm::mat4 model{ 1.0f };

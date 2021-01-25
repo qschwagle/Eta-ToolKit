@@ -5,6 +5,8 @@
 
 #include <exception>
 
+#include "gl_character.h"
+
 etk::renderer::opengl::GLDrawableContext::GLDrawableContext()
 {
 }
@@ -44,4 +46,9 @@ void etk::renderer::opengl::GLDrawableContext::UpdateDimensions(const int width,
 {
 	glViewport(0, 0, width, height);
 	etk::renderer::DrawableContext::UpdateDimensions(width, height);
+}
+
+std::shared_ptr<etk::renderer::opengl::GLCharacter> etk::renderer::opengl::GLDrawableContext::GetCharacter()
+{
+	return std::make_shared<etk::renderer::opengl::GLCharacter>(shared_from_this());
 }

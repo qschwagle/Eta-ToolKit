@@ -17,7 +17,7 @@ namespace etk {
 class Scene final : public etk::SingleContainer, public std::enable_shared_from_this<Scene> {
 public:
 	Scene(std::wstring identifier);
-	void Draw() override;
+	void Draw(const glm::vec2& eye) override;
 	bool SetWidget(std::wstring identifier, std::wstring target, std::shared_ptr<Widget> widget);
 	bool SetWidget(std::wstring identifier, std::wstring target, std::shared_ptr<MultiContainer> widget);
 	bool SetWidget(std::wstring identifier, std::wstring target, std::shared_ptr<SingleContainer> widget);

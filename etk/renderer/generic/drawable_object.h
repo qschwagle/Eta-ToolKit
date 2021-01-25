@@ -12,7 +12,7 @@ class DrawableObject {
 public:
 	DrawableObject()=default;
 	virtual ~DrawableObject() {}
-	virtual void Draw() = 0;
+	virtual void Draw(glm::vec2 eye) = 0;
 	const glm::vec2& GetPos(void) const { return mPos; }
 	void SetPos(float x, float y) { mPos = glm::vec2(x, y);  }
 private:

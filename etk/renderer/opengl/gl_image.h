@@ -11,7 +11,7 @@ class GLImage : public etk::renderer::Image, public GLObject {
 public:
 	GLImage(std::weak_ptr<GLDrawableContext> context);
 	virtual ~GLImage();
-	void Draw() override;
+	void Draw(glm::vec2 eye) override;
 
 	void LoadImage(unsigned char* data, int width, int height, int channels) override;
 private:
