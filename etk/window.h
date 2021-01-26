@@ -54,6 +54,14 @@ public:
 		return mEye;
 	}
 
+	void LeftMouseButtonClicked(float x, float y) {
+		if(mScene) mScene->OnLeftClick(x, y);
+	}
+
+	void RightMouseButtonClicked(float x, float y) {
+		if (mScene) mScene->OnRightClick(x, y);
+	}
+
 private:
 	const int mId;
 	GLFWwindow* mWin{ nullptr };

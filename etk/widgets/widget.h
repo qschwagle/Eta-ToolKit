@@ -149,7 +149,7 @@ public:
 	}
 
 	virtual bool HitInsideBox(const glm::vec2 point) {
-		return GetPosition().x - GetMargin()[3] < point.x && point.x < GetPosition().x + GetInternalWidth() + GetMargin()[1] && GetPosition().y - GetMargin()[0] < point.y && point.y < GetPosition().y + GetInternalHeight() + GetMargin()[2];
+		return GetPosition().x + GetPadding()[3] < point.x && point.x < GetPosition().x + GetInternalWidth() + GetPadding()[3] + GetMargin()[3] + GetMargin()[1] && GetPosition().y + GetPadding()[0] < point.y && point.y < GetPosition().y + GetInternalHeight() + GetPadding()[0] + GetMargin()[0] + GetMargin()[2];
 	}
 
 	virtual bool OnScroll(const glm::vec2 point, const float x, const float y) {
@@ -200,6 +200,8 @@ protected:
 		return mDrawableFactory;
 	}
 
+public:
+
 	void SetLeftClickCallback(std::unique_ptr<std::function<void()>> c) {
 		mLeftClickCallback = std::move(c);
 	}
@@ -209,12 +211,23 @@ protected:
 	}
 
 	virtual bool OnLeftClick(float x, float y) {
-		return false;
+		if (HitInsideBox(glm::vec2{ x,y })) {
+			if (mLeftClickCallback) {
+				(*mLeftClickCallback)();
+				return true;
+			}
+			return false;
+		}
 	}
 
 	virtual bool OnRightClick(float x, float y) {
-		return false;
-
+		if (HitInsideBox(glm::vec2{ x,y })) {
+			if (mRightClickCallback) {
+				(*mRightClickCallback)();
+				return true;
+			}
+			return false;
+		}
 	}
 
 protected:

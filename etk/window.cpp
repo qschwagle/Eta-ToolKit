@@ -14,6 +14,20 @@ static void glfw_on_scroll_callback(GLFWwindow* window, double xoffset, double y
 
 }
 
+static void glfw_mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+{
+	etk::Window* win = reinterpret_cast<etk::Window*>(glfwGetWindowUserPointer(window));
+	double x;
+	double y;
+	glfwGetCursorPos(window, &x, &y);
+
+	if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS) {
+		win->RightMouseButtonClicked(x, y);
+	} if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
+		win->LeftMouseButtonClicked(x, y);
+	}
+}
+
 
 static void glfw_framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
@@ -49,6 +63,7 @@ void etk::Window::Init()
 	glfwSetWindowUserPointer(mWin, this);
 	glfwSetFramebufferSizeCallback(mWin, glfw_framebuffer_size_callback);
 	glfwSetScrollCallback(mWin, glfw_on_scroll_callback);
+	glfwSetMouseButtonCallback(mWin, glfw_mouse_button_callback);
 
 	float xScale;
 	float yScale;

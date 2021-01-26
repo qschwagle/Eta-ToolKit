@@ -27,9 +27,6 @@ public:
 		return temp;
 	}
 
-
-
-
 private:
 	unsigned int mHeight{ 0 };
 	unsigned int mWidth{ 0 };

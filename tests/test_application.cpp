@@ -2,7 +2,7 @@
 
 #include <etk/application.h>
 
-#include <etk/renderer/ui_thread_scheduler.h>
+#include <etk/renderer/generic/ui_thread_scheduler.h>
 
 #include <memory>
 

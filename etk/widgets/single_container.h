@@ -30,12 +30,41 @@ public:
 
 	bool OnScroll(const glm::vec2 point, float xOffset, float yOffset) override {
 		if (HitInsideBox(point)) {
-			if (!mWidget->OnScroll(point, xOffset, yOffset)) {
+			if (!mWidget->OnScroll(GetEye()+point, xOffset, yOffset)) {
 				return etk::Widget::OnScroll(point, xOffset, yOffset);
 			}
 			return true;
 		}
 	}
+
+	bool OnLeftClick(float x, float y) override {
+		if (HitInsideBox(glm::vec2{ x,y })) {
+			if (mWidget) {
+				if (mWidget->OnLeftClick(GetEye().x+x,GetEye().y+y)) {
+					return true;
+				}
+			}
+			if (etk::Widget::OnLeftClick(x, y)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	bool OnRightClick(float x, float y) override {
+		if (HitInsideBox(glm::vec2{ x,y })) {
+			if (mWidget) {
+				if (mWidget->OnRightClick(GetEye().x+x,GetEye().y+y)) {
+					return true;
+				}
+			}
+			if (etk::Widget::OnRightClick(x, y)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 
 protected:
 	std::shared_ptr<Widget> GetWidget() {

@@ -38,7 +38,7 @@ public:
 	{
 		if (HitInsideBox(point)) {
 			for (auto& i : mWidgetList) {
-				if (i->OnScroll(point, xOffset, yOffset)) {
+				if (i->OnScroll(GetEye()+point, xOffset, yOffset)) {
 					return true;
 				}
 			}
@@ -46,6 +46,33 @@ public:
 		}
 	}
 
+	bool OnLeftClick(float x, float y) override {
+		if (HitInsideBox(glm::vec2{ x,y })) {
+			for(auto& i: mWidgetList) {
+				if (i->OnLeftClick(GetEye().x+x, GetEye().y+y)) {
+					return true;
+				}
+			}
+			if (etk::Widget::OnLeftClick(x, y)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	bool OnRightClick(float x, float y) override {
+		if (HitInsideBox(glm::vec2{ x,y })) {
+			for(auto& i: mWidgetList) {
+				if (i->OnRightClick(GetEye().x+x, GetEye().y+y)) {
+					return true;
+				}
+			}
+			if (etk::Widget::OnRightClick(x, y)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 protected:
 	virtual void UpdateChildrenPositions() {};
