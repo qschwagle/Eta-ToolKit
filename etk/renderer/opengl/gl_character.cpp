@@ -7,6 +7,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "helpers.h"
+
 static std::vector<float> rectangle = {
 	 0.0f,  1.0f,  0.0, 0.0,
 	 0.0f,  0.0f,  0.0, 1.0,
@@ -64,7 +66,7 @@ void etk::renderer::opengl::GLCharacter::Draw(glm::vec2 eye)
     program->SetUniform3fv(program->GetUniformLoc(uniformTextColor), etk::colors::BLUE.GetFloatPtr());
 
     GLint uniProjView = program->GetUniformLoc(std::string("proj"));
-    glm::mat4 proj = glm::ortho(eye.x, eye.x+static_cast<float>(context->GetWidth()), -1.0f*eye.y+-1.0f*static_cast<float>(context->GetHeight()), -1.0f*eye.y, 0.1f, 100.0f);
+    glm::mat4 proj = etk::renderer::opengl::CreateOrtho(eye, context->GetWidth(), context->GetHeight());
     program->SetUniformMat4fv(uniProjView, glm::value_ptr(proj));
 
     GLint modelId = program->GetUniformLoc(std::string("model"));

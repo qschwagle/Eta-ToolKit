@@ -5,6 +5,8 @@
 #include<glm/gtc/matrix_transform.hpp>
 #include<glm/gtc/type_ptr.hpp>
 
+#include "helpers.h"
+
 #include <string>
 
 #include<GL/glew.h>
@@ -65,7 +67,7 @@ void etk::renderer::opengl::GLFilledRectangle::Draw(glm::vec2 eye)
         { pos.x + GetWidth(), pos.y + GetHeight() }
     };
 	GLint uniProjView = program->GetUniformLoc(std::string("proj"));
-    glm::mat4 proj = glm::ortho(eye.x, eye.x+static_cast<float>(context->GetWidth()), -1.0f*(eye.y+static_cast<float>(context->GetHeight())), -1.0f*eye.y, 0.1f, 100.0f);
+    glm::mat4 proj = CreateOrtho(eye, context->GetWidth(), context->GetHeight());
     program->SetUniformMat4fv(uniProjView, glm::value_ptr(proj));
 
     glm::mat4 model{ 1.0f };

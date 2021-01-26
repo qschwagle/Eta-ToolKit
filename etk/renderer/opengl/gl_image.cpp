@@ -7,6 +7,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "helpers.h"
+
 static std::vector<float> rectangle = {
 	 0.0f,  1.0f,  0.0, 1.0,
 	 1.0f,  0.0f,  1.0, 0.0,
@@ -58,7 +60,8 @@ void etk::renderer::opengl::GLImage::Draw(glm::vec2 eye)
         throw std::exception("etk::renderer::opengl::GLFilledRectangle::Draw(): Tried to draw object without context");
         return;
     }
-	auto program = GetContext().lock()->GetProgramHolder(etk::renderer::opengl::GLImageProgram::GetId()).lock()->GetProgram();
+	auto context = GetContext().lock();
+	auto program = context->GetProgramHolder(etk::renderer::opengl::GLImageProgram::GetId()).lock()->GetProgram();
 
     const glm::vec2& pos = GetPos();
 
@@ -72,7 +75,7 @@ void etk::renderer::opengl::GLImage::Draw(glm::vec2 eye)
 	GLint uniModel = program->GetUniformLoc(std::string("model"));
 	GLint uniProjView = program->GetUniformLoc(std::string("proj_view"));
 	program->SetUniformMat4fv(uniModel, glm::value_ptr(model));
-	auto proj =	glm::ortho( eye.x, eye.x+static_cast<float>(GetContext().lock()->GetWidth()), -1.0f*(eye.y+static_cast<float>(GetContext().lock()->GetHeight())), -1.0f*eye.y);
+	auto proj = CreateOrtho(eye, context->GetWidth(), context->GetHeight());
 	program->SetUniformMat4fv(uniProjView, glm::value_ptr(proj));
 
 	glBindVertexArray(mVAO);
