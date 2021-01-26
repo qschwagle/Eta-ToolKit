@@ -38,7 +38,7 @@ int etk::Application::Run(void)
 }
 
 
-int etk::Application::CreateWindow(const std::string title, long width, long height)
+int etk::Application::CreateAppWindow(const std::string title, long width, long height)
 {
 	auto win = std::make_unique<Window>(mFreeId, title, width, height);
 	mWindows.insert(std::pair(mFreeId, std::move(win)));

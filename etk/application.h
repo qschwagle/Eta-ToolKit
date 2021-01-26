@@ -18,7 +18,7 @@ public:
 	int Run(void);
 
 
-	int CreateWindow(const std::string title="", long width = 1920, long height = 1080);
+	int CreateAppWindow(const std::string title="", long width = 1920, long height = 1080);
 
 	Window* GetWindow(int id);
 private:

@@ -78,6 +78,11 @@ void etk::renderer::opengl::GLImage::Draw(glm::vec2 eye)
 	auto proj = CreateOrtho(eye, context->GetWidth(), context->GetHeight());
 	program->SetUniformMat4fv(uniProjView, glm::value_ptr(proj));
 
+	GLint uniVec = program->GetUniformLoc(std::string("boundary"));
+	program->SetUniform4f(uniVec, pos.x, pos.y, mWidth, mHeight);
+
+
+
 	glBindVertexArray(mVAO);
 	glBindTexture(GL_TEXTURE_2D, mTexture);
 	glDrawArrays(GL_TRIANGLES, 0, 6);

@@ -16,6 +16,8 @@ public:
 
 	void Init() override;
 
+	void Invalidate() override;
+	
 protected:
 
 	void UpdateChildrenPositions() override;

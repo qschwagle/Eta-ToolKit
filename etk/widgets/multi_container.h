@@ -9,12 +9,14 @@ class MultiContainer : public etk::Widget
 public:
 	virtual void AddWidget(std::shared_ptr<Widget> widget)
 	{
+		widget->SetOwner(shared_from_this());
 		mWidgetList.push_back(widget);
 		widget->SetDrawableFactory(GetDrawableFactory());
+		Invalidate();
 		if (IsInitialized()) widget->Init();
 	}
 
-	virtual void ClearWidgets(std::shared_ptr<Widget> widget)
+	virtual void ClearWidgets()
 	{
 		mWidgetList.clear();
 	}

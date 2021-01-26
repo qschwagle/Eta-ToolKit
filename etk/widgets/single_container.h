@@ -11,6 +11,7 @@ public:
 	}
 	void SetWidget(std::shared_ptr<Widget> widget)
 	{
+		widget->SetOwner(shared_from_this());
 		mWidget = widget;
 		mWidget->SetDrawableFactory(GetDrawableFactory());
 		if (IsInitialized()) mWidget->Init();
@@ -63,6 +64,14 @@ public:
 			}
 		}
 		return false;
+	}
+
+	void Invalidate() override {
+		if (mWidget) {
+			SetInternalWidth(mWidget->GetExternalWidth());
+			SetInternalHeight(mWidget->GetExternalHeight());
+		}
+		if (!GetOwner().expired()) GetOwner().lock()->Invalidate();
 	}
 
 

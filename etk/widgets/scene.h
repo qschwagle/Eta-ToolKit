@@ -14,7 +14,7 @@ namespace etk {
 * A user should use SetWidget to set the widgets. 
 * 
 */
-class Scene final : public etk::SingleContainer, public std::enable_shared_from_this<Scene> {
+class Scene final : public etk::SingleContainer {
 public:
 	Scene(std::wstring identifier);
 	void Draw(const glm::vec2& eye) override;

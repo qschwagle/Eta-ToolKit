@@ -18,6 +18,7 @@ public:
 	void SetUniformMat4fv(GLint loc, const float* mat4);
 	void SetUniform3fv(GLint loc, const float* vec3);
     void SetUniform3f(GLint, float x, float y, float z);
+    void SetUniform4f(GLint, float x, float y, float z, float w);
 
 private:
     bool CompileShader(std::string &src, GLenum type, unsigned int &shader);

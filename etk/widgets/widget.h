@@ -8,7 +8,7 @@
 #include "../renderer/generic/drawable_factory.h"
 
 namespace etk {
-class Widget {
+class Widget : public std::enable_shared_from_this<Widget> {
 public:
 	Widget() : mScroller{ std::make_unique<NoScroller>() } { };
 	Widget(const Widget&) = delete;
@@ -230,6 +230,10 @@ public:
 		}
 	}
 
+	void SetOwner(std::weak_ptr<etk::Widget> o) {
+		mOwner = o;
+	}
+
 protected:
 	void SetEye(glm::vec2 eye) {
 		mEye = eye;
@@ -237,6 +241,10 @@ protected:
 
 	void AdjustEye(glm::vec2 eye) {
 		mEye += eye;
+	}
+
+	std::weak_ptr<etk::Widget> GetOwner() const {
+		return mOwner;
 	}
 
 private:
@@ -273,5 +281,7 @@ private:
 
 	std::unique_ptr<std::function<void()>> mLeftClickCallback{ nullptr };
 	std::unique_ptr<std::function<void()>> mRightClickCallback{ nullptr };
+
+	std::weak_ptr<etk::Widget> mOwner;
 };
 }
