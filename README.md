@@ -23,8 +23,13 @@ tests for eta.
 
 A simple application built using eta
 
+### doc
+
+Contains detailed documentation on architecture
+
 ## Dependencies
 
 - Opengl 3.3 or later
 - glfw
 - glew
+- FreeType

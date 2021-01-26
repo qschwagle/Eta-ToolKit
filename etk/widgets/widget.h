@@ -3,6 +3,7 @@
 #include <glm/glm.hpp>
 
 #include <memory>
+#include <functional>
 
 #include "../renderer/generic/drawable_factory.h"
 
@@ -199,7 +200,22 @@ protected:
 		return mDrawableFactory;
 	}
 
+	void SetLeftClickCallback(std::unique_ptr<std::function<void()>> c) {
+		mLeftClickCallback = std::move(c);
+	}
+	
+	void SetRightClickCallback(std::unique_ptr<std::function<void()>> c) {
+		mRightClickCallback = std::move(c);
+	}
 
+	virtual bool OnLeftClick(float x, float y) {
+		return false;
+	}
+
+	virtual bool OnRightClick(float x, float y) {
+		return false;
+
+	}
 
 protected:
 	void SetEye(glm::vec2 eye) {
@@ -241,5 +257,8 @@ private:
 	std::unique_ptr<Scroller> mScroller;
 
 	glm::vec2 mEye{ 0.0f, 0.0f };
+
+	std::unique_ptr<std::function<void()>> mLeftClickCallback{ nullptr };
+	std::unique_ptr<std::function<void()>> mRightClickCallback{ nullptr };
 };
 }
