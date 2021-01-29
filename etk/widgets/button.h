@@ -8,7 +8,7 @@
 namespace etk {
 class Button : public Widget {
 public:
-	void Draw(const glm::vec2& eye) override;
+	void Draw() override;
 
 	void Init() override;
 

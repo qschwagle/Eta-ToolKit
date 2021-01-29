@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include <unordered_map>
+#include <vector>
 #include <memory>
 
 #include "window.h"
@@ -18,11 +18,10 @@ public:
 	int Run(void);
 
 
-	int CreateAppWindow(const std::string title="", long width = 1920, long height = 1080);
+	std::weak_ptr<Window> CreateAppWindow(const std::string title="", long width = 1920, long height = 1080);
 
-	Window* GetWindow(int id);
 private:
-	std::unordered_map<int, std::unique_ptr<Window>> mWindows;
+	std::vector<std::shared_ptr<Window>> mWindows;
 	int mFreeId{ 0 };
 	bool mInitialized{ false };
 };

@@ -22,8 +22,7 @@ int main(int argc, char** argv)
 	etk::Application app;
 
 	// create the window
-	int id = app.CreateAppWindow("Image Viewer");
-	auto window = app.GetWindow(id);
+	auto window = app.CreateAppWindow("Image Viewer").lock();
 
 	// set the background color
 	window->SetColor(etk::colors::PURPLE);

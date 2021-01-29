@@ -5,9 +5,9 @@
 namespace etk {
 class SingleContainer : public etk::Widget {
 public:
-	void Draw(const glm::vec2& eye) override
+	void Draw() override
 	{
-		if(mWidget) mWidget->Draw(eye + GetEye());
+		if (mWidget) mWidget->Draw();
 	}
 	void SetWidget(std::shared_ptr<Widget> widget)
 	{
@@ -31,7 +31,8 @@ public:
 
 	bool OnScroll(const glm::vec2 point, float xOffset, float yOffset) override {
 		if (HitInsideBox(point)) {
-			if (!mWidget->OnScroll(GetEye()+point, xOffset, yOffset)) {
+			auto shift = GetBox().lock()->GetShift();
+			if (!mWidget->OnScroll(shift+point, xOffset, yOffset)) {
 				return etk::Widget::OnScroll(point, xOffset, yOffset);
 			}
 			return true;
@@ -41,7 +42,8 @@ public:
 	bool OnLeftClick(float x, float y) override {
 		if (HitInsideBox(glm::vec2{ x,y })) {
 			if (mWidget) {
-				if (mWidget->OnLeftClick(GetEye().x+x,GetEye().y+y)) {
+				auto shift = GetBox().lock()->GetShift();
+				if (mWidget->OnLeftClick(shift.x + x, shift.y + y)) {
 					return true;
 				}
 			}
@@ -55,7 +57,8 @@ public:
 	bool OnRightClick(float x, float y) override {
 		if (HitInsideBox(glm::vec2{ x,y })) {
 			if (mWidget) {
-				if (mWidget->OnRightClick(GetEye().x+x,GetEye().y+y)) {
+				auto box = GetBox().lock()->GetDimensions(); 
+				if (mWidget->OnRightClick(box.x+x, box.y+y)) {
 					return true;
 				}
 			}

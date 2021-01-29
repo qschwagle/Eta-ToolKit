@@ -1,13 +1,15 @@
 #include "scene.h"
 #include <utility>
 
+#include "../window.h"
+
 etk::Scene::Scene(std::wstring identifier) : mSelfIdentifier{identifier}
 {
 }
 
-void etk::Scene::Draw(const glm::vec2& eye)
+void etk::Scene::Draw()
 {
-	SingleContainer::Draw(eye + GetEye());
+	SingleContainer::Draw();
 }
 
 bool etk::Scene::SetWidget(std::wstring identifier, std::wstring target, std::shared_ptr<etk::Widget> widget)
@@ -160,4 +162,25 @@ bool etk::Scene::RemoveWidget(std::wstring identifer)
 		}
 	}
 	return false;
+}
+
+/// <summary>
+/// Set the window directly owning this scene
+/// </summary>
+/// <param name="w"window owner></param>
+void etk::Scene::SetWindow(std::weak_ptr<Window> w)
+{
+	mWindow = w;
+}
+
+std::weak_ptr<etk::renderer::ScreenBox> etk::Scene::GetBox()
+{
+	auto box = Widget::GetBox();
+	if (box.expired()) {
+		if (!mWindow.expired()) return mWindow.lock()->GetBox();
+		return std::weak_ptr<etk::renderer::ScreenBox>();
+	}
+	else {
+		return box;
+	}
 }

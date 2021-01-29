@@ -16,8 +16,8 @@ void etk::Label::Init()
 	SetInternalWidth(mTextVisual->GetWidth());
 }
 
-void etk::Label::Draw(const glm::vec2& eye)
+void etk::Label::Draw()
 {
 	mTextVisual->SetPos(GetPadding()[3] + GetMargin()[3] + GetPosition().x, GetPadding()[0] + GetMargin()[0] + GetPosition().y);
-	mTextVisual->Draw(eye + GetEye());
+	mTextVisual->Draw(GetBox().lock()->GetShift());
 }

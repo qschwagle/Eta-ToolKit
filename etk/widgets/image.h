@@ -15,7 +15,7 @@ namespace etk {
 
 		void Load(const std::wstring filePath);
 
-		void Draw(const glm::vec2& eye) override;
+		void Draw() override;
 
 		void Invalidate() override {
 			mImageRenderer = nullptr;

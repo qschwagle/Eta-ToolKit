@@ -2,10 +2,10 @@
 
 #include "../color.h"
 
-void etk::Button::Draw(const glm::vec2& eye)
+void etk::Button::Draw()
 {
-	mBackgroundRenderer->Draw(eye + GetEye());
-	mTextVisual->Draw(eye + GetEye());
+	mBackgroundRenderer->Draw(GetBox().lock()->GetShift());
+	mTextVisual->Draw(GetBox().lock()->GetShift());
 }
 
 void etk::Button::Init()

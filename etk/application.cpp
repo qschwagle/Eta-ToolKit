@@ -3,13 +3,14 @@
 #include <GLFW/glfw3.h>
 
 #include <exception>
+#include <iostream>
 
 void etk::Application::Init(int argc, char** argv)
 {
 	if (!glfwInit())
 		throw std::exception("Could not init glfw");
 	for (auto& i : mWindows) {
-		i.second->Init();
+		i->Init();
 	}
 	mInitialized = true;
 
@@ -19,16 +20,17 @@ int etk::Application::Run(void)
 {
 	while (true) {
 		std::vector<int> toBeRemoved;
+		int counter = 0;
 		for (auto& i : mWindows) {
-			if (!i.second->Run()) {
-				toBeRemoved.push_back(i.first);
+			if (!i->Run()) {
+				toBeRemoved.push_back(counter);
 			}
+			counter++;
 		}
+		counter = 0;
 		for (auto i : toBeRemoved) {
-			auto found = mWindows.find(i);
-			if (found != mWindows.end()) {
-				mWindows.erase(found);
-			}
+			mWindows.erase(mWindows.begin() + (i-counter));
+			counter++;
 		}
 		if (!mWindows.size()) {
 			return 0;
@@ -38,21 +40,11 @@ int etk::Application::Run(void)
 }
 
 
-int etk::Application::CreateAppWindow(const std::string title, long width, long height)
+std::weak_ptr<etk::Window> etk::Application::CreateAppWindow(const std::string title, long width, long height)
 {
-	auto win = std::make_unique<Window>(mFreeId, title, width, height);
-	mWindows.insert(std::pair(mFreeId, std::move(win)));
-	int used = mFreeId;
-	mFreeId++;
-	return used;
-}
-
-etk::Window* etk::Application::GetWindow(int id) {
-	auto found = mWindows.find(id);
-	if (found != mWindows.end()) {
-		return found->second.get();
-	}
-	return nullptr;
+	std::shared_ptr<Window> win = std::make_shared<Window>(mFreeId, title, width, height);
+	mWindows.push_back(win);
+	return win;
 }
 
 etk::Application::~Application()

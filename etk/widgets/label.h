@@ -10,7 +10,7 @@ namespace etk {
 class Label : public Widget {
 public:
 	Label();
-	void Draw(const glm::vec2& eye) override;
+	void Draw() override;
 
 	void SetText(std::wstring t) {
 		mText = t;

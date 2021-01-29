@@ -41,13 +41,14 @@ static void glfw_content_scale_changed_callback(GLFWwindow* window, float xScale
 	win->ContentScaleChanged(xScale, yScale);
 }
 
-etk::Window::Window(int id,  std::string title, long width, long height, std::shared_ptr<etk::renderer::DrawableFactory> factory) : 
-	mId{ id }, 
-	mWidth{ width }, 
-	mHeight{ height }, 
+etk::Window::Window(int id, std::string title, long width, long height, std::shared_ptr<etk::renderer::DrawableFactory> factory) :
+	mId{ id },
+	mWidth{ width },
+	mHeight{ height },
 	mTitle{ title },
-	mDrawableFactory{ factory } 
+	mDrawableFactory{ factory }
 {
+	mBox = factory->GetContext().lock()->GetScreenBox();
 	mBackground = mDrawableFactory->CreateBackground();
 }
 
@@ -112,7 +113,7 @@ bool etk::Window::Run()
 	auto context = mDrawableFactory->GetContext().lock();
 	context->Clear();
 	mBackground->Draw();
-	if (mScene) mScene->Draw(GetEye());
+	if (mScene) mScene->Draw();
 	glfwSwapBuffers(mWin);
 	glfwPollEvents();
 	return true;

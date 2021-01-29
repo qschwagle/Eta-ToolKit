@@ -3,6 +3,9 @@
 #include <string>
 
 #include <unordered_map>
+#include <memory>
+
+#include "screen_box.h"
 
 namespace etk {
 namespace renderer {
@@ -31,11 +34,20 @@ public:
 		return mContentYScale;
 	}
 
+	std::shared_ptr<ScreenBox> GetScreenBox() {
+		auto box = std::make_shared<ScreenBox>();
+		box->SetDimensions(glm::vec2(static_cast<float>(mWidth), static_cast<float>(mHeight)));
+		mBoxes.push_back(box);
+		return box;
+	}
+
 private:
 	float mContentXScale;
 	float mContentYScale;
 	int mWidth;
 	int mHeight;
+
+	std::vector<std::weak_ptr<ScreenBox>> mBoxes;
 };
 }
 }

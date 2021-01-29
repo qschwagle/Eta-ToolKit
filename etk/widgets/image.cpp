@@ -27,14 +27,14 @@ void etk::Image::Load(const std::wstring filePath)
 	fclose(file);
 }
 
-void etk::Image::Draw(const glm::vec2& eye)
+void etk::Image::Draw()
 {
 	if (!mImageRenderer) {
 		mImageRenderer = GetDrawableFactory().lock()->CreateImage();
 		mImageRenderer->LoadImage(mImageData, mImageWidth, mImageHeight, mChannels);
 	}
 	mImageRenderer->SetPos(GetPosition().x, GetPosition().y);
-	mImageRenderer->Draw(eye + GetEye());
+	mImageRenderer->Draw(GetBox().lock()->GetShift());
 }
 
 void etk::Image::SetPosition(const glm::vec2 position)

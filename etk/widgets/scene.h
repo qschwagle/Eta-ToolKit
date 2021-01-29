@@ -6,7 +6,10 @@
 #include <string>
 #include <memory>
 
+
 namespace etk {
+
+class Window;
 /**
 * Contains the tree and a sets of references to widgets and containers in the tree.
 * 
@@ -17,7 +20,7 @@ namespace etk {
 class Scene final : public etk::SingleContainer {
 public:
 	Scene(std::wstring identifier);
-	void Draw(const glm::vec2& eye) override;
+	void Draw() override;
 	bool SetWidget(std::wstring identifier, std::wstring target, std::shared_ptr<Widget> widget);
 	bool SetWidget(std::wstring identifier, std::wstring target, std::shared_ptr<MultiContainer> widget);
 	bool SetWidget(std::wstring identifier, std::wstring target, std::shared_ptr<SingleContainer> widget);
@@ -25,10 +28,18 @@ public:
 	std::weak_ptr<SingleContainer> GetSingleContainer(std::wstring identifer);
 	std::weak_ptr<MultiContainer> GetMultiContainer(std::wstring identifer);
 	bool RemoveWidget(std::wstring identifer);
+
+	void SetWindow(std::weak_ptr<Window> w);
+
+	std::weak_ptr <etk::renderer::ScreenBox> GetBox();
 private:
 	std::wstring mSelfIdentifier;
 	std::unordered_map<std::wstring, std::weak_ptr<etk::Widget>> mWidgetTable;
 	std::unordered_map<std::wstring, std::weak_ptr<etk::MultiContainer>> mMultiContainerTable;
 	std::unordered_map<std::wstring, std::weak_ptr<etk::SingleContainer>> mSingleContainerTable;
+	/// <summary>
+	/// reference
+	/// </summary>
+	std::weak_ptr<etk::Window> mWindow;
 };
 }

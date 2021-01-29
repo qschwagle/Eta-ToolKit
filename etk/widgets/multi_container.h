@@ -21,9 +21,9 @@ public:
 		mWidgetList.clear();
 	}
 
-	void Draw(const glm::vec2& eye) override
+	void Draw() override
 	{
-		for(auto i: mWidgetList) i->Draw(eye + GetEye());
+		for(auto i: mWidgetList) i->Draw();
 	}
 
 	void SetDrawableFactory(std::weak_ptr<etk::renderer::DrawableFactory> factory) override {
@@ -40,7 +40,7 @@ public:
 	{
 		if (HitInsideBox(point)) {
 			for (auto& i : mWidgetList) {
-				if (i->OnScroll(GetEye()+point, xOffset, yOffset)) {
+				if (i->OnScroll(GetBox().lock()->GetShift()+point, xOffset, yOffset)) {
 					return true;
 				}
 			}
@@ -51,7 +51,8 @@ public:
 	bool OnLeftClick(float x, float y) override {
 		if (HitInsideBox(glm::vec2{ x,y })) {
 			for(auto& i: mWidgetList) {
-				if (i->OnLeftClick(GetEye().x+x, GetEye().y+y)) {
+				auto shift = i->GetBox().lock()->GetShift();
+				if (i->OnLeftClick(shift.x + x, shift.y + y)) {
 					return true;
 				}
 			}
@@ -65,7 +66,8 @@ public:
 	bool OnRightClick(float x, float y) override {
 		if (HitInsideBox(glm::vec2{ x,y })) {
 			for(auto& i: mWidgetList) {
-				if (i->OnRightClick(GetEye().x+x, GetEye().y+y)) {
+				auto shift = i->GetBox().lock()->GetShift();
+				if (i->OnRightClick(shift.x+x, shift.y+y)) {
 					return true;
 				}
 			}

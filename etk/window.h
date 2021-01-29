@@ -10,10 +10,12 @@
 
 #include "renderer/generic/window_background.h"
 
+#include "renderer/generic/screen_box.h"
+
 struct GLFWwindow;
 
 namespace etk {
-class Window {
+class Window : public std::enable_shared_from_this<Window> {
 public:
 	Window(int id, std::string title = "", long width = 1920, long height = 1080, std::shared_ptr<etk::renderer::DrawableFactory> factory = std::make_shared<etk::renderer::opengl::GLFactory>());
 	Window(const Window&) = delete;
@@ -31,8 +33,9 @@ public:
 	void MarkToClose();
 
 	void SetScene(std::shared_ptr<Scene> scene) {
-		mScene = scene;
 		scene->SetDrawableFactory(mDrawableFactory);
+		scene->SetWindow(shared_from_this());
+		mScene = scene;
 		if (mInitialized) scene->Init();
 	}
 
@@ -50,10 +53,6 @@ public:
 		if (mScene) mScene->OnScroll(glm::vec2(point.x, height+point.y), xOffset, yOffset);
 	}
 
-	const glm::vec2& GetEye() const {
-		return mEye;
-	}
-
 	void LeftMouseButtonClicked(float x, float y) {
 		if(mScene) mScene->OnLeftClick(x, y);
 	}
@@ -62,18 +61,22 @@ public:
 		if (mScene) mScene->OnRightClick(x, y);
 	}
 
+	const std::weak_ptr<etk::renderer::ScreenBox> GetBox() const {
+		return mBox;
+	}
+
 private:
 	const int mId;
 	GLFWwindow* mWin{ nullptr };
 	long mHeight;
 	long mWidth;
+	std::shared_ptr<etk::renderer::ScreenBox> mBox;
 	std::string mTitle;
 	std::shared_ptr<renderer::DrawableFactory> mDrawableFactory{ nullptr };
 	std::shared_ptr<etk::Scene> mScene;
 	std::unique_ptr<etk::renderer::WindowBackground> mBackground;
 
 	bool mInitialized{ false };
-	glm::vec2 mEye{ 0.0f,0.0f };
 };
 
 }

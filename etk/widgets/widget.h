@@ -7,6 +7,8 @@
 
 #include "../renderer/generic/drawable_factory.h"
 
+#include "../renderer/generic/screen_box.h"
+
 namespace etk {
 class Widget : public std::enable_shared_from_this<Widget> {
 public:
@@ -23,8 +25,18 @@ public:
 		mInitialized = true;
 	}
 
-	const glm::vec2& GetEye() {
-		return mEye;
+	virtual std::weak_ptr <etk::renderer::ScreenBox> GetBox() {
+		if (mBox) {
+			return mBox;
+		}
+		else {
+			if (!mOwner.expired()) {
+				return mOwner.lock()->GetBox(); 
+			}
+			else {
+				return std::weak_ptr<etk::renderer::ScreenBox>();
+			}
+		}
 	}
 
 	class Scroller {
@@ -44,6 +56,10 @@ public:
 		virtual bool ScrollYEnabled(void) {
 			return false;
 		}
+
+		virtual bool Enabled() const {
+			return false;
+		}
 	protected:
 		Widget* GetOwner() const {
 			return mOwner;
@@ -56,10 +72,13 @@ public:
 	class HorizontalScroller : public Scroller {
 	public:
 		float ScrollX(float x) override {
-			GetOwner()->AdjustEye(glm::vec2(x * 40.0f, 0));
+			GetOwner()->GetBox().lock()->AdjustShift(x * 40.0f, 0);
 			return 0.0f;
 		}
 		bool ScrollXEnabled(void) override {
+			return true;
+		}
+		bool Enabled() const override {
 			return true;
 		}
 	private:
@@ -68,10 +87,13 @@ public:
 	class VerticalScroller : public Scroller {
 	public:
 		float ScrollY(float y) override {
-			GetOwner()->AdjustEye(glm::vec2(0, y * 40.0f));
+			GetOwner()->GetBox().lock()->AdjustShift(0, y * 40.0f);
 			return 0.0f;
 		}
 		bool ScrollYEnabled(void) override {
+			return true;
+		}
+		bool Enabled() const override {
 			return true;
 		}
 	};
@@ -87,7 +109,7 @@ public:
 	private:
 	};
 
-	virtual void Draw(const glm::vec2& eye) {}
+	virtual void Draw() {}
 
 	virtual void SetPosition(const glm::vec2 pos)
 	{
@@ -146,6 +168,7 @@ public:
 
 	virtual void SetDrawableFactory(std::weak_ptr<etk::renderer::DrawableFactory> factory) {
 		mDrawableFactory = factory;
+		if(mScroller && mScroller->Enabled()) SetBox(GetDrawableFactory().lock()->GetContext().lock()->GetScreenBox());
 	}
 
 	virtual bool HitInsideBox(const glm::vec2 point) {
@@ -169,6 +192,7 @@ public:
 
 	void SetScroller(std::unique_ptr<Scroller> s) {
 		s->SetOwner(this);
+		if(!GetDrawableFactory().expired() && s->Enabled()) SetBox(GetDrawableFactory().lock()->GetContext().lock()->GetScreenBox());
 		mScroller = std::move(s);
 	}
 protected:
@@ -235,12 +259,8 @@ public:
 	}
 
 protected:
-	void SetEye(glm::vec2 eye) {
-		mEye = eye;
-	}
-
-	void AdjustEye(glm::vec2 eye) {
-		mEye += eye;
+	void SetBox(std::shared_ptr<etk::renderer::ScreenBox> box) {
+		mBox = box;
 	}
 
 	std::weak_ptr<etk::Widget> GetOwner() const {
@@ -277,7 +297,7 @@ private:
 
 	std::unique_ptr<Scroller> mScroller;
 
-	glm::vec2 mEye{ 0.0f, 0.0f };
+	std::shared_ptr<etk::renderer::ScreenBox> mBox;
 
 	std::unique_ptr<std::function<void()>> mLeftClickCallback{ nullptr };
 	std::unique_ptr<std::function<void()>> mRightClickCallback{ nullptr };
