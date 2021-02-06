@@ -79,9 +79,7 @@ void etk::renderer::opengl::GLImage::Draw(glm::vec2 eye)
 	program->SetUniformMat4fv(uniProjView, glm::value_ptr(proj));
 
 	GLint uniVec = program->GetUniformLoc(std::string("boundary"));
-	program->SetUniform4f(uniVec, pos.x, pos.y, mWidth, mHeight);
-
-
+	program->SetUniform4f(uniVec, pos.x+eye.x, -1.0f*pos.y + eye.y, mWidth, mHeight);
 
 	glBindVertexArray(mVAO);
 	glBindTexture(GL_TEXTURE_2D, mTexture);

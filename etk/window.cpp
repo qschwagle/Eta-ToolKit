@@ -102,6 +102,27 @@ void etk::Window::SetColor(etk::Color color)
 	mBackground->SetColor(color);
 }
 
+void etk::Window::PollEvents()
+{
+	glfwPollEvents();
+}
+
+void etk::Window::WaitEvents()
+{
+	glfwWaitEvents();
+}
+
+void etk::Window::WaitEventsTimeout(double timeout)
+{
+	glfwWaitEventsTimeout(timeout);
+}
+
+void etk::Window::PostEmptyEvent()
+{
+	glfwPostEmptyEvent();
+
+}
+
 bool etk::Window::Run()
 {
 	glfwMakeContextCurrent(mWin);
@@ -115,6 +136,8 @@ bool etk::Window::Run()
 	mBackground->Draw();
 	if (mScene) mScene->Draw();
 	glfwSwapBuffers(mWin);
-	glfwPollEvents();
+	if (!mDrawableFactory->GetUIScheduler().lock()->AnimationQueued() && mDrawableFactory->GetUIScheduler().lock()->UIActionQueued()) WaitEventsTimeout(100);
+	else if (mDrawableFactory->GetUIScheduler().lock()->AnimationQueued()) PollEvents();
+	else WaitEvents();
 	return true;
 }

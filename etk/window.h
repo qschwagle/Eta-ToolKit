@@ -27,6 +27,10 @@ public:
 	long GetWidth() const { return mWidth;  }
 	void SetWidth(const long width) { mWidth = width;  }
 	void SetColor(etk::Color color);
+	void PollEvents();
+	void WaitEvents();
+	void WaitEventsTimeout(double timeout);
+	void PostEmptyEvent();
 	const std::string& GetTitle() const { return mTitle;  }
 	void SetTitle(const std::string title) { mTitle = title; }
 	bool Run();
