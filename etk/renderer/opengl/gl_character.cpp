@@ -9,19 +9,8 @@
 
 #include "helpers.h"
 
-static std::vector<float> rectangle = {
-	 0.0f,  1.0f,  0.0, 0.0,
-	 0.0f,  0.0f,  0.0, 1.0,
-	 1.0f,  0.0f,  1.0, 1.0,
-
-	 0.0f,  1.0f,  0.0, 0.0,
-	 1.0f,  0.0f,  1.0, 1.0,
-	 1.0f,  1.0f,  1.0, 0.0,
-};
-
 etk::renderer::opengl::GLCharacter::GLCharacter(std::weak_ptr<GLDrawableContext> context) : GLObject(context)
 {
-
     auto c = context.lock();
     auto weakProgram = c->GetProgramHolder(GLCharacterProgram::GetId());
     if (weakProgram.expired()) {
@@ -42,6 +31,8 @@ etk::renderer::opengl::GLCharacter::GLCharacter(std::weak_ptr<GLDrawableContext>
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
 
     glGenTextures(1, &mTexture);
+
+    GenerateVertices();
 }
 
 etk::renderer::opengl::GLCharacter::~GLCharacter()
@@ -74,23 +65,11 @@ void etk::renderer::opengl::GLCharacter::Draw(glm::vec2 eye)
     glBindTexture(GL_TEXTURE_2D, mTexture);
     glBindVertexArray(mVAO);
 
-
-    const auto shiftRight = GetBearingX();
-    const auto shiftDown = 0;
-    const auto shiftY = GetPos().y + shiftDown;
-    const auto shiftX = GetPos().x + shiftRight;
-
-    const auto sizeY = GetGlyphHeight();
-    const auto sizeX = GetGlyphWidth();
-
     glm::mat4 model{ 1.0f };
-    model = glm::translate(model, glm::vec3(shiftX, shiftY, 0.0f));
-    model = glm::scale(model, glm::vec3(sizeX, sizeY, 1.0f));
     program->SetUniformMat4fv(modelId, glm::value_ptr(model));
 
     glBindBuffer(GL_ARRAY_BUFFER, mVBO);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, rectangle.size()*sizeof(float), rectangle.data());
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, mVertices.size()*sizeof(float), mVertices.data());
     glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
@@ -109,4 +88,44 @@ void etk::renderer::opengl::GLCharacter::LoadGlyph(unsigned int adv, unsigned in
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+}
+
+/// <summary>
+/// Generate the Vertices for a given character
+/// </summary>
+void etk::renderer::opengl::GLCharacter::GenerateVertices()
+{
+    const float x = GetPos().x; 
+    const float y = GetPos().y;
+    const float xW = x + GetGlyphWidth();
+    const float yH = GetPos().y + GetGlyphHeight() - GetGlyphHeight() + GetBearingY();
+    mVertices[0] = x;
+    mVertices[1] = yH;
+    mVertices[2] = 0.0f;
+    mVertices[3] = 0.0f;
+
+    mVertices[4] = x;
+    mVertices[5] = y;
+    mVertices[6] = 0.0f;
+    mVertices[7] = 1.0f;
+
+    mVertices[8] = xW;
+    mVertices[9] = y;
+    mVertices[10] = 1.0f;
+    mVertices[11] = 1.0f;
+
+    mVertices[12] = x;
+    mVertices[13] = yH;
+    mVertices[14] = 0.0f;
+    mVertices[15] = 0.0f;
+
+    mVertices[16] = xW;
+    mVertices[17] = y;
+    mVertices[18] = 1.0f;
+    mVertices[19] = 1.0f;
+
+    mVertices[20] = xW;
+    mVertices[21] = yH;
+    mVertices[22] = 1.0f;
+    mVertices[23] = 0.0f;
 }

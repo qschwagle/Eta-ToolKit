@@ -4,6 +4,8 @@
 
 #include "gl_object.h"
 
+#include <array>
+
 namespace etk {
 namespace renderer {
 namespace opengl {
@@ -15,11 +17,29 @@ public:
 
 	void LoadGlyph(unsigned int adv, unsigned int width, unsigned int height, int bearingX, int bearingY, unsigned char* data) override;
 
+	/// <summary>
+	/// Sets the character c
+	/// </summary>
+	/// <param name="c">character shown by GLCharacter</param>
 	void SetCharacter(wchar_t c) {
 		mCharacter = c;
 	}
+
+	/// <summary>
+	/// Sets the Position and Generates the Vertices for the given position
+	/// </summary>
+	/// <param name="x">x position</param>
+	/// <param name="y">y position</param>
+	void SetPos(float x, float y) override {
+		DrawableObject::SetPos(x, y);
+		GenerateVertices();
+	}
 private:
+	void GenerateVertices();
+
 	wchar_t mCharacter{ 0 };
+
+	std::array<float, 24> mVertices;
 
 	unsigned int mVBO{ 0 };
 	unsigned int mVAO{ 0 };
