@@ -9,6 +9,10 @@
 
 #include "helpers.h"
 
+/// <summary>
+/// Allocates the Character resources such as vertex array and vertex bufffer
+/// </summary>
+/// <param name="context">the context associated with the character</param>
 etk::renderer::opengl::GLCharacter::GLCharacter(std::weak_ptr<GLDrawableContext> context) : GLObject(context)
 {
     auto c = context.lock();
@@ -35,6 +39,9 @@ etk::renderer::opengl::GLCharacter::GLCharacter(std::weak_ptr<GLDrawableContext>
     GenerateVertices();
 }
 
+/// <summary>
+/// Deconstructor. deletes gl resources
+/// </summary>
 etk::renderer::opengl::GLCharacter::~GLCharacter()
 {
     glDeleteTextures(1, &mTexture);
@@ -42,6 +49,10 @@ etk::renderer::opengl::GLCharacter::~GLCharacter()
     glDeleteVertexArrays(1, &mVAO);
 }
 
+/// <summary>
+/// Draws the character
+/// </summary>
+/// <param name="eye">the upper left hand corner</param>
 void etk::renderer::opengl::GLCharacter::Draw(glm::vec2 eye)
 {
 	if (GetContext().expired()) {
@@ -73,6 +84,15 @@ void etk::renderer::opengl::GLCharacter::Draw(glm::vec2 eye)
     glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
+/// <summary>
+/// Loads the Glyph and associated properties
+/// </summary>
+/// <param name="adv">advancement distance to next charcter</param>
+/// <param name="width">width of the character</param>
+/// <param name="height">height of the charcter</param>
+/// <param name="bearingX">bearing of character in x</param>
+/// <param name="bearingY">bearing of character in y</param>
+/// <param name="data">glyph alpha image</param>
 void etk::renderer::opengl::GLCharacter::LoadGlyph(unsigned int adv, unsigned int width, unsigned int height, int bearingX, int bearingY, unsigned char* data)
 {
 	SetAdvance(adv);

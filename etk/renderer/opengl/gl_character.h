@@ -1,9 +1,7 @@
 #pragma once
 
 #include "../generic/character.h"
-
 #include "gl_object.h"
-
 #include <array>
 
 namespace etk {
@@ -34,15 +32,33 @@ public:
 		DrawableObject::SetPos(x, y);
 		GenerateVertices();
 	}
+
 private:
 	void GenerateVertices();
 
+	/// <summary>
+	/// character being drawn
+	/// </summary>
 	wchar_t mCharacter{ 0 };
 
+	/// <summary>
+	/// vertices drawn
+	/// </summary>
 	std::array<float, 24> mVertices;
 
+	/// <summary>
+	/// Vertex Buffer Object
+	/// </summary>
 	unsigned int mVBO{ 0 };
+
+	/// <summary>
+	/// Vertex Array Object
+	/// </summary>
 	unsigned int mVAO{ 0 };
+
+	/// <summary>
+	/// Texture
+	/// </summary>
 	unsigned int mTexture{ 0 };
 };
 }
