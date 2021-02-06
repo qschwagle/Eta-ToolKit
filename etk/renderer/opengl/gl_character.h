@@ -7,6 +7,9 @@
 namespace etk {
 namespace renderer {
 namespace opengl {
+/// <summary>
+/// A GLCharacter drawable object which draws the provided character using the static position and dynamic eye
+/// </summary>
 class GLCharacter : public etk::renderer::Character, public GLObject {
 public:
 	GLCharacter(std::weak_ptr<GLDrawableContext> context);
