@@ -34,7 +34,7 @@ void etk::Image::Draw()
 		mImageRenderer->LoadImage(mImageData, mImageWidth, mImageHeight, mChannels);
 	}
 	mImageRenderer->SetPos(GetPosition().x, GetPosition().y);
-	mImageRenderer->Draw(GetBox().lock()->GetShift());
+	mImageRenderer->Draw(GetBox());
 }
 
 void etk::Image::SetPosition(const glm::vec2 position)

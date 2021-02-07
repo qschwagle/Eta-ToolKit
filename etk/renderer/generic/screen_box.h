@@ -35,8 +35,6 @@ public:
 		mShift.y += y;
 	}
 
-
-
 	/// <summary>
 	/// retrieves the top right left which is the anchor to container screen coordinates (0,0) if at origin
 	/// </summary>

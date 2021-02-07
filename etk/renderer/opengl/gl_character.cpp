@@ -53,7 +53,7 @@ etk::renderer::opengl::GLCharacter::~GLCharacter()
 /// Draws the character
 /// </summary>
 /// <param name="eye">the upper left hand corner</param>
-void etk::renderer::opengl::GLCharacter::Draw(glm::vec2 eye)
+void etk::renderer::opengl::GLCharacter::Draw(std::weak_ptr<ScreenBox> box)
 {
 	if (GetContext().expired()) {
         throw std::exception("etk::renderer::opengl::GLCharacter::Draw(): Tried to draw object without context");
@@ -68,7 +68,7 @@ void etk::renderer::opengl::GLCharacter::Draw(glm::vec2 eye)
     program->SetUniform3fv(program->GetUniformLoc(uniformTextColor), etk::colors::BLUE.GetFloatPtr());
 
     GLint uniProjView = program->GetUniformLoc(std::string("proj"));
-    glm::mat4 proj = etk::renderer::opengl::CreateOrtho(eye, context->GetWidth(), context->GetHeight());
+    glm::mat4 proj = etk::renderer::opengl::CreateOrtho(box.lock()->GetShift(), context->GetWidth(), context->GetHeight());
     program->SetUniformMat4fv(uniProjView, glm::value_ptr(proj));
 
     GLint modelId = program->GetUniformLoc(std::string("model"));
@@ -78,6 +78,9 @@ void etk::renderer::opengl::GLCharacter::Draw(glm::vec2 eye)
 
     glm::mat4 model{ 1.0f };
     program->SetUniformMat4fv(modelId, glm::value_ptr(model));
+
+	auto lbox = box.lock();
+	//glViewport(lbox->GetPosAnchor().x, lbox->GetPosAnchor().y, lbox->GetDimensions().x - lbox->GetPosAnchor().x, lbox->GetDimensions().y + lbox->GetPosAnchor().y);
 
     glBindBuffer(GL_ARRAY_BUFFER, mVBO);
     glBufferSubData(GL_ARRAY_BUFFER, 0, mVertices.size()*sizeof(float), mVertices.data());

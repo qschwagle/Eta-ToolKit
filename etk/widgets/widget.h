@@ -114,6 +114,7 @@ public:
 	virtual void SetPosition(const glm::vec2 pos)
 	{
 		mPos = pos;
+		if(!GetBox().expired()) GetBox().lock()->SetPosAnchor(pos);
 	}
 
 	const glm::vec2& GetPosition(void) const
@@ -193,6 +194,7 @@ public:
 	void SetScroller(std::unique_ptr<Scroller> s) {
 		s->SetOwner(this);
 		if(!GetDrawableFactory().expired() && s->Enabled()) SetBox(GetDrawableFactory().lock()->GetContext().lock()->GetScreenBox());
+		if(!GetDrawableFactory().expired() && s->Enabled()) GetBox().lock()->SetPosAnchor(GetPosition());
 		mScroller = std::move(s);
 	}
 protected:

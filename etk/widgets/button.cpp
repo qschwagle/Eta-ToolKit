@@ -4,8 +4,8 @@
 
 void etk::Button::Draw()
 {
-	mBackgroundRenderer->Draw(GetBox().lock()->GetShift());
-	mTextVisual->Draw(GetBox().lock()->GetShift());
+	mBackgroundRenderer->Draw(GetBox());
+	mTextVisual->Draw(GetBox());
 }
 
 void etk::Button::Init()

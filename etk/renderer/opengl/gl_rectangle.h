@@ -12,7 +12,7 @@ namespace opengl {
 class GLRectangle : public etk::renderer::Rectangle, public GLObject {
 public:
 	GLRectangle(std::weak_ptr<GLDrawableContext> context) : GLObject(context) {}
-	void Draw(glm::vec2 eye) override;
+	void Draw(std::weak_ptr<ScreenBox> box) override;
 };
 }
 }

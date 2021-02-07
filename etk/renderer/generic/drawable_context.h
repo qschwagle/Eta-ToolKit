@@ -15,8 +15,14 @@ public:
 	virtual void WindowInit(int width, int height) = 0;
 	virtual void Init() = 0;
 	virtual void Clear() = 0;
-	void SetWidth (const int w) { mWidth = w; }
-	void SetHeight(const int h) { mHeight = h;  }
+	void SetWidth (const int w) { 
+		mWidth = w; 
+		for (auto& i : mBoxes) i.lock()->SetDimensions(glm::vec2(w, i.lock()->GetDimensions().y));
+	}
+	void SetHeight(const int h) { 
+		mHeight = h;  
+		for (auto& i : mBoxes) i.lock()->SetDimensions(glm::vec2(i.lock()->GetDimensions().x, h));
+	}
 	int GetWidth() const { return mWidth;  }
 	int GetHeight() const { return mHeight;  }
 	virtual void UpdateDimensions(const int w, const int h) { SetWidth(w); SetHeight(h); }

@@ -14,7 +14,7 @@ public:
 	GLText(std::weak_ptr<GLDrawableContext> context) : GLObject(context) {}
 
 	void SetText(std::wstring text) override;
-	void Draw(glm::vec2 eye) override;
+	void Draw(std::weak_ptr<ScreenBox> box) override;
 
 private:
 	std::vector<std::shared_ptr<etk::renderer::opengl::GLCharacter>> mGLText;

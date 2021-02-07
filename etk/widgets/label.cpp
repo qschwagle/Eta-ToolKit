@@ -19,5 +19,5 @@ void etk::Label::Init()
 void etk::Label::Draw()
 {
 	mTextVisual->SetPos(GetPadding()[3] + GetMargin()[3] + GetPosition().x, GetPadding()[0] + GetMargin()[0] + GetPosition().y);
-	mTextVisual->Draw(GetBox().lock()->GetShift());
+	mTextVisual->Draw(GetBox());
 }

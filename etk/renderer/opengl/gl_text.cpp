@@ -21,12 +21,12 @@ void etk::renderer::opengl::GLText::SetText(std::wstring text)
 	SetHeight(fontEngine.GetHeight());
 }
 
-void etk::renderer::opengl::GLText::Draw(glm::vec2 eye)
+void etk::renderer::opengl::GLText::Draw(std::weak_ptr<ScreenBox> box)
 {
 	float x = GetPos().x, y = -1.0f*(GetHeight() + GetPos().y);
 	for (auto& i : mGLText) {
 		i->SetPos(x, y);
-		i->Draw(eye);
+		i->Draw(box);
 		x += i->GetAdvance();
 	}
 }

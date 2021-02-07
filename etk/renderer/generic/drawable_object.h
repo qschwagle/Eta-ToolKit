@@ -4,6 +4,8 @@
 
 #include "drawable_context.h"
 
+#include "screen_box.h"
+
 #include <memory>
 
 namespace etk {
@@ -12,7 +14,7 @@ class DrawableObject {
 public:
 	DrawableObject()=default;
 	virtual ~DrawableObject() {}
-	virtual void Draw(glm::vec2 eye) = 0;
+	virtual void Draw(std::weak_ptr<ScreenBox> box) {}
 	const glm::vec2& GetPos(void) const { return mPos; }
 	virtual void SetPos(float x, float y) { mPos = glm::vec2(x, y);  }
 private:

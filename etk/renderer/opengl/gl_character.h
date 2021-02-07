@@ -14,7 +14,7 @@ class GLCharacter : public etk::renderer::Character, public GLObject {
 public:
 	GLCharacter(std::weak_ptr<GLDrawableContext> context);
 	virtual ~GLCharacter();
-	void Draw(glm::vec2 eye) override;
+	void Draw(std::weak_ptr<ScreenBox> box) override;
 
 	void LoadGlyph(unsigned int adv, unsigned int width, unsigned int height, int bearingX, int bearingY, unsigned char* data) override;
 

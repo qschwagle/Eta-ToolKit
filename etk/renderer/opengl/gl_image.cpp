@@ -54,7 +54,7 @@ etk::renderer::opengl::GLImage::~GLImage()
 	glDeleteVertexArrays(1, &mVAO);
 }
 
-void etk::renderer::opengl::GLImage::Draw(glm::vec2 eye)
+void etk::renderer::opengl::GLImage::Draw(std::weak_ptr<ScreenBox> box)
 {
     if (GetContext().expired()) {
         throw std::exception("etk::renderer::opengl::GLFilledRectangle::Draw(): Tried to draw object without context");
@@ -75,11 +75,14 @@ void etk::renderer::opengl::GLImage::Draw(glm::vec2 eye)
 	GLint uniModel = program->GetUniformLoc(std::string("model"));
 	GLint uniProjView = program->GetUniformLoc(std::string("proj_view"));
 	program->SetUniformMat4fv(uniModel, glm::value_ptr(model));
-	auto proj = CreateOrtho(eye, context->GetWidth(), context->GetHeight());
+	auto proj = CreateOrtho(box.lock()->GetShift(), context->GetWidth(), context->GetHeight());
+	auto lbox = box.lock();
+	//glViewport(lbox->GetPosAnchor().x, lbox->GetDimensions().y - lbox->GetPosAnchor().y, lbox->GetDimensions().x - lbox->GetPosAnchor().x, lbox->GetPosAnchor().y);
 	program->SetUniformMat4fv(uniProjView, glm::value_ptr(proj));
 
 	GLint uniVec = program->GetUniformLoc(std::string("boundary"));
-	program->SetUniform4f(uniVec, pos.x+eye.x, -1.0f*pos.y + eye.y, mWidth, mHeight);
+	const auto& eye = box.lock()->GetShift();
+	program->SetUniform4f(uniVec, pos.x-eye.x, -1.0f*pos.y + eye.y, mWidth, mHeight);
 
 	glBindVertexArray(mVAO);
 	glBindTexture(GL_TEXTURE_2D, mTexture);
