@@ -8,7 +8,7 @@ public:
 	Text() = default;
 	virtual ~Text() {}
 
-	virtual void SetText(std::wstring text)=0;
+	virtual void UpdateText(const std::wstring& text)=0;
 
 	float GetWidth() const { return mWidth;  }
 	float GetHeight() const { return mHeight;  }

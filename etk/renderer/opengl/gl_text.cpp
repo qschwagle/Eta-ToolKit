@@ -6,13 +6,12 @@
 #include "../../font_rendering/font_rendering.h"
 
 
-void etk::renderer::opengl::GLText::SetText(std::wstring text)
+void etk::renderer::opengl::GLText::UpdateText(const std::wstring& text)
 {
-	mText = text;
 	mGLText.clear();
 	etk::font_rendering::FontRendering fontEngine(L"C:\\Windows\\Fonts\\DejaVuSans.ttf");
 	auto context = GetContext().lock();
-	for (auto& i : mText) {
+	for (auto& i : text) {
 		mGLText.emplace_back(context->GetCharacter());
 		std::shared_ptr<etk::renderer::Character> tempShared = std::static_pointer_cast<etk::renderer::Character>(mGLText.back());
 		fontEngine.SetCharacter(tempShared, static_cast<unsigned int>(i));

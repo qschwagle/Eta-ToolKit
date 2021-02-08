@@ -13,7 +13,7 @@ void etk::Button::Init()
 	etk::Widget::Init();
 	auto fact = GetDrawableFactory().lock();
 	mTextVisual = fact->CreateText();
-	mTextVisual->SetText(mText);
+	mTextVisual->UpdateText(mText);
 	SetInternalHeight(mTextVisual->GetHeight());
 	SetInternalWidth(mTextVisual->GetWidth());
 	mTextVisual->SetPos(GetPadding()[3] + GetMargin()[3] + GetPosition()[0], GetPadding()[0] + GetPosition()[1] +GetMargin()[0]);

@@ -197,6 +197,7 @@ public:
 		if(!GetDrawableFactory().expired() && s->Enabled()) GetBox().lock()->SetPosAnchor(GetPosition());
 		mScroller = std::move(s);
 	}
+
 protected:
 	/// <summary>
 	/// The internal width of the object

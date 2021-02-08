@@ -19,7 +19,7 @@ public:
 	void SetText(std::wstring text) {
 		mText = text;
 		if (IsInitialized()) {
-			mTextVisual->SetText(text);
+			mTextVisual->UpdateText(text);
 			SetInternalWidth(mTextVisual->GetWidth());
 			SetInternalHeight(mTextVisual->GetHeight());
 			mBackgroundRenderer->SetPos(GetPadding()[3] + GetPosition()[0], GetPadding()[0] + GetPosition()[1]);

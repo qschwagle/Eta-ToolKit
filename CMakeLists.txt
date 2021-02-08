@@ -3,5 +3,6 @@ project(etk)
 
 add_subdirectory(etk)
 add_subdirectory(imageviewer)
+add_subdirectory(imageviewer2)
 add_subdirectory(tests)
 

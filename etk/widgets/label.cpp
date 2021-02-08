@@ -4,6 +4,7 @@
 
 etk::Label::Label()
 {
+	mData = std::make_shared<Data>();
 }
 
 void etk::Label::Init()
@@ -11,7 +12,7 @@ void etk::Label::Init()
 	etk::Widget::Init();
 	auto fact = GetDrawableFactory().lock();
 	mTextVisual = fact->CreateText();
-	mTextVisual->SetText(mText);
+	mTextVisual->UpdateText(mData->GetText());
 	SetInternalHeight(mTextVisual->GetHeight());
 	SetInternalWidth(mTextVisual->GetWidth());
 }
