@@ -13,6 +13,7 @@ public:
 
 	void Invalidate() override {
 		mBackgroundRenderer = nullptr;
+		InvalidateOwner();
 	}
 
 	void SetDrawableFactory(std::weak_ptr<etk::renderer::DrawableFactory> factory) override; 
@@ -27,6 +28,7 @@ public:
 			mBackgroundRenderer->SetHeight(GetMargin()[0] + GetMargin()[2] + GetInternalHeight());
 			mBackgroundRenderer->SetWidth(GetMargin()[1] + GetMargin()[3] + GetInternalWidth());
 		}
+		InvalidateOwner();
 	}
 private:
 	std::wstring mText;

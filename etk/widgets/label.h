@@ -22,6 +22,7 @@ public:
 			mData->AddObserver(ptr);
 		}
 		mData->SetText(t);
+		InvalidateOwner();
 	}
 
 	class Data {

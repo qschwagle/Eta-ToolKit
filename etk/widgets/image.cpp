@@ -24,6 +24,7 @@ void etk::Image::Load(const std::wstring filePath)
 	mImageData  = stbi_load_from_file(file, &mImageWidth, &mImageHeight, &mChannels, 0);
 	SetInternalWidth(mImageWidth);
 	SetInternalHeight(mImageHeight);
+	InvalidateOwner();
 	fclose(file);
 }
 

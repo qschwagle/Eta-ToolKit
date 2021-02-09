@@ -138,7 +138,13 @@ public:
 		return mStyle->GetPixelPadding();
 	}
 
-	virtual void Invalidate() {};
+	virtual void Invalidate() {
+		InvalidateOwner();
+	};
+
+	virtual void InvalidateOwner() {
+		if(!mOwner.expired()) mOwner.lock()->Invalidate();
+	}
 
 	/// <summary>
 	/// Internal Width + border + margin + padding

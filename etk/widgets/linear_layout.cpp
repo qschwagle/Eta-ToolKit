@@ -17,7 +17,7 @@ void etk::LinearLayout::SetPosition(const glm::vec2 pos)
 void etk::LinearLayout::Invalidate()
 {
 	UpdateChildrenPositions();
-	if (!GetOwner().expired()) GetOwner().lock()->Invalidate();
+	InvalidateOwner();
 }
 
 void etk::LinearLayout::UpdateChildrenPositions()

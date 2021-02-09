@@ -24,5 +24,6 @@ void etk::Button::SetDrawableFactory(std::weak_ptr<etk::renderer::DrawableFactor
 		mBackgroundRenderer->SetHeight(margin[0] + margin[2] + GetInternalHeight());
 		mBackgroundRenderer->SetWidth(margin[1] + margin[3] + GetInternalWidth());
 		mBackgroundRenderer->SetColor(etk::colors::ORANGE);
+		InvalidateOwner();
 	}
 }
