@@ -4,21 +4,22 @@
 
 #include "../renderer/generic/rectangle.h"
 #include "../renderer/generic/text.h"
+#include <etk/renderer/generic/drawable_factory.h>
 
 namespace etk {
 class Button : public Widget {
 public:
 	void Draw() override;
 
-	void Init() override;
-
 	void Invalidate() override {
 		mBackgroundRenderer = nullptr;
 	}
 
+	void SetDrawableFactory(std::weak_ptr<etk::renderer::DrawableFactory> factory) override; 
+
 	void SetText(std::wstring text) {
 		mText = text;
-		if (IsInitialized()) {
+		if (!GetDrawableFactory().expired()) {
 			mTextVisual->UpdateText(text);
 			SetInternalWidth(mTextVisual->GetWidth());
 			SetInternalHeight(mTextVisual->GetHeight());

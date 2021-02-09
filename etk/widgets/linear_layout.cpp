@@ -14,12 +14,6 @@ void etk::LinearLayout::SetPosition(const glm::vec2 pos)
 	UpdateChildrenPositions();
 }
 
-void etk::LinearLayout::Init()
-{
-	etk::MultiContainer::Init();
-	Invalidate();
-}
-
 void etk::LinearLayout::Invalidate()
 {
 	UpdateChildrenPositions();

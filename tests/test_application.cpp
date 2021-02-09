@@ -19,17 +19,16 @@ TEST(ApplicationTest, SimpleRun) {
 
 TEST(ApplicationTest, CreateWindow) {
 	auto app = std::make_shared<etk::Application>();
-	int id = app->CreateWindow("hello world");
+	auto win = app->CreateAppWindow("hello world");
 	char* hello[1] = { "app" };
 	auto count = std::make_shared<int>(0);
-	app->GetWindow(id)->ScheduleFunc([count, id, app]()->bool {
+	win.lock()->ScheduleFunc([count, win, app]()->bool {
 		if (*count != 2) {
 			(*count)++;
 			return true;
 		}
 		else {
-			etk::Window* win = app->GetWindow(id);
-			if (win) win->MarkToClose();
+			if (!win.expired()) win.lock()->MarkToClose();
 			return false;
 		}
 		});

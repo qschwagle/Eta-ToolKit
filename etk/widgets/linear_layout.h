@@ -14,8 +14,6 @@ public:
 	
 	void SetPosition(const glm::vec2 pos) override;
 
-	void Init() override;
-
 	void Invalidate() override;
 	
 protected:

@@ -17,7 +17,7 @@ struct GLFWwindow;
 namespace etk {
 class Window : public std::enable_shared_from_this<Window> {
 public:
-	Window(int id, std::string title = "", long width = 1920, long height = 1080, std::shared_ptr<etk::renderer::DrawableFactory> factory = std::make_shared<etk::renderer::opengl::GLFactory>());
+	Window(int id, std::string title = "", long width = 1920, long height = 1080, std::shared_ptr<etk::renderer::DrawableFactory> factory = std::shared_ptr<etk::renderer::opengl::GLFactory>());
 	Window(const Window&) = delete;
 	Window& operator=(const Window&) = delete;
 	~Window();
@@ -40,7 +40,6 @@ public:
 		scene->SetDrawableFactory(mDrawableFactory);
 		scene->SetWindow(shared_from_this());
 		mScene = scene;
-		if (mInitialized) scene->Init();
 	}
 
 	void ScheduleFunc(std::function<bool()> func) {
@@ -81,6 +80,7 @@ private:
 	std::unique_ptr<etk::renderer::WindowBackground> mBackground;
 
 	bool mInitialized{ false };
+	Color mBackgroundColor;
 };
 
 }

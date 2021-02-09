@@ -14,7 +14,6 @@ public:
 		widget->SetOwner(shared_from_this());
 		mWidget = widget;
 		mWidget->SetDrawableFactory(GetDrawableFactory());
-		if (IsInitialized()) mWidget->Init();
 	}
 
 	void ClearWidget(std::shared_ptr<Widget> widget)
@@ -24,10 +23,12 @@ public:
 
 	void SetDrawableFactory(std::weak_ptr<etk::renderer::DrawableFactory> factory) override {
 		Widget::SetDrawableFactory(factory);
-		if (mWidget) mWidget->SetDrawableFactory(factory);
+		if (mWidget) {
+			mWidget->SetDrawableFactory(factory);
+			SetInternalWidth(mWidget->GetExternalWidth());
+			SetInternalHeight(mWidget->GetExternalHeight());
+		}
 	}
-
-	void Init() override;
 
 	bool OnScroll(const glm::vec2 point, float xOffset, float yOffset) override {
 		if (HitInsideBox(point)) {

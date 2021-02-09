@@ -12,35 +12,41 @@ public:
 	Label();
 	void Draw() override;
 
+	void SetDrawableFactory(std::weak_ptr<etk::renderer::DrawableFactory> factory) override; 
+
 	void SetText(std::wstring t) {
+
+		if (!mData) {
+			mData = std::make_shared<Data>();
+			auto ptr = std::dynamic_pointer_cast<etk::Label>(shared_from_this());
+			mData->AddObserver(ptr);
+		}
 		mData->SetText(t);
 	}
-
-	void Init() override;
 
 	class Data {
 	public:
 		void SetText(std::wstring text) {
 			mText = text;
-			Update();
+			Notify();
 		}
 		const std::wstring& GetText(void) const { return mText; }
 
-		void SetOwner(std::weak_ptr<Label> owner) {
-			mOwner = owner;
-			Update();
+		void AddObserver(std::weak_ptr<Label> o) {
+			mObs.push_back(o);
+			Notify();
 		}
 
-		void Update() {
-			if (!mOwner.expired()) mOwner.lock()->Notify();
+		void Notify() {
+			for(auto& i: mObs) if (!i.expired()) i.lock()->Update();
 		}
 
 	private:
-		std::weak_ptr<Label> mOwner;
+		std::vector<std::weak_ptr<Label>> mObs;
 		std::wstring mText;
 	};
 
-	void Notify() {
+	void Update() {
 		if (mTextVisual) {
 			mTextVisual->UpdateText(mData->GetText());
 			SetInternalHeight(mTextVisual->GetHeight());

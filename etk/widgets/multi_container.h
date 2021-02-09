@@ -13,7 +13,6 @@ public:
 		mWidgetList.push_back(widget);
 		widget->SetDrawableFactory(GetDrawableFactory());
 		Invalidate();
-		if (IsInitialized()) widget->Init();
 	}
 
 	virtual void ClearWidgets()
@@ -29,11 +28,6 @@ public:
 	void SetDrawableFactory(std::weak_ptr<etk::renderer::DrawableFactory> factory) override {
 		Widget::SetDrawableFactory(factory);
 		for(auto i: mWidgetList) i->SetDrawableFactory(factory);
-	}
-
-	void Init() override {
-		for (auto& i : mWidgetList) i->Init();
-		etk::Widget::Init();
 	}
 
 	bool OnScroll(const glm::vec2 point, float xOffset, float yOffset)

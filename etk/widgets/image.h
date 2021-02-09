@@ -22,6 +22,11 @@ namespace etk {
 		}
 
 		void SetPosition(const glm::vec2 position) override;
+
+		class Data {
+		public:
+
+		};
 	private:
 		int mImageHeight{ 0 };
 		int mImageWidth{ 0 };

@@ -9,20 +9,16 @@
 
 #include "../renderer/generic/screen_box.h"
 
+#include "../style/style.h"
+
 namespace etk {
 class Widget : public std::enable_shared_from_this<Widget> {
 public:
-	Widget() : mScroller{ std::make_unique<NoScroller>() } { };
+	Widget() : mScroller{ std::make_unique<NoScroller>() },
+		mStyle{ std::make_shared<etk::Style>() } {}
 	Widget(const Widget&) = delete;
 	Widget& operator=(const Widget&) = delete;
-	virtual ~Widget() {}
-
-	bool IsInitialized() const {
-		return mInitialized;
-	}
-
-	virtual void Init() {
-		mInitialized = true;
+	virtual ~Widget() {
 	}
 
 	virtual std::weak_ptr <etk::renderer::ScreenBox> GetBox() {
@@ -113,46 +109,47 @@ public:
 
 	virtual void SetPosition(const glm::vec2 pos)
 	{
-		mPos = pos;
+		mStyle->SetPos(PixelUnit(pos[0]), PixelUnit(pos[1]));
 		if(!GetBox().expired()) GetBox().lock()->SetPosAnchor(pos);
 	}
 
-	const glm::vec2& GetPosition(void) const
+	glm::vec2 GetPosition(void) const
 	{
-		return mPos;
+		return mStyle->GetPixelPos();
 	}
 
 	void SetMargin(const glm::vec4 margin) 
 	{
-		mMargin = margin;
+		mStyle->SetMargin(PixelUnit(margin[0]), PixelUnit(margin[1]), PixelUnit(margin[2]), PixelUnit(margin[3]));
 	}
 
 	const glm::vec4& GetMargin() const
 	{
-		return mMargin;
+		return mStyle->GetPixelMargin();
 	}
 
 	void SetPadding(const glm::vec4 padding)
 	{
-		mPadding = padding;
+		mStyle->SetPadding(PixelUnit(padding[0]), PixelUnit(padding[1]), PixelUnit(padding[2]), PixelUnit(padding[3]));
 	}
 
-	const glm::vec4& GetPadding() const 
+	glm::vec4 GetPadding() const 
 	{
-		return mPadding;
+		return mStyle->GetPixelPadding();
 	}
 
 	virtual void Invalidate() {};
-
 
 	/// <summary>
 	/// Internal Width + border + margin + padding
 	/// </summary>
 	/// <returns></returns>
 	float GetExternalWidth() const {
-		float width = mPadding[3] + mPadding[1] + mMargin[1] + mMargin[3] + mInternalWidth;
+		auto pad = GetPadding();
+		auto marg = GetMargin();
+		float width = pad[3] + pad[1] + marg[1] + marg[3] + mInternalWidth;
 		// branchless version: does not use mBorder->GetWidth() if mBorder is nullptr
-		mBorder && (width += mBorder->GetWidth());
+		//mBorder && (width += mBorder->GetWidth());
 		return width;
 	}
 
@@ -161,15 +158,17 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	float GetExternalHeight() const {
-		float height = mPadding[0] + mPadding[2] + mMargin[0] + mMargin[2] + mInternalHeight;
+		auto pad = GetPadding();
+		auto marg = GetMargin();
+		float height = pad[0] + pad[2] + marg[0] + marg[2] + mInternalHeight;
 		// branchless version: does not use mBorder->GetWidth() if mBorder is nullptr
-		mBorder && (height += mBorder->GetWidth());
+		//mBorder && (height += mBorder->GetWidth());
 		return height;
 	}
 
 	virtual void SetDrawableFactory(std::weak_ptr<etk::renderer::DrawableFactory> factory) {
 		mDrawableFactory = factory;
-		if(mScroller && mScroller->Enabled()) SetBox(GetDrawableFactory().lock()->GetContext().lock()->GetScreenBox());
+		if(mScroller && mScroller->Enabled() && !factory.expired()) SetBox(GetDrawableFactory().lock()->GetContext().lock()->GetScreenBox());
 	}
 
 	virtual bool HitInsideBox(const glm::vec2 point) {
@@ -273,31 +272,9 @@ protected:
 private:
 	float mInternalWidth{ 0.0f };
 	float mInternalHeight{ 0.0f };
-	/// <summary>
-	/// position of the box
-	/// </summary>
-	glm::vec2 mPos{ 0.0f, 0.0f };
-
-	/// <summary>
-	/// margin in the box
-	/// </summary>
-	glm::vec4 mMargin{ 0.0f, 0.0f, 0.0f, 0.0f };
-
-	/// <summary>
-	/// Padding around the box 
-	/// </summary>
-	glm::vec4 mPadding{ 0.0f, 0.0f, 0.0f, 0.0f };
-
-	/// <summary>
-	/// border
-	/// </summary>
-	std::unique_ptr<Border> mBorder{ nullptr };
 
 	std::weak_ptr<etk::renderer::DrawableFactory> mDrawableFactory;
 	
-
-	bool mInitialized{ false };
-
 	std::unique_ptr<Scroller> mScroller;
 
 	std::shared_ptr<etk::renderer::ScreenBox> mBox;
@@ -306,5 +283,7 @@ private:
 	std::unique_ptr<std::function<void()>> mRightClickCallback{ nullptr };
 
 	std::weak_ptr<etk::Widget> mOwner;
+
+	std::shared_ptr<etk::Style> mStyle;
 };
 }

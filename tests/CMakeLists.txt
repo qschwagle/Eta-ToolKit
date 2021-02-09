@@ -1,4 +1,4 @@
-add_executable(tests  test_application.cpp "test_window.cpp")
+add_executable(tests  test_application.cpp "test_window.cpp" "test_label.cpp" "test_widget.cpp")
 
 find_package(GTest CONFIG REQUIRED)
 #target_link_libraries(tests PRIVATE GTest::gmock GTest::gtest GTest::gmock_main GTest::gtest_main ${PROJECT_NAME})

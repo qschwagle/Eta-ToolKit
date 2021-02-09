@@ -46,14 +46,19 @@ etk::Window::Window(int id, std::string title, long width, long height, std::sha
 	mWidth{ width },
 	mHeight{ height },
 	mTitle{ title },
-	mDrawableFactory{ factory }
+	mDrawableFactory{ factory },
+	mBackgroundColor{colors::BLUE}
 {
-	mBox = factory->GetContext().lock()->GetScreenBox();
-	mBackground = mDrawableFactory->CreateBackground();
+	mBox = nullptr;
+	mBackground = nullptr;
 }
 
 void etk::Window::Init() 
 {
+	mDrawableFactory = std::make_shared<etk::renderer::opengl::GLFactory>();
+	mBox = mDrawableFactory->GetContext().lock()->GetScreenBox();
+	mBackground = mDrawableFactory->CreateBackground();
+	mBackground->SetColor(mBackgroundColor);
 	auto context = mDrawableFactory->GetContext().lock();
 	context->WindowInit(GetWidth(), GetHeight());
 	mWin = glfwCreateWindow(GetWidth(), GetHeight(), mTitle.c_str(), nullptr, nullptr);
@@ -71,7 +76,7 @@ void etk::Window::Init()
 	glfwGetWindowContentScale(mWin, &xScale, &yScale);
 	context->UpdateContentScale(xScale, yScale);
 	context->Init();
-	if (mScene) mScene->Init();
+	if (mScene) mScene->SetDrawableFactory(mDrawableFactory);
 	mInitialized = true;
 }
 
@@ -99,7 +104,8 @@ etk::Window::~Window()
 
 void etk::Window::SetColor(etk::Color color)
 {
-	mBackground->SetColor(color);
+	mBackgroundColor = color;
+	if(mBackground) mBackground->SetColor(color);
 }
 
 void etk::Window::PollEvents()
