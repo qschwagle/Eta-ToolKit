@@ -25,8 +25,7 @@ public:
 		Widget::SetDrawableFactory(factory);
 		if (mWidget) {
 			mWidget->SetDrawableFactory(factory);
-			SetInternalWidth(mWidget->GetExternalWidth());
-			SetInternalHeight(mWidget->GetExternalHeight());
+			Invalidate();
 		}
 	}
 

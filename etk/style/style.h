@@ -71,7 +71,7 @@ private:
 	/// <summary>
 	/// The width and height of the widget
 	/// </summary>
-	std::array<DimensionalUnit, 2> mDimensions;
+	std::array<DimensionalUnit, 2> mDimensions{ PixelUnit(0), PixelUnit(0) };
 
 	/// <summary>
 	/// The max width and height of the widget

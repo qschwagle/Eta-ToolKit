@@ -28,6 +28,7 @@ public:
 	void SetDrawableFactory(std::weak_ptr<etk::renderer::DrawableFactory> factory) override {
 		Widget::SetDrawableFactory(factory);
 		for(auto i: mWidgetList) i->SetDrawableFactory(factory);
+		Invalidate();
 	}
 
 	bool OnScroll(const glm::vec2 point, float xOffset, float yOffset)

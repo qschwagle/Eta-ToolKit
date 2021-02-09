@@ -172,7 +172,10 @@ public:
 	}
 
 	virtual bool HitInsideBox(const glm::vec2 point) {
-		return GetPosition().x + GetPadding()[3] < point.x && point.x < GetPosition().x + GetInternalWidth() + GetPadding()[3] + GetMargin()[3] + GetMargin()[1] && GetPosition().y + GetPadding()[0] < point.y && point.y < GetPosition().y + GetInternalHeight() + GetPadding()[0] + GetMargin()[0] + GetMargin()[2];
+		const auto margin = GetMargin();
+		const auto padding = GetPadding();
+		const auto pos = GetPosition();
+		return pos.x + padding[3] < point.x && point.x < pos.x + GetInternalWidth() + padding[3] + margin[3] + margin[1] && pos.y + padding[0] < point.y && point.y < pos.y + GetInternalHeight() + padding[0] + margin[0] + margin[2];
 	}
 
 	virtual bool OnScroll(const glm::vec2 point, const float x, const float y) {
