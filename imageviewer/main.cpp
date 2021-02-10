@@ -11,6 +11,9 @@
 #include <crtdbg.h>
 #include <ShObjIdl.h>
 
+#include <locale>
+#include <codecvt>
+
 #include<vector>
 
 std::vector<std::wstring> supported_image_types = {L"png", L"jpeg", L"jpg", L"bmp"};
@@ -99,7 +102,12 @@ int main(int argc, char** argv)
                             for (auto& i : directory_path + L"\\" + name) {
                                 hack.push_back(static_cast<char>(i));
                             }
-                            image->Load(hack);
+							setlocale(LC_ALL, "");
+							std::string file = std::wstring_convert< std::codecvt_utf8_utf16<wchar_t>, wchar_t>{}.to_bytes(hack);
+							auto data = std::make_shared<etk::Image::FromFileData>(file);
+
+                            image->SetData(data);
+							image->Load();
                             //image->SetSizeSettingWidth(QSWidget::SizeSetting::OWNER);
                             //image->SetSizeSettingHeight(QSWidget::SizeSetting::OWNER);
                             //image->SetAlignment(QSImage::Alignment::CENTER);
