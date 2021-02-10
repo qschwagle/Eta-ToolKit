@@ -47,7 +47,8 @@ etk::Window::Window(int id, std::string title, long width, long height, std::sha
 	mHeight{ height },
 	mTitle{ title },
 	mDrawableFactory{ factory },
-	mBackgroundColor{colors::BLUE}
+	mBackgroundColor{colors::BLUE},
+	mScheduler{ std::make_shared<etk::renderer::UIThreadScheduler>()}
 {
 	mBox = nullptr;
 	mBackground = nullptr;
@@ -132,8 +133,7 @@ void etk::Window::PostEmptyEvent()
 bool etk::Window::Run()
 {
 	glfwMakeContextCurrent(mWin);
-	auto sched = mDrawableFactory->GetUIScheduler();
-	sched.lock()->Execute();
+	mScheduler->Execute();
 	if (glfwWindowShouldClose(mWin)) {
 		return false;
 	}
@@ -142,8 +142,8 @@ bool etk::Window::Run()
 	mBackground->Draw();
 	if (mScene) mScene->Draw();
 	glfwSwapBuffers(mWin);
-	if (!mDrawableFactory->GetUIScheduler().lock()->AnimationQueued() && mDrawableFactory->GetUIScheduler().lock()->UIActionQueued()) WaitEventsTimeout(100);
-	else if (mDrawableFactory->GetUIScheduler().lock()->AnimationQueued()) PollEvents();
+	if (!mScheduler->AnimationQueued() && mScheduler->UIActionQueued()) WaitEventsTimeout(100);
+	else if (mScheduler->AnimationQueued()) PollEvents();
 	else WaitEvents();
 	return true;
 }

@@ -43,8 +43,7 @@ public:
 	}
 
 	void ScheduleFunc(std::function<bool()> func) {
-		auto sched = mDrawableFactory->GetUIScheduler();
-		sched.lock()->Schedule(func);
+		mScheduler->Schedule(func);
 	}
 
 	void FrameBufferChanged(int width, int height);
@@ -78,6 +77,7 @@ private:
 	std::shared_ptr<renderer::DrawableFactory> mDrawableFactory{ nullptr };
 	std::shared_ptr<etk::Scene> mScene;
 	std::unique_ptr<etk::renderer::WindowBackground> mBackground;
+	std::shared_ptr<etk::renderer::UIThreadScheduler> mScheduler;
 
 	bool mInitialized{ false };
 	Color mBackgroundColor;

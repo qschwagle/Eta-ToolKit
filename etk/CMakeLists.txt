@@ -39,13 +39,13 @@ target_link_libraries(${PROJECT_NAME} PRIVATE OpenGL::GL)
 
 target_include_directories(${PROJECT_NAME} PUBLIC "${PROJECT_SOURCE_DIR}/")
 
-target_link_libraries(${PROJECT_NAME} PRIVATE glew)
-target_include_directories(${PROJECT_NAME} PRIVATE "${glew_SOURCE_DIR}/include")
+target_link_libraries(${PROJECT_NAME} PRIVATE glew_s)
+
+target_include_directories(${PROJECT_NAME} PUBLIC "${PROJECT_SOURCE_DIR}/extern/glew-2.2.0/include")
+message("GLEW: ${PROJECT_SOURCE_DIR}/extern/glew-2.2.0/include")
 
 target_link_libraries(${PROJECT_NAME} PUBLIC glm)
 
-SET(STB_INCLUDE_DIRS ${stb_SOURCE_DIR})
-
-target_include_directories(${PROJECT_NAME} PRIVATE ${STB_INCLUDE_DIRS})
+target_include_directories(${PROJECT_NAME} PRIVATE ${stb_SOURCE_DIR})
 
 target_link_libraries(${PROJECT_NAME} PRIVATE freetype)

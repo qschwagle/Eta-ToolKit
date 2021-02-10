@@ -9,7 +9,7 @@
 void etk::renderer::opengl::GLText::UpdateText(const std::wstring& text)
 {
 	mGLText.clear();
-	etk::font_rendering::FontRendering fontEngine(L"C:\\Windows\\Fonts\\DejaVuSans.ttf");
+	etk::font_rendering::FontRendering fontEngine(L"C:\\Users\\qschwagle\\AppData\\Local\\Microsoft\\Windows\\Fonts\\DejaVuSerifCondensed.ttf");
 	auto context = GetContext().lock();
 	for (auto& i : text) {
 		mGLText.emplace_back(context->GetCharacter());

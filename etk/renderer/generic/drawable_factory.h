@@ -16,7 +16,7 @@ namespace etk {
 namespace renderer {
 class DrawableFactory {
 public:
-	DrawableFactory() : mThreadSchedueler{ std::make_shared<UIThreadScheduler>() } {};
+	DrawableFactory() {}
 	DrawableFactory(const DrawableFactory&) = delete;
 	DrawableFactory& operator=(const DrawableFactory&) = delete;
 	virtual ~DrawableFactory() {}
@@ -29,10 +29,6 @@ public:
 	virtual std::unique_ptr<Text> CreateText() = 0;
 	virtual std::unique_ptr<WindowBackground> CreateBackground() = 0;
 	virtual std::weak_ptr<DrawableContext> GetContext() = 0;
-
-	std::weak_ptr<UIThreadScheduler> GetUIScheduler() {
-		return mThreadSchedueler;
-	}
 private:
 	std::shared_ptr<UIThreadScheduler> mThreadSchedueler;
 };
