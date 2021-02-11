@@ -20,7 +20,7 @@ set(SOURCE_FILES
 	font_rendering/font_rendering.cpp
 	widgets/label.cpp 
 	widgets/linear_layout.cpp
-	widgets/single_container.cpp)
+	widgets/single_container.cpp "widgets/list_view.cpp")
 
 add_library(${PROJECT_NAME} STATIC ${SOURCE_FILES})
 

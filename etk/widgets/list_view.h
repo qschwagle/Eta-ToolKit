@@ -2,6 +2,7 @@
 
 #include "widget.h"
 #include "scene.h"
+#include "scene_builder.h"
 #include <memory>
 
 namespace etk {
@@ -50,18 +51,16 @@ public:
 		virtual ListModelDataPointer* FetchLast() { return nullptr; }
 	
 		virtual void Notify() {
-			mView->Update();
+			mView.lock()->Update();
 		}
 	
-		virtual void SetListView(ListView<T>* view) {
+		virtual void SetListView(std::weak_ptr<ListView<T>> view) {
 			mView = view;
 		}
 	
-		virtual void SetScene() {
-	
-		}
 	private:
-		ListView<T>* mView;
+		std::weak_ptr<ListView<T>> mView;
+
 	};
 
 	/// <summary>
@@ -72,9 +71,12 @@ public:
 	virtual void SetModel(ListModelDataPointer* m) {
 		if (mModel) delete mModel;
 		mModel = m;
-		mModel->SetListView(this);
+		mModel->SetListView(std::dynamic_pointer_cast<ListView<T>>(shared_from_this()));
 	}
 
+	virtual void SetSceneBuilder(std::shared_ptr<SceneBuilder> builder) {
+		mBuilder = builder;
+	}
 
 
 	virtual void Update() {}
@@ -84,5 +86,7 @@ private:
 	/// Model associated with the ListView
 	/// </summary>
 	ListModelDataPointer* mModel{ nullptr };
+
+	std::shared_ptr<SceneBuilder> mBuilder;
 };
 }

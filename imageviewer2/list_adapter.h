@@ -38,7 +38,8 @@ public:
 	}
 
 	void Map(std::wstring* data, std::shared_ptr<etk::Scene> scene) override {
-
+		auto title = std::dynamic_pointer_cast<etk::Label>(scene->GetWidget(L"TITLE").lock());
+		title->SetText(*data);
 	}
 
 private:

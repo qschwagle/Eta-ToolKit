@@ -9,7 +9,6 @@
 /// Should not be instantiated by any class other than ListView
 /// </remark>
 namespace etk {
-template<typename T>
 class ListViewItem {
 public:
 	ListViewItem() = default;
@@ -26,6 +25,5 @@ private:
 	/// <summary>
 	/// pointer to the data represented in the scene
 	/// </summary>
-	T* mData;
 };
 }

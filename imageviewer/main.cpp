@@ -38,7 +38,10 @@ int main(int argc, char** argv)
 	scene->SetWidget(L"MAIN_LAYOUT", L"MAIN_SCENE", std::static_pointer_cast<etk::MultiContainer>(mainLayout));
 
 	auto imageLayout = std::make_shared<etk::LinearLayout>();
+	imageLayout->SetDirection(etk::LinearLayout::Direction::VERTICAL);
 	imageLayout->SetScroller(std::make_unique<etk::LinearLayout::VerticalScroller>());
+	auto fileMenuBar = std::shared_ptr<etk::LinearLayout>();
+
 	auto directoryChooserButton = std::make_shared<etk::Button>();
 	directoryChooserButton->SetText(L"Choose Directory");
 	scene->SetWidget(L"CHOOSE_DIRECTORY_BUTTON", L"MAIN_LAYOUT", directoryChooserButton);

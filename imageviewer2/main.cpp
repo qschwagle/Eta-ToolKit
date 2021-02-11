@@ -6,6 +6,7 @@
 #include <etk/widgets/image.h>
 #include <etk/widgets/label.h>
 #include <etk/widgets/linear_layout.h>
+#include <etk/widgets/scene_builder_func.h>
 
 #include <windows.h>
 #include <crtdbg.h>
@@ -16,6 +17,19 @@
 #include "list_adapter.h"
 
 std::vector<std::wstring> supported_image_types = {L"png", L"jpeg", L"jpg", L"bmp"};
+
+std::shared_ptr<etk::Scene> CreateSceneBuilder() {
+	auto scene = std::make_shared<etk::Scene>(L"ITEM_SCENE");
+	auto layout = std::make_shared<etk::LinearLayout>();
+	auto title = std::make_shared<etk::Label>();
+	auto image = std::make_shared <etk::Image>();
+
+	scene->SetWidget(L"LAYOUT", L"ITEM_SCENE", std::dynamic_pointer_cast<etk::MultiContainer>(layout));
+	scene->SetWidget(L"TITLE", L"LAYOUT", title);
+	scene->SetWidget(L"IMAGE", L"LAYOUT", image);
+
+	return scene;
+}
 
 int main(int argc, char** argv)
 {
@@ -43,6 +57,9 @@ int main(int argc, char** argv)
 	auto imageList = std::make_shared<etk::ListView<std::wstring>>();
 	imageList->SetScroller(std::make_unique<etk::LinearLayout::VerticalScroller>());
 	imageList->SetModel(adapter);
+	auto function = std::make_shared<etk::SceneBuilderFunction>();
+	function->SetFunction(CreateSceneBuilder);
+	imageList->SetSceneBuilder(function);
 
 	auto directoryChooserButton = std::make_shared<etk::Button>();
 	directoryChooserButton->SetText(L"Choose Directory");
