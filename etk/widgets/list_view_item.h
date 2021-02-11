@@ -2,6 +2,7 @@
 
 #include "scene.h"
 
+
 /// <summary>
 /// Represents a Widget within a List View.
 /// </summary>
@@ -17,11 +18,17 @@ public:
 
 	void SetScene(std::shared_ptr<Scene> scene) {
 		mScene = scene; 
+		scene->SetOwner(shared_from_this());
+		if(!GetDrawableFactory().expired()) mScene->SetDrawableFactory(GetDrawableFactory());
 	} 
 	void Draw() override {
 		mScene->Draw();
 	}
 
+	void SetDrawableFactory(std::weak_ptr<etk::renderer::DrawableFactory> fact) override {
+		Widget::SetDrawableFactory(fact);
+		if(mScene) mScene->SetDrawableFactory(fact);
+	}
 
 
 private:

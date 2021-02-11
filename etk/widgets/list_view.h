@@ -106,19 +106,81 @@ public:
 		long index = mBaseIndex;
 		while (!i->IsEnd()) {
 			auto item = std::make_shared<ListViewItem>();
-			item->SetDrawableFactory(GetDrawableFactory());
 			auto scene = mBuilder->CreateScene();
+			item->SetDrawableFactory(GetDrawableFactory());
 			i->Map(i->GetData(), scene);
 			item->SetScene(scene);
+			item->SetOwner(shared_from_this());
 			mItems.emplace(index, item);
 			++index;
 			i = i->Fetch(1);
 		}
+		UpdateChildrenPositions();
 	}
 
 	virtual void Draw() override {
 		for (auto i : mItems) {
 			i.second->Draw();
+		}
+	}
+
+	enum class Direction {
+		HORIZONTAL = 0,
+		VERTICAL = 1
+	};
+
+
+	void SetDirection(Direction d) {
+		mDirection = d;
+	}
+
+	void SetPosition(const glm::vec2 pos)
+	{
+		etk::Widget::SetPosition(pos);
+		mNextLocation = { pos.x, pos.y };
+		UpdateChildrenPositions();
+	}
+
+	void Invalidate()
+	{
+		UpdateChildrenPositions();
+		InvalidateOwner();
+	}
+
+	void UpdateChildrenPositions()
+	{
+		switch (mDirection) {
+		case Direction::VERTICAL:
+		{
+			mNextLocation = { GetPosition().x, GetPosition().y };
+			float greatestWidth = 0.0f;
+			for (auto& i : mItems) {
+				i.second->SetPosition(glm::vec2(mNextLocation[0], mNextLocation[1]));
+				mNextLocation[1] += i.second->GetExternalHeight();
+				greatestWidth = i.second->GetExternalWidth() > greatestWidth ? i.second->GetExternalWidth() : greatestWidth;
+			}
+			SetInternalWidth(greatestWidth);
+			if (mItems.size() > 0) {
+				SetInternalHeight(mNextLocation[1] - GetPosition().y + mItems.rbegin()->second->GetExternalHeight());
+			}
+			break;
+		}
+
+		case Direction::HORIZONTAL:
+		{
+			mNextLocation = { GetPosition().x, GetPosition().y };
+			float greatestHeight = 0.0f;
+			for (auto& i : mItems) {
+				i.second->SetPosition(glm::vec2(mNextLocation[0], mNextLocation[1]));
+				mNextLocation[0] += i.second->GetExternalWidth();
+				greatestHeight = i.second->GetExternalHeight() > greatestHeight ? i.second->GetExternalHeight() : greatestHeight;
+			}
+			SetInternalHeight(greatestHeight);
+			if (mItems.size() > 0) {
+				SetInternalWidth(mNextLocation[0] + GetPosition().x + mItems.rbegin()->second->GetExternalWidth());
+			}
+			break;
+		}
 		}
 	}
 
@@ -132,5 +194,7 @@ private:
 
 	long mBaseIndex{ 0 };
 	std::map<long, std::shared_ptr<etk::ListViewItem>> mItems;
+	std::array<float, 2> mNextLocation{ 0.0f,0.0f };
+	Direction mDirection = Direction::VERTICAL;
 };
 }
