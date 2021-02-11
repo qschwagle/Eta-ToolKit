@@ -9,11 +9,20 @@
 /// Should not be instantiated by any class other than ListView
 /// </remark>
 namespace etk {
-class ListViewItem {
+class ListViewItem : public Widget {
 public:
 	ListViewItem() = default;
 	ListViewItem(const ListViewItem&) = delete;
 	ListViewItem& operator=(const ListViewItem&) = delete;
+
+	void SetScene(std::shared_ptr<Scene> scene) {
+		mScene = scene; 
+	} 
+	void Draw() override {
+		mScene->Draw();
+	}
+
+
 
 private:
 

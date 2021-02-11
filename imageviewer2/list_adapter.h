@@ -42,6 +42,10 @@ public:
 		title->SetText(*data);
 	}
 
+	std::wstring* GetData() {
+		return &((*mFileList.lock())[mPos]);
+	}
+
 private:
 	int mPos;
 	std::weak_ptr<std::vector<std::wstring>> mFileList;

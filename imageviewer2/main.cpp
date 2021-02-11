@@ -52,7 +52,7 @@ int main(int argc, char** argv)
 
 	std::shared_ptr<std::vector<std::wstring>> fileList = std::make_shared<std::vector<std::wstring>>();
 
-	ListAdapter*  adapter = new ListAdapter(0, fileList);
+	ListAdapter* adapter = new ListAdapter(0, fileList);
 
 	auto imageList = std::make_shared<etk::ListView<std::wstring>>();
 	imageList->SetScroller(std::make_unique<etk::LinearLayout::VerticalScroller>());
@@ -66,7 +66,7 @@ int main(int argc, char** argv)
 	scene->SetWidget(L"CHOOSE_DIRECTORY_BUTTON", L"MAIN_LAYOUT", directoryChooserButton);
 	scene->SetWidget(L"IMAGE_LIST", L"MAIN_LAYOUT", std::static_pointer_cast<etk::Widget>(imageList));
 
-	directoryChooserButton->SetLeftClickCallback(std::make_unique<std::function<void()>>([&fileList]() {
+	directoryChooserButton->SetLeftClickCallback(std::make_unique<std::function<void()>>([&fileList, adapter]() {
 		IFileOpenDialog* pFileOpen;
 		HRESULT hr = CoCreateInstance(CLSID_FileOpenDialog, nullptr, CLSCTX_ALL, IID_IFileOpenDialog, reinterpret_cast<void**>(&pFileOpen));
 		if (SUCCEEDED(hr)) {
@@ -119,6 +119,7 @@ int main(int argc, char** argv)
                             hack.push_back(static_cast<char>(i));
                         }
 						fileList->push_back(hack);
+						adapter->Notify();
                     } while (FindNextFileW(hFind, &FindFileData) != 0);
 				}
 				pItem->Release();
