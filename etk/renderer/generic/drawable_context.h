@@ -50,7 +50,15 @@ public:
 private:
 	float mContentXScale;
 	float mContentYScale;
+
+	/// <summary>
+	/// The view port width of the window ( may not be the current view port width )
+	/// </summary>
 	int mWidth;
+
+	/// <summary>
+	/// The view port height of the window ( may not be the current view port height )
+	/// </summary>
 	int mHeight;
 
 	std::vector<std::weak_ptr<ScreenBox>> mBoxes;

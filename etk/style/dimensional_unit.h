@@ -1,5 +1,7 @@
 #pragma once
 
+#include <etk/renderer/generic/screen_box.h>
+
 namespace etk {
 /// <summary>
 /// A dimensional unit for screen space. 
@@ -84,10 +86,18 @@ public:
 	}
 };
 
+
+class VWUnit : public DimensionalUnit {
+public:
+	float GetPixels(const float parentPixels, const float vPortWidth, const float vPortHeight, const float ftSize) const override {
+		return 0.01 * vPortWidth;
+	}
+};
+
 class VHUnit : public DimensionalUnit {
 public:
 	float GetPixels(const float parentPixels, const float vPortWidth, const float vPortHeight, const float ftSize) const override {
-		return GetValue();
+		return 0.01 * vPortHeight;
 	}
 };
 
