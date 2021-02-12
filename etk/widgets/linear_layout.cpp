@@ -34,7 +34,7 @@ void etk::LinearLayout::UpdateChildrenPositions()
 		}
 		SetInternalWidth(greatestWidth);
 		if (GetWidgetList().size() > 0) {
-			SetInternalHeight(mNextLocation[1] - GetPosition().y + GetWidgetList().back()->GetExternalHeight());
+			SetInternalHeight(mNextLocation[1] - GetPosition().y);
 		}
 		break;
 	}

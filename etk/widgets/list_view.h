@@ -161,7 +161,7 @@ public:
 			}
 			SetInternalWidth(greatestWidth);
 			if (mItems.size() > 0) {
-				SetInternalHeight(mNextLocation[1] - GetPosition().y + mItems.rbegin()->second->GetExternalHeight());
+				SetInternalHeight(mNextLocation[1] - GetPosition().y);
 			}
 			break;
 		}
