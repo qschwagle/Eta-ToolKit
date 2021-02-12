@@ -70,7 +70,7 @@ private:
 	/// <summary>
 	/// background color
 	/// </summary>
-	Color mBackgroundColor{ colors::BLUE };
+	Color mBackgroundColor{ colors::NONE };
 
 	/// <summary>
 	/// The width and height of the widget

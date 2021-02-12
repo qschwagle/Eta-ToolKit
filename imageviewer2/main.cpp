@@ -17,6 +17,7 @@
 #include "list_adapter.h"
 
 std::vector<std::wstring> supported_image_types = {L"png", L"jpeg", L"jpg", L"bmp"};
+
 /// <summary>
 /// Builds the scene used as List Items. Passed to the ListView
 /// </summary>
@@ -46,7 +47,7 @@ int main(int argc, char** argv)
 	auto window = app.CreateAppWindow("Image Viewer").lock();
 
 	// set the background color
-	window->SetColor(etk::colors::GREEN);
+	window->SetColor(etk::colors::WHITE);
 
 	// create the main scene
 	auto scene = std::make_shared<etk::Scene>(L"MAIN_SCENE");

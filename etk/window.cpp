@@ -47,7 +47,7 @@ etk::Window::Window(int id, std::string title, long width, long height, std::sha
 	mHeight{ height },
 	mTitle{ title },
 	mDrawableFactory{ factory },
-	mBackgroundColor{colors::BLUE},
+	mBackgroundColor{colors::WHITE},
 	mScheduler{ std::make_shared<etk::renderer::UIThreadScheduler>()}
 {
 	mBox = nullptr;
