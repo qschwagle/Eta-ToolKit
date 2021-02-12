@@ -7,6 +7,12 @@
 namespace etk {
 class SceneBuilderFunction : public SceneBuilder {
 public:
+
+	SceneBuilderFunction() = default;
+
+	SceneBuilderFunction(std::function<std::shared_ptr<Scene>()> f) {
+		SetFunction(f);
+	}
 	void SetFunction(std::function <std::shared_ptr<Scene>()> f) {
 		mFunc = f;
 	}

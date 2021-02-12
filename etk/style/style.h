@@ -61,6 +61,10 @@ public:
 		mPadding[2] = bottom;
 		mPadding[3] = left;
 	}
+
+	void SetBackgroundColor(Color color) {
+		mBackgroundColor = color;
+	}
 private:
 
 	/// <summary>

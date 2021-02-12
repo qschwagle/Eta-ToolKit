@@ -71,6 +71,11 @@ void GLShaderProgram::SetUniform4f(GLint loc, float x, float y, float z, float w
     glUniform4f(loc, x, y, z, w);
 }
 
+void GLShaderProgram::SetUniform4fv(GLint loc, const float* vec4)
+{
+    glUniform4fv(loc, 1, vec4);
+}
+
 bool GLShaderProgram::CompileShader(std::string& src, GLenum type, unsigned int& shader)
 {
     int success;

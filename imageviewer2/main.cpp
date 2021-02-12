@@ -46,7 +46,7 @@ int main(int argc, char** argv)
 	auto window = app.CreateAppWindow("Image Viewer").lock();
 
 	// set the background color
-	window->SetColor(etk::colors::PURPLE);
+	window->SetColor(etk::colors::GREEN);
 
 	// create the main scene
 	auto scene = std::make_shared<etk::Scene>(L"MAIN_SCENE");
@@ -75,14 +75,8 @@ int main(int argc, char** argv)
 	// set the model adapter
 	imageList->SetModel(adapter);
 
-	// scene builder function wrapper used to create ListViewItems
-	auto function = std::make_shared<etk::SceneBuilderFunction>();
-
-	// set the scene builder function
-	function->SetFunction(CreateSceneBuilder);
-
 	// set the scene builder
-	imageList->SetSceneBuilder(function);
+	imageList->SetSceneBuilder(std::make_shared<etk::SceneBuilderFunction>(CreateSceneBuilder));
 
 	// button to get the folder picker
 	auto directoryChooserButton = std::make_shared<etk::Button>();

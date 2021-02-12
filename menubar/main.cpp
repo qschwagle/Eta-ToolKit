@@ -15,6 +15,7 @@
 #include <codecvt>
 
 #include<vector>
+#include<iostream>
 
 std::vector<std::wstring> supported_image_types = {L"png", L"jpeg", L"jpg", L"bmp"};
 
@@ -36,15 +37,38 @@ int main(int argc, char** argv)
 	auto mainLayout = std::make_shared<etk::LinearLayout>();
 	scene->SetWidget(L"MAIN_LAYOUT", L"MAIN_SCENE", std::static_pointer_cast<etk::MultiContainer>(mainLayout));
 
-	auto imageLayout = std::make_shared<etk::LinearLayout>();
-	imageLayout->SetScroller(std::make_unique<etk::LinearLayout::VerticalScroller>());
-	auto directoryChooserButton = std::make_shared<etk::Button>();
-	directoryChooserButton->SetText(L"Choose Directory");
-	scene->SetWidget(L"CHOOSE_DIRECTORY_BUTTON", L"MAIN_LAYOUT", directoryChooserButton);
+	auto menuBar = std::make_shared<etk::LinearLayout>();
+	menuBar->SetDirection(etk::LinearLayout::Direction::HORIZONTAL);
+	scene->SetWidget(L"MENU_BAR", L"MAIN_LAYOUT", std::static_pointer_cast<etk::MultiContainer>(menuBar));
 
-	std::weak_ptr<etk::LinearLayout> imageLayoutWeak = imageLayout;
+	auto fileButton = std::make_shared<etk::Button>();
+	fileButton->SetText(L"File");
+	fileButton->SetBackgroundColor(etk::colors::NONE);
+	fileButton->SetMargin(glm::vec4(0.0f, 20.0f, 0.0f, 20.0f));
+	fileButton->SetPadding(glm::vec4(0.0f, 20.0f, 0.0f, 0.0f));
+	fileButton->SetLeftClickCallback(std::make_unique<std::function<void()>>([]() {
+		std::cout << "File Button Click" << std::endl;
+	}));
+	scene->SetWidget(L"FILE_BUTTON", L"MENU_BAR", fileButton);
 
-	scene->SetWidget(L"IMAGE_LAYOUT", L"MAIN_LAYOUT", std::static_pointer_cast<etk::MultiContainer>(imageLayout));
+	auto editButton = std::make_shared<etk::Button>();
+	editButton->SetText(L"Edit");
+	editButton->SetBackgroundColor(etk::colors::NONE);
+	editButton->SetMargin(glm::vec4(0.0f, 20.0f, 0.0f, 20.0f));
+	editButton->SetPadding(glm::vec4(0.0f, 20.0f, 0.0f, 0.0f));
+	editButton->SetLeftClickCallback(std::make_unique<std::function<void()>>([]() {
+		std::cout << "Edit Button Click" << std::endl;
+	}));
+	scene->SetWidget(L"EDIT_BUTTON", L"MENU_BAR", editButton);
+
+	auto viewButton = std::make_shared<etk::Button>();
+	viewButton->SetText(L"View");
+	viewButton->SetMargin(glm::vec4(0.0f, 20.0f, 0.0f, 20.0f));
+	viewButton->SetBackgroundColor(etk::colors::NONE);
+	viewButton->SetLeftClickCallback(std::make_unique<std::function<void()>>([]() {
+		std::cout << "View Button Click" << std::endl;
+	}));
+	scene->SetWidget(L"VIEW_BUTTON", L"MENU_BAR", viewButton);
 
 	// initialize the app
 	app.Init(argc, argv);

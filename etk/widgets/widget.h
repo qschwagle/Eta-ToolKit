@@ -208,6 +208,14 @@ public:
 		mScroller = std::move(s);
 	}
 
+	void SetBackgroundColor(Color color) {
+		mStyle->SetBackgroundColor(color);
+	}
+
+	Color GetBackgroundColor(void) const {
+		return mStyle->GetBackgroundColor();
+	}
+
 protected:
 	/// <summary>
 	/// The internal width of the object
