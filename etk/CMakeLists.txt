@@ -20,10 +20,7 @@ set(SOURCE_FILES
 	font_rendering/font_rendering.cpp
 	widgets/label.cpp 
 	widgets/linear_layout.cpp
-	widgets/single_container.cpp)
-
-find_package(glfw3 3.3 REQUIRED)
-
+	widgets/single_container.cpp "widgets/list_view.cpp" "widgets/list_view_item.cpp")
 
 add_library(${PROJECT_NAME} STATIC ${SOURCE_FILES})
 
@@ -42,17 +39,13 @@ target_link_libraries(${PROJECT_NAME} PRIVATE OpenGL::GL)
 
 target_include_directories(${PROJECT_NAME} PUBLIC "${PROJECT_SOURCE_DIR}/")
 
-find_package(GLEW REQUIRED)
+target_link_libraries(${PROJECT_NAME} PRIVATE glew_s)
 
-target_link_libraries(${PROJECT_NAME} PRIVATE GLEW::GLEW)
-
-find_package(glm REQUIRED)
+target_include_directories(${PROJECT_NAME} PUBLIC "${PROJECT_SOURCE_DIR}/extern/glew-2.2.0/include")
+message("GLEW: ${PROJECT_SOURCE_DIR}/extern/glew-2.2.0/include")
 
 target_link_libraries(${PROJECT_NAME} PUBLIC glm)
 
+target_include_directories(${PROJECT_NAME} PRIVATE ${stb_SOURCE_DIR})
 
-find_path(STB_INCLUDE_DIRS "stb.h" "stbi_image")
-target_include_directories(${PROJECT_NAME} PRIVATE ${STB_INCLUDE_DIRS})
-
-find_package(freetype CONFIG REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE freetype)

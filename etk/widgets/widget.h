@@ -56,6 +56,7 @@ public:
 		virtual bool Enabled() const {
 			return false;
 		}
+		
 	protected:
 		Widget* GetOwner() const {
 			return mOwner;
@@ -106,6 +107,7 @@ public:
 	};
 
 	virtual void Draw() {}
+
 
 	virtual void SetPosition(const glm::vec2 pos)
 	{
@@ -206,6 +208,14 @@ public:
 		mScroller = std::move(s);
 	}
 
+	void SetBackgroundColor(Color color) {
+		mStyle->SetBackgroundColor(color);
+	}
+
+	Color GetBackgroundColor(void) const {
+		return mStyle->GetBackgroundColor();
+	}
+
 protected:
 	/// <summary>
 	/// The internal width of the object
@@ -267,6 +277,19 @@ public:
 
 	void SetOwner(std::weak_ptr<etk::Widget> o) {
 		mOwner = o;
+	}
+
+	virtual std::shared_ptr<Widget> Clone() {
+		auto copy = std::make_shared<Widget>();
+		copy->SetInternalHeight(GetInternalHeight());
+		copy->SetInternalWidth(GetInternalWidth());
+		copy->mScroller = std::make_unique<Scroller>(*this->mScroller);
+		copy->mLeftClickCallback = std::make_unique<std::function<void()>>(*mLeftClickCallback);
+		copy->mRightClickCallback = std::make_unique<std::function<void()>>(*mRightClickCallback);
+		copy->mDrawableFactory = this->mDrawableFactory;
+		copy->mOwner = std::weak_ptr<etk::Widget>();
+		copy->mStyle = std::make_shared<etk::Style>();
+		return copy;
 	}
 
 protected:

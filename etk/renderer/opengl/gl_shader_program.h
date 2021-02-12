@@ -1,6 +1,7 @@
 #pragma once
 
 #include<GL/glew.h>
+
 #include<GLFW/glfw3.h>
 
 #include <string>
@@ -19,6 +20,7 @@ public:
 	void SetUniform3fv(GLint loc, const float* vec3);
     void SetUniform3f(GLint, float x, float y, float z);
     void SetUniform4f(GLint, float x, float y, float z, float w);
+    void SetUniform4fv(GLint, const float* vec4);
 
 private:
     bool CompileShader(std::string &src, GLenum type, unsigned int &shader);

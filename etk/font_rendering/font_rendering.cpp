@@ -37,7 +37,7 @@ etk::font_rendering::FontRendering::FontRendering(std::wstring fontPath)
        std::cout << "QSLabel::Init Error occurred trying to initialize FT_Library" << std::endl;
        exit(1);
     }
-    error = FT_Set_Pixel_Sizes(mFace, 0, 64);
+    error = FT_Set_Char_Size(mFace, 0, mPtHeight * 64, mHor, mVert);
 }
 
 etk::font_rendering::FontRendering::~FontRendering()
@@ -45,6 +45,18 @@ etk::font_rendering::FontRendering::~FontRendering()
     FT_Done_Face(mFace);
     delete mLibrary;
 }
+
+void etk::font_rendering::FontRendering::SetDpi(float hor, float vert) {
+	mHor = hor;
+	mVert = vert;
+    int error = FT_Set_Char_Size(mFace, 0, mPtHeight * 64, mHor, mVert);
+}
+
+void etk::font_rendering::FontRendering::SetPt(unsigned int pt) {
+	mPtHeight = pt;
+    int error = FT_Set_Char_Size(mFace, 0, mPtHeight * 64, mHor, mVert);
+}
+
 
 void etk::font_rendering::FontRendering::SetCharacter(std::weak_ptr<etk::renderer::Character> character, unsigned int c)
 {

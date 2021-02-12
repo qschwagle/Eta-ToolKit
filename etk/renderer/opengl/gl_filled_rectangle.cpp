@@ -77,7 +77,7 @@ void etk::renderer::opengl::GLFilledRectangle::Draw(std::weak_ptr<ScreenBox> box
     program->SetUniformMat4fv(modelId, glm::value_ptr(model));
 
 	GLint colorUniform = program->GetUniformLoc(std::string("color"));
-    program->SetUniform3fv(colorUniform, GetColor().GetFloatPtr());
+    program->SetUniform4fv(colorUniform, GetColor().GetFloatPtr());
 
     glBindBuffer(GL_ARRAY_BUFFER, mVBO);
 	glEnableVertexAttribArray(0);

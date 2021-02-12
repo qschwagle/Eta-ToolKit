@@ -23,7 +23,7 @@ void etk::Button::SetDrawableFactory(std::weak_ptr<etk::renderer::DrawableFactor
 		mBackgroundRenderer->SetPos(GetPadding()[3] + GetPosition()[0], GetPadding()[0] + GetPosition()[1]);
 		mBackgroundRenderer->SetHeight(margin[0] + margin[2] + GetInternalHeight());
 		mBackgroundRenderer->SetWidth(margin[1] + margin[3] + GetInternalWidth());
-		mBackgroundRenderer->SetColor(etk::colors::ORANGE);
+		mBackgroundRenderer->SetColor(GetBackgroundColor());
 		InvalidateOwner();
 	}
 }

@@ -27,7 +27,14 @@ public:
 		return temp;
 	}
 
+	void SetDpi(float hor, float vert);
+
+	void SetPt(unsigned int pt);
+
 private:
+	unsigned int mPtHeight{ 24 };
+	float mHor{ 200 };
+	float mVert{ 200 };
 	unsigned int mHeight{ 0 };
 	unsigned int mWidth{ 0 };
 	unsigned int mShift{ 0 };

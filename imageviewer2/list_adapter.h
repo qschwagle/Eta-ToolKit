@@ -6,6 +6,8 @@
 #include <memory>
 #include <vector>
 
+#include <codecvt>
+
 /// <summary>
 /// We are adapting a vector<wstring> to be used with ListView
 /// </summary>
@@ -38,7 +40,17 @@ public:
 	}
 
 	void Map(std::wstring* data, std::shared_ptr<etk::Scene> scene) override {
+		auto title = std::dynamic_pointer_cast<etk::Label>(scene->GetWidget(L"TITLE").lock());
+		auto image = std::dynamic_pointer_cast<etk::Image>(scene->GetWidget(L"IMAGE").lock());
+		title->SetText(*data);
+		setlocale(LC_ALL, "");
+		std::string file = std::wstring_convert< std::codecvt_utf8_utf16<wchar_t>, wchar_t>{}.to_bytes(*data);
+		auto df = std::make_shared<etk::Image::FromFileData>(file);
+		image->SetData(df);
+	}
 
+	std::wstring* GetData() {
+		return &((*mFileList.lock())[mPos]);
 	}
 
 private:

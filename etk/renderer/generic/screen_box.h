@@ -4,6 +4,10 @@
 
 namespace etk {
 namespace renderer {
+/// <summary>
+/// Holds the necessary information for rendering to screen
+/// Such information includes window view port size .
+/// </summary>
 class ScreenBox {
 public:
 	/// <summary>
@@ -15,7 +19,8 @@ public:
 	}
 
 	/// <summary>
-	/// Sets the width and height
+	/// Sets the window view port width and height
+	/// Should only be updated by context
 	/// </summary>
 	/// <param name="dim">[width, height]</param>
 	void SetDimensions(const glm::vec2 dim) {
@@ -83,8 +88,8 @@ private:
 	glm::vec2 mPosAnchor{ 0.0f,0.0f };
 
 	/// <summary>
-	/// The width and height of the box.
-	/// These measurements are used from the position anchor down and right and must not reach off screen 
+	/// The view port width and height ( the screen box )
+	/// These measurements are used from the position anchor down and right and must not reach off screen and is pixels
 	/// </summary>
 	glm::vec2 mDimensions{ 0.0f, 0.0f };
 

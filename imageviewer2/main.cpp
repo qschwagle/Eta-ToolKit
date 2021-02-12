@@ -6,6 +6,7 @@
 #include <etk/widgets/image.h>
 #include <etk/widgets/label.h>
 #include <etk/widgets/linear_layout.h>
+#include <etk/widgets/scene_builder_func.h>
 
 #include <windows.h>
 #include <crtdbg.h>
@@ -17,9 +18,28 @@
 
 std::vector<std::wstring> supported_image_types = {L"png", L"jpeg", L"jpg", L"bmp"};
 
+/// <summary>
+/// Builds the scene used as List Items. Passed to the ListView
+/// </summary>
+/// <returns>List View Item Scene</returns>
+std::shared_ptr<etk::Scene> CreateSceneBuilder() {
+	auto scene = std::make_shared<etk::Scene>(L"ITEM_SCENE");
+	auto layout = std::make_shared<etk::LinearLayout>();
+	auto title = std::make_shared<etk::Label>();
+	title->SetMargin(glm::vec4(0.0f, 0.0f, 10.0f, 0.0f));
+	auto image = std::make_shared <etk::Image>();
+
+	scene->SetWidget(L"LAYOUT", L"ITEM_SCENE", std::dynamic_pointer_cast<etk::MultiContainer>(layout));
+	scene->SetWidget(L"TITLE", L"LAYOUT", title);
+	scene->SetWidget(L"IMAGE", L"LAYOUT", image);
+
+	return scene;
+}
+
 int main(int argc, char** argv)
 {
 	HRESULT hr = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE);
+
 	// The Application itself
 	etk::Application app;
 
@@ -27,29 +47,55 @@ int main(int argc, char** argv)
 	auto window = app.CreateAppWindow("Image Viewer").lock();
 
 	// set the background color
-	window->SetColor(etk::colors::PURPLE);
+	window->SetColor(etk::colors::WHITE);
 
-	// create a scene
+	// create the main scene
 	auto scene = std::make_shared<etk::Scene>(L"MAIN_SCENE");
+	
+	// set the main scene
 	window->SetScene(scene);
 
+	// main layout used to hold the configuration buttons and ListView 
 	auto mainLayout = std::make_shared<etk::LinearLayout>();
+
+	// Insert the listview into the main scene
 	scene->SetWidget(L"MAIN_LAYOUT", L"MAIN_SCENE", std::static_pointer_cast<etk::MultiContainer>(mainLayout));
 
+	// model containing a list of file paths
 	std::shared_ptr<std::vector<std::wstring>> fileList = std::make_shared<std::vector<std::wstring>>();
 
-	ListAdapter*  adapter = new ListAdapter(0, fileList);
+	// adapter to map the list of file paths to ListView items
+	ListAdapter* adapter = new ListAdapter(0, fileList);
 
+	// List View 
 	auto imageList = std::make_shared<etk::ListView<std::wstring>>();
+
+	// List View needs to be scrollable
 	imageList->SetScroller(std::make_unique<etk::LinearLayout::VerticalScroller>());
+
+	// set the model adapter
 	imageList->SetModel(adapter);
 
+	// set the scene builder
+	imageList->SetSceneBuilder(std::make_shared<etk::SceneBuilderFunction>(CreateSceneBuilder));
+
+	// button to get the folder picker
 	auto directoryChooserButton = std::make_shared<etk::Button>();
+
+	// button text
 	directoryChooserButton->SetText(L"Choose Directory");
+
+	// set the margin in pixels
+	directoryChooserButton->SetMargin(glm::vec4(5.0f, 5.0f, 5.0f, 5.0f));
+
+	// set the button inside the layout
 	scene->SetWidget(L"CHOOSE_DIRECTORY_BUTTON", L"MAIN_LAYOUT", directoryChooserButton);
+
+	// insert the image list
 	scene->SetWidget(L"IMAGE_LIST", L"MAIN_LAYOUT", std::static_pointer_cast<etk::Widget>(imageList));
 
-	directoryChooserButton->SetLeftClickCallback(std::make_unique<std::function<void()>>([&fileList]() {
+	// button callback for folder picker
+	directoryChooserButton->SetLeftClickCallback(std::make_unique<std::function<void()>>([&fileList, adapter]() {
 		IFileOpenDialog* pFileOpen;
 		HRESULT hr = CoCreateInstance(CLSID_FileOpenDialog, nullptr, CLSCTX_ALL, IID_IFileOpenDialog, reinterpret_cast<void**>(&pFileOpen));
 		if (SUCCEEDED(hr)) {
@@ -102,6 +148,9 @@ int main(int argc, char** argv)
                             hack.push_back(static_cast<char>(i));
                         }
 						fileList->push_back(hack);
+
+						// notify the adapter that the data structure has changed
+						adapter->Notify();
                     } while (FindNextFileW(hFind, &FindFileData) != 0);
 				}
 				pItem->Release();

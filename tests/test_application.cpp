@@ -20,9 +20,11 @@ TEST(ApplicationTest, SimpleRun) {
 TEST(ApplicationTest, CreateWindow) {
 	auto app = std::make_shared<etk::Application>();
 	auto win = app->CreateAppWindow("hello world");
+	ASSERT_EQ(win.expired(), false);
 	char* hello[1] = { "app" };
 	auto count = std::make_shared<int>(0);
-	win.lock()->ScheduleFunc([count, win, app]()->bool {
+	auto lWin = win.lock();
+	lWin->ScheduleFunc([count, win, app]()->bool {
 		if (*count != 2) {
 			(*count)++;
 			return true;

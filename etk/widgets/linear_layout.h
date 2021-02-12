@@ -15,6 +15,17 @@ public:
 	void SetPosition(const glm::vec2 pos) override;
 
 	void Invalidate() override;
+
+	enum class Direction {
+		HORIZONTAL = 0,
+		VERTICAL = 1
+	};
+
+
+	void SetDirection(Direction d) {
+		mDirection = d;
+	}
+
 	
 protected:
 
@@ -22,6 +33,7 @@ protected:
 
 private:
 	std::array<float, 2> mNextLocation{ 0.0f,0.0f };
+	Direction mDirection = Direction::VERTICAL;
 
 };
 }

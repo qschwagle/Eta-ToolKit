@@ -1,6 +1,6 @@
 #include "gl_window_background.h"
 
-#include <gl/glew.h>
+#include <GL/glew.h>
 
 void etk::renderer::opengl::GLWindowBackground::Draw()
 {

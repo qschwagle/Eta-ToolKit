@@ -15,10 +15,10 @@ void main() \n\
 static std::string fragment_shader_source = "\
 #version 330 core \n\
 out vec4 FragColor; \n\
-uniform vec3 color;\n\
+uniform vec4 color;\n\
 void main() \n\
 { \n\
-    FragColor = vec4(color, 1.0);\n\
+    FragColor = vec4(color);\n\
 }\
 ";
 

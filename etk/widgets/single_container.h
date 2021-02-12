@@ -77,6 +77,19 @@ public:
 		if (!GetOwner().expired()) GetOwner().lock()->Invalidate();
 	}
 
+	std::shared_ptr<Widget> Clone() override {
+		auto out = std::dynamic_pointer_cast<SingleContainer>(Widget::Clone());
+		if (mWidget) out->mWidget = mWidget->Clone();
+		out->mWidget->SetOwner(out);
+		return out;
+	}
+
+	void SetPosition(glm::vec2 pos) override {
+		Widget::SetPosition(pos);
+		if (mWidget) mWidget->SetPosition(pos);
+	}
+
+
 
 protected:
 	std::shared_ptr<Widget> GetWidget() {
