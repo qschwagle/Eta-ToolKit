@@ -40,5 +40,3 @@ TEST(LabelTest, SetTextWidthHeightOpenGL) {
 	ASSERT_GT(label->GetExternalHeight(), 0.0f);
 	ASSERT_GT(label->GetExternalWidth(), 0.0f);
 }
-
-

@@ -35,6 +35,7 @@ public:
 		return *this;
 	}
 
+
 	const float* GetFloatPtr() const {
 		return mColor.data();
 	}
@@ -42,12 +43,20 @@ public:
 	unsigned int GetColorSize(void) const {
 		return mColor.size();
 	}
+	friend bool operator==(const Color lhs, const Color rhs);
 private:
 	std::array<float, 4> mColor;
 };
 
-namespace 
-colors {
+inline bool operator==(const Color lhs, const Color rhs) {
+	for (int i = 0; i < rhs.mColor.size(); ++i) {
+		if (rhs.mColor[i] != lhs.mColor[i])
+		return false;
+	}
+	return true;
+}
+
+namespace colors {
 	const etk::Color BLUE(0.0f, 0.0f, 1.0f);
 	const etk::Color RED(1.0f, 0.0f, 0.0f);
 	const etk::Color GREEN(0.0f, 1.0f, 0.0f);
@@ -57,8 +66,5 @@ colors {
 	const etk::Color ORANGE((unsigned char) 0xFF, 0xAF, 0);
 	const etk::Color PURPLE((unsigned char)0x80, 0x00, 80);
 }
-
-
 }
-
 

@@ -67,6 +67,11 @@ public:
 		return mBox;
 	}
 
+	Color GetColor(void) const {
+		return mBackgroundColor;
+
+	}
+
 private:
 	const int mId;
 	GLFWwindow* mWin{ nullptr };
