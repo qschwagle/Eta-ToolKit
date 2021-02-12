@@ -43,7 +43,6 @@ FETCHCONTENT_MAKEAVAILABLE(freetype)
 add_subdirectory(extern/glew-2.2.0/build/cmake)
 
 add_subdirectory(etk)
-add_subdirectory(imageviewer)
 add_subdirectory(imageviewer2)
 add_subdirectory(menubar)
 add_subdirectory(tests)
