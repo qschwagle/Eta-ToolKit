@@ -84,6 +84,12 @@ public:
 		return out;
 	}
 
+	void SetPosition(glm::vec2 pos) override {
+		Widget::SetPosition(pos);
+		if (mWidget) mWidget->SetPosition(pos);
+	}
+
+
 
 protected:
 	std::shared_ptr<Widget> GetWidget() {

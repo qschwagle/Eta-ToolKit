@@ -1,4 +1,4 @@
-add_executable(tests  test_application.cpp "test_window.cpp" "test_label.cpp" "test_widget.cpp")
+add_executable(tests  test_application.cpp "test_window.cpp" "test_label.cpp" "test_widget.cpp" "test_list_view.cpp")
 
 # find_package(GTest CONFIG REQUIRED)
 

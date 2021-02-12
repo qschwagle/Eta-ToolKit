@@ -106,12 +106,12 @@ public:
 		long index = mBaseIndex;
 		while (!i->IsEnd()) {
 			auto item = std::make_shared<ListViewItem>();
-			auto scene = mBuilder->CreateScene();
-			item->SetDrawableFactory(GetDrawableFactory());
-			i->Map(i->GetData(), scene);
-			item->SetScene(scene);
 			item->SetOwner(shared_from_this());
+			item->SetDrawableFactory(GetDrawableFactory());
+			auto scene = mBuilder->CreateScene();
+			i->Map(i->GetData(), scene);
 			mItems.emplace(index, item);
+			item->SetScene(scene);
 			++index;
 			i = i->Fetch(1);
 		}
@@ -183,7 +183,47 @@ public:
 		}
 		}
 	}
+	bool OnScroll(const glm::vec2 point, float xOffset, float yOffset)
+	{
+		if (HitInsideBox(point)) {
+			for (auto& i : mItems) {
+				if (i.second->OnScroll(GetBox().lock()->GetShift() + point, xOffset, yOffset)) {
+					return true;
+				}
+			}
+			return etk::Widget::OnScroll(point, xOffset, yOffset);
+		}
+	}
 
+	bool OnLeftClick(float x, float y) override {
+		if (HitInsideBox(glm::vec2{ x,y })) {
+			for (auto& i : mItems) {
+				auto shift = i.second->GetBox().lock()->GetShift();
+				if (i.second->OnLeftClick(shift.x + x, shift.y + y)) {
+					return true;
+				}
+			}
+			if (etk::Widget::OnLeftClick(x, y)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	bool OnRightClick(float x, float y) override {
+		if (HitInsideBox(glm::vec2{ x,y })) {
+			for (auto& i : mItems) {
+				auto shift = i.second->GetBox().lock()->GetShift();
+				if (i.second->OnRightClick(shift.x + x, shift.y + y)) {
+					return true;
+				}
+			}
+			if (etk::Widget::OnRightClick(x, y)) {
+				return true;
+			}
+		}
+		return false;
+	}
 private:
 	/// <summary>
 	/// Model associated with the ListView
