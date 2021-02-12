@@ -96,6 +96,7 @@ namespace etk {
 
 		void SetData(std::shared_ptr<Data> d) {
 			mData = d;
+			Load();
 		}
 	private:
 		std::shared_ptr<Data> mData;
