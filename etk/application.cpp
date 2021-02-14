@@ -4,6 +4,7 @@
 
 #include <exception>
 #include <iostream>
+#include <chrono>
 
 void etk::Application::Init(int argc, char** argv)
 {
@@ -19,6 +20,7 @@ void etk::Application::Init(int argc, char** argv)
 int etk::Application::Run(void)
 {
 	while (true) {
+		auto start = std::chrono::system_clock::now();
 		std::vector<int> toBeRemoved;
 		int counter = 0;
 		for (auto& i : mWindows) {
@@ -35,6 +37,10 @@ int etk::Application::Run(void)
 		if (!mWindows.size()) {
 			return 0;
 		}
+		auto end = std::chrono::system_clock::now();
+		std::chrono::duration<double> duration = end - start;
+		std::cout << "draw duration: " << duration.count() << "s" << std::endl;
+		std::cout << "draw fps: " << 1.0 / duration.count() << "fps" << std::endl;
 	}
 	return 0;
 }

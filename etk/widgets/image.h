@@ -15,6 +15,8 @@ namespace etk {
 
 		void Load();
 
+		void Unload();
+
 		void Draw() override;
 
 		void Invalidate() override {

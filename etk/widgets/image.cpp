@@ -20,14 +20,24 @@ void etk::Image::Load()
 	SetInternalHeight(mData->GetImageHeight());
 }
 
+void etk::Image::Unload()
+{
+	mData->Clear();
+}
+
 void etk::Image::Draw()
 {
 	if (!mImageRenderer) {
 		mImageRenderer = GetDrawableFactory().lock()->CreateImage();
 		mImageRenderer->LoadImage(mData->GetData(), mData->GetImageWidth(), mData->GetImageHeight(), mData->GetImageChannels());
 	}
-	mImageRenderer->SetPos(GetPosition().x, GetPosition().y);
-	mImageRenderer->Draw(GetBox());
+
+	if (true) {
+		// IF ON SCREEN THEN DRAW
+		mImageRenderer->SetPos(GetPosition().x, GetPosition().y);
+		mImageRenderer->Draw(GetBox());
+	}
+
 }
 
 void etk::Image::SetPosition(const glm::vec2 position)
