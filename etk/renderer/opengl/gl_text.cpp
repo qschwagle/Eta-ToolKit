@@ -8,7 +8,7 @@
 void etk::renderer::opengl::GLText::UpdateText(const std::wstring& text)
 {
 	mGLText.clear();
-	etk::font_rendering::FontRendering fontEngine(L"C:\\Windows\\Fonts\\DejaVuSerifCondensed.ttf");
+	etk::font_rendering::FontRendering fontEngine(L"C:\\Windows\\Fonts\\Arial.ttf");
 	auto context = GetContext().lock();
 	for (auto& i : text) {
 		mGLText.emplace_back(context->GetCharacter());

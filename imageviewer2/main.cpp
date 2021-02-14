@@ -157,6 +157,7 @@ int main(int argc, char** argv)
 
 	directoryChooserButton->SetTextColor(etk::colors::BLUE);
 	directoryChooserButton->SetFontSize(etk::PointUnit(24));
+	directoryChooserButton->SetBackgroundColor(etk::colors::RED);
 
 	// set the button inside the layout
 	scene->SetWidget(L"CHOOSE_DIRECTORY_BUTTON", L"MAIN_LAYOUT", directoryChooserButton);

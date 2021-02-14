@@ -24,7 +24,15 @@ public:
 		return &mProgram;
 	}
 
+	GLint GetTextColorId() {
+		if (mTextColorId == -1) {
+			mTextColorId = mProgram.GetUniformLoc(std::string("textColor"));
+		}
+		return mTextColorId;
+	}
+
 private:
+	GLint mTextColorId{ -1 };
 	GLShaderProgram mProgram;
 };
 }

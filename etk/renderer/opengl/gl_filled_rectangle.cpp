@@ -59,22 +59,16 @@ void etk::renderer::opengl::GLFilledRectangle::Draw(std::weak_ptr<ScreenBox> box
 
     glBindVertexArray(mVAO);
     float vertices[6][2] = {
-        { pos.x, pos.y + GetHeight() },
-        { pos.x, pos.y },
-        { pos.x + GetWidth() , pos.y },
-        { pos.x, pos.y + GetHeight() },
-        { pos.x + GetWidth() , pos.y },
-        { pos.x + GetWidth(), pos.y + GetHeight() }
+        { pos.x, -1.0f *(pos.y + GetHeight()) },
+        { pos.x, -1.0f* pos.y },
+        { pos.x + GetWidth() , -1.0f* pos.y },
+        { pos.x, -1.0f * (pos.y + GetHeight()) },
+        { pos.x + GetWidth() , -1.0f* pos.y },
+        { pos.x + GetWidth(), -1.0f*(pos.y + GetHeight()) }
     };
 	GLint uniProjView = program->GetUniformLoc(std::string("proj"));
     glm::mat4 proj = CreateOrtho(box.lock()->GetShift(), context->GetWidth(), context->GetHeight());
     program->SetUniformMat4fv(uniProjView, glm::value_ptr(proj));
-
-    glm::mat4 model{ 1.0f };
-    model = glm::scale(model, glm::vec3(1.0f, -1.0f, 1.0f));
-
-	GLint modelId = program->GetUniformLoc(std::string("model"));
-    program->SetUniformMat4fv(modelId, glm::value_ptr(model));
 
 	GLint colorUniform = program->GetUniformLoc(std::string("color"));
     program->SetUniform4fv(colorUniform, GetColor().GetFloatPtr());

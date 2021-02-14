@@ -6,11 +6,11 @@ layout (location=0) in vec2 aPos;\n\
 layout (location=1) in vec2 aTex;\n\
 out vec2 outTex;\n\
 uniform mat4 model;\n\
-uniform mat4 proj_view;\n\
+uniform mat4 proj;\n\
 out vec2 pos;\n\
 void main() \n\
 {\n\
-	gl_Position = proj_view * model * vec4(aPos, -1.0, 1.0);\n\
+	gl_Position = proj * model * vec4(aPos, -1.0, 1.0);\n\
 	outTex = aTex;\n\
 	pos = aPos;\n\
 }\

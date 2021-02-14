@@ -61,23 +61,19 @@ void etk::renderer::opengl::GLCharacter::Draw(std::weak_ptr<ScreenBox> box)
     }
 
     auto context = GetContext().lock();
-    auto program = context->GetProgramHolder(GLCharacterProgram::GetId()).lock()->GetProgram();
+    auto p = std::dynamic_pointer_cast<GLCharacterProgram>(context->GetProgramHolder(GLCharacterProgram::GetId()).lock());
+    auto program = p->GetProgram();
     program->Use();
 
-    std::string uniformTextColor = "textColor";
-    program->SetUniform3fv(program->GetUniformLoc(uniformTextColor), GetColor().GetFloatPtr());
+    GLint textColorId = p->GetTextColorId();
+    program->SetUniform3fv(textColorId, GetColor().GetFloatPtr());
 
-    GLint uniProjView = program->GetUniformLoc(std::string("proj"));
+    GLint uniProjView = p->GetProjId();
     glm::mat4 proj = etk::renderer::opengl::CreateOrtho(box.lock()->GetShift(), context->GetWidth(), context->GetHeight());
     program->SetUniformMat4fv(uniProjView, glm::value_ptr(proj));
 
-    GLint modelId = program->GetUniformLoc(std::string("model"));
-
     glBindTexture(GL_TEXTURE_2D, mTexture);
     glBindVertexArray(mVAO);
-
-    glm::mat4 model{ 1.0f };
-    program->SetUniformMat4fv(modelId, glm::value_ptr(model));
 
 	auto lbox = box.lock();
 	//glViewport(lbox->GetPosAnchor().x, lbox->GetPosAnchor().y, lbox->GetDimensions().x - lbox->GetPosAnchor().x, lbox->GetDimensions().y + lbox->GetPosAnchor().y);

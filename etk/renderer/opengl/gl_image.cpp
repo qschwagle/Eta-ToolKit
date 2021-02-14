@@ -61,7 +61,8 @@ void etk::renderer::opengl::GLImage::Draw(std::weak_ptr<ScreenBox> box)
         return;
     }
 	auto context = GetContext().lock();
-	auto program = context->GetProgramHolder(etk::renderer::opengl::GLImageProgram::GetId()).lock()->GetProgram();
+	auto p = context->GetProgramHolder(etk::renderer::opengl::GLImageProgram::GetId()).lock();
+	auto program = p->GetProgram();
 
     const glm::vec2& pos = GetPos();
 
@@ -73,7 +74,7 @@ void etk::renderer::opengl::GLImage::Draw(std::weak_ptr<ScreenBox> box)
 	model = glm::scale(model, my_scale);
 
 	GLint uniModel = program->GetUniformLoc(std::string("model"));
-	GLint uniProjView = program->GetUniformLoc(std::string("proj_view"));
+	GLint uniProjView = p->GetProjId();
 	program->SetUniformMat4fv(uniModel, glm::value_ptr(model));
 	auto proj = CreateOrtho(box.lock()->GetShift(), context->GetWidth(), context->GetHeight());
 	auto lbox = box.lock();
@@ -91,7 +92,7 @@ void etk::renderer::opengl::GLImage::Draw(std::weak_ptr<ScreenBox> box)
 
 void etk::renderer::opengl::GLImage::LoadImage(unsigned char* data, int width, int height, int channels)
 {
-	glPixelStorei(GL_UNPACK_ALIGNMENT, channels);
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	glBindTexture(GL_TEXTURE_2D, mTexture);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);

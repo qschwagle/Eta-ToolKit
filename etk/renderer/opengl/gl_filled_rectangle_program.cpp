@@ -5,10 +5,9 @@ static std::string vertex_shader_source = "\
 #version 330 core \n\
 layout (location=0) in vec2 vertex;\n\
 uniform mat4 proj;\n\
-uniform mat4 model;\n\
 void main() \n\
 {\n\
-	gl_Position = proj * model * vec4(vertex.xy, -1.0, 1.0);\n\
+	gl_Position = proj * vec4(vertex.xy, -1.0, 1.0);\n\
 }\
 ";
 
