@@ -27,6 +27,7 @@ std::shared_ptr<etk::Scene> CreateSceneBuilder() {
 	auto layout = std::make_shared<etk::LinearLayout>();
 	auto title = std::make_shared<etk::Label>();
 	title->SetMargin(glm::vec4(0.0f, 0.0f, 10.0f, 0.0f));
+	title->SetTextColor(etk::colors::RED);
 	auto image = std::make_shared <etk::Image>();
 
 	scene->SetWidget(L"LAYOUT", L"ITEM_SCENE", std::dynamic_pointer_cast<etk::MultiContainer>(layout));
@@ -87,6 +88,8 @@ int main(int argc, char** argv)
 
 	// set the margin in pixels
 	directoryChooserButton->SetMargin(glm::vec4(5.0f, 5.0f, 5.0f, 5.0f));
+
+//	directoryChooserButton->SetTextColor(etk::colors::BLUE);
 
 	// set the button inside the layout
 	scene->SetWidget(L"CHOOSE_DIRECTORY_BUTTON", L"MAIN_LAYOUT", directoryChooserButton);

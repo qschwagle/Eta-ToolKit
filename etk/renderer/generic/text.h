@@ -1,5 +1,7 @@
 #pragma once
 #include "drawable_object.h"
+#include <etk/style/dimensional_unit.h>
+#include <etk/color.h>
 
 namespace etk {
 namespace renderer {
@@ -13,6 +15,22 @@ public:
 	float GetWidth() const { return mWidth;  }
 	float GetHeight() const { return mHeight;  }
 
+	void SetSize(etk::DimensionalUnit u) {
+		mSize = u;
+	}
+
+	etk::DimensionalUnit GetSize(void) const {
+		return mSize;
+	}
+
+	void SetColor(etk::Color c) {
+		mColor = c;
+	}
+
+	etk::Color GetColor(void) const {
+		return mColor;
+	}
+
 protected:
 	void SetWidth(float w) {
 		mWidth = w;
@@ -24,6 +42,10 @@ protected:
 private:
 	float mWidth{ 0.0f };
 	float mHeight{ 0.0f };
+
+	etk::DimensionalUnit mSize;
+	etk::Color mColor{ etk::colors::BLACK };
+
 
 };
 }

@@ -65,7 +65,7 @@ void etk::renderer::opengl::GLCharacter::Draw(std::weak_ptr<ScreenBox> box)
     program->Use();
 
     std::string uniformTextColor = "textColor";
-    program->SetUniform3fv(program->GetUniformLoc(uniformTextColor), etk::colors::BLUE.GetFloatPtr());
+    program->SetUniform3fv(program->GetUniformLoc(uniformTextColor), GetColor().GetFloatPtr());
 
     GLint uniProjView = program->GetUniformLoc(std::string("proj"));
     glm::mat4 proj = etk::renderer::opengl::CreateOrtho(box.lock()->GetShift(), context->GetWidth(), context->GetHeight());

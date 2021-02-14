@@ -6,6 +6,8 @@
 
 #include<string>
 
+#include<etk/style/dimensional_unit.h>
+
 namespace etk {
 class Label : public Widget {
 public:
@@ -15,7 +17,6 @@ public:
 	void SetDrawableFactory(std::weak_ptr<etk::renderer::DrawableFactory> factory) override; 
 
 	void SetText(std::wstring t) {
-
 		if (!mData) {
 			mData = std::make_shared<Data>();
 			auto ptr = std::dynamic_pointer_cast<etk::Label>(shared_from_this());
@@ -52,6 +53,17 @@ public:
 			mTextVisual->UpdateText(mData->GetText());
 			SetInternalHeight(mTextVisual->GetHeight());
 			SetInternalWidth(mTextVisual->GetWidth());
+		}
+	}
+
+	void SetFontSize(DimensionalUnit u) {
+		GetStyle().lock()->SetFontSize(u);
+	}
+
+	void SetTextColor(Color c) {
+		GetStyle().lock()->SetTextColor(c);
+		if (mTextVisual) {
+			mTextVisual->SetColor(c);
 		}
 	}
 

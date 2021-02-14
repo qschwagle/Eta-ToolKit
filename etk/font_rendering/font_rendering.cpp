@@ -63,6 +63,7 @@ void etk::font_rendering::FontRendering::SetCharacter(std::weak_ptr<etk::rendere
     auto characterLock = character.lock();
     FT_GlyphSlot slot = mFace->glyph;
     FT_UInt glyph_index;
+
     int error = FT_Load_Char(mFace, c, FT_LOAD_RENDER);
     if (error) throw std::exception("etk::font_rendering::FontRendering::SetCharacter::FT_Load_Char Error");
     characterLock->LoadGlyph(

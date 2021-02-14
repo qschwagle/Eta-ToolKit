@@ -216,7 +216,6 @@ public:
 		return mStyle->GetBackgroundColor();
 	}
 
-protected:
 	/// <summary>
 	/// The internal width of the object
 	/// </summary>
@@ -243,6 +242,10 @@ protected:
 
 	std::weak_ptr<etk::renderer::DrawableFactory> GetDrawableFactory() {
 		return mDrawableFactory;
+	}
+
+	std::weak_ptr<Style> GetStyle(void) const {
+		return mStyle;
 	}
 
 public:
@@ -293,10 +296,18 @@ public:
 	}
 
 protected:
+	/// <summary>
+	/// Set the screen box of the overarching factory's context
+	/// </summary>
+	/// <param name="box">box</param>
 	void SetBox(std::shared_ptr<etk::renderer::ScreenBox> box) {
 		mBox = box;
 	}
 
+	/// <summary>
+	/// Get the owner of the widget, widget may be owned by a window and this will return an expried pointer
+	/// </summary>
+	/// <returns>possible widget owner of this widget</returns>
 	std::weak_ptr<etk::Widget> GetOwner() const {
 		return mOwner;
 	}
@@ -305,6 +316,11 @@ private:
 	float mInternalWidth{ 0.0f };
 	float mInternalHeight{ 0.0f };
 
+	/// <summary>
+	/// reference to an instance of an abstract factory.
+	/// This value set signifies widget has been initialized.
+	/// This value should be set by either owning widget, or window
+	/// </summary>
 	std::weak_ptr<etk::renderer::DrawableFactory> mDrawableFactory;
 	
 	std::unique_ptr<Scroller> mScroller;
@@ -317,5 +333,12 @@ private:
 	std::weak_ptr<etk::Widget> mOwner;
 
 	std::shared_ptr<etk::Style> mStyle;
+
+	friend std::weak_ptr<etk::Widget> GetOwner(Widget& w);
 };
+
+inline std::weak_ptr<etk::Widget> GetOwner(Widget& w) {
+	return w.GetOwner();
+}
+
 }

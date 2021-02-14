@@ -65,7 +65,28 @@ public:
 	void SetBackgroundColor(Color color) {
 		mBackgroundColor = color;
 	}
+
+	Color GetTextColor(void) const {
+		return mTextColor;
+	}
+
+	void SetTextColor(Color c) {
+		mTextColor = c;
+	}
+
+	void SetFontSize(DimensionalUnit u) {
+		mFontSize = u;
+	}
+
+	DimensionalUnit GetFontSize(void) const {
+		return mFontSize;
+	}
+
 private:
+
+	Color mTextColor{ colors::BLACK };
+
+	DimensionalUnit mFontSize;
 
 	/// <summary>
 	/// background color

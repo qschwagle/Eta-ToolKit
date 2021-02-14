@@ -31,6 +31,9 @@ public:
 	virtual float GetPixels(const float parentPixels, const float vPortWidth, const float vPortHeight, const float ftSize) const {
 		return GetValue();
 	}
+	virtual float GetPt(const float parentPixels, const float vPortWidth, const float vPortHeight, const float ftSize) const {
+		return GetValue();
+	}
 private:
 	float mValue{ 0.0f };
 };

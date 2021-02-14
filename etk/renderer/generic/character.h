@@ -1,6 +1,9 @@
 #pragma once 
 #include "drawable_object.h"
 
+#include <etk/style/dimensional_unit.h>
+#include <etk/color.h>
+
 namespace etk {
 namespace renderer {
 class Character : public etk::renderer::DrawableObject {
@@ -16,6 +19,14 @@ public:
 	int GetBearingX(void) const { return mBearingX; }
 	int GetBearingY(void) const { return mBearingY; }
 
+	void SetSize(etk::DimensionalUnit u) { mSize = u; } 
+	DimensionalUnit GetSize(void) const { return mSize; }
+
+	void SetColor(etk::Color c) { mColor = c; }
+
+	etk::Color GetColor(void) const { return mColor; }
+
+
 protected:
 	void SetAdvance(unsigned int adv) { mAdvance = adv; }
 	void SetGlyphWidth(unsigned  w) { mGlyphWidth = w; }
@@ -29,6 +40,9 @@ private:
 	unsigned int mGlyphHeight{ 0 };
 	int mBearingX{ 0 };
 	int mBearingY{ 0 };
+
+	Color mColor{ etk::colors::BLACK };
+	DimensionalUnit mSize;
 };
 }
 }

@@ -1,6 +1,5 @@
 #include "gl_text.h"
 
-
 #include "gl_character.h"
 
 #include "../../font_rendering/font_rendering.h"
@@ -24,6 +23,7 @@ void etk::renderer::opengl::GLText::Draw(std::weak_ptr<ScreenBox> box)
 {
 	float x = GetPos().x, y = -1.0f*(GetHeight() + GetPos().y);
 	for (auto& i : mGLText) {
+		i->SetColor(GetColor());
 		i->SetPos(x, y);
 		i->Draw(box);
 		x += i->GetAdvance();

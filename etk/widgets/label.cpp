@@ -23,6 +23,8 @@ void etk::Label::SetDrawableFactory(std::weak_ptr<etk::renderer::DrawableFactory
 		auto fact = GetDrawableFactory().lock();
 		mTextVisual = fact->CreateText();
 		mTextVisual->UpdateText(mData->GetText());
+		mTextVisual->SetSize(GetStyle().lock()->GetFontSize());
+		mTextVisual->SetColor(GetStyle().lock()->GetTextColor());
 		SetInternalHeight(mTextVisual->GetHeight());
 		SetInternalWidth(mTextVisual->GetWidth());
 	}

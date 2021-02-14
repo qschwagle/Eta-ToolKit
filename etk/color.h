@@ -62,7 +62,7 @@ namespace colors {
 	const etk::Color GREEN(0.0f, 1.0f, 0.0f);
 	const etk::Color NONE(1.0f, 1.0f, 1.0f, 0.0f);
 	const etk::Color WHITE(1.0f, 1.0f, 1.0f, 1.0f);
-	const etk::Color BLACK(1.0f, 1.0f, 1.0f, 1.0f);
+	const etk::Color BLACK(0.0f, 0.0f, 0.0f, 1.0f);
 	const etk::Color ORANGE((unsigned char) 0xFF, 0xAF, 0);
 	const etk::Color PURPLE((unsigned char)0x80, 0x00, 80);
 }
