@@ -70,6 +70,8 @@ public:
 
 class PointUnit : public DimensionalUnit {
 public:
+
+	PointUnit(float val) : DimensionalUnit(val) {}
 	float GetPixels(const float parentPixels, const float vPortWidth, const float vPortHeight, const float ftSize) const override {
 		return GetValue();
 	}
@@ -79,6 +81,17 @@ class EMUnit : public DimensionalUnit {
 public:
 	float GetPixels(const float parentPixels, const float vPortWidth, const float vPortHeight, const float ftSize) const override {
 		return GetValue();
+	}
+	/// <summary>
+	/// EM are multiples of the base ptSize
+	/// </summary>
+	/// <param name="parentPixels"></param>
+	/// <param name="vPortWidth"></param>
+	/// <param name="vPortHeight"></param>
+	/// <param name="ftSize"></param>
+	/// <returns></returns>
+	float GetPt(const float parentPixels, const float vPortWidth, const float vPortHeight, const float ftSize) const override {
+		return ftSize * GetValue();
 	}
 };
 

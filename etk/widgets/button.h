@@ -30,6 +30,22 @@ public:
 		}
 		InvalidateOwner();
 	}
+
+	void SetFontSize(DimensionalUnit u) {
+		GetStyle().lock()->SetFontSize(u);
+		if (mTextVisual) {
+			mTextVisual->SetSize(u);
+		}
+
+	}
+
+	void SetTextColor(Color c) {
+		GetStyle().lock()->SetTextColor(c);
+		if (mTextVisual) {
+			mTextVisual->SetColor(c);
+		}
+	}
+
 private:
 	std::wstring mText;
 	std::unique_ptr<etk::renderer::Text> mTextVisual{ nullptr };

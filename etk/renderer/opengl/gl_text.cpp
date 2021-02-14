@@ -13,6 +13,7 @@ void etk::renderer::opengl::GLText::UpdateText(const std::wstring& text)
 	for (auto& i : text) {
 		mGLText.emplace_back(context->GetCharacter());
 		std::shared_ptr<etk::renderer::Character> tempShared = std::static_pointer_cast<etk::renderer::Character>(mGLText.back());
+		fontEngine.SetPt(static_cast<unsigned int>(GetSize().GetPt(0,0,0,0)));
 		fontEngine.SetCharacter(tempShared, static_cast<unsigned int>(i));
 	}
 	SetWidth(fontEngine.GetWidth());

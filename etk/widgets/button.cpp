@@ -14,7 +14,9 @@ void etk::Button::SetDrawableFactory(std::weak_ptr<etk::renderer::DrawableFactor
 	if (!factory.expired()) {
 		auto fact = GetDrawableFactory().lock();
 		mTextVisual = fact->CreateText();
+		mTextVisual->SetSize(GetStyle().lock()->GetFontSize());
 		mTextVisual->UpdateText(mText);
+		mTextVisual->SetColor(GetStyle().lock()->GetTextColor());
 		SetInternalHeight(mTextVisual->GetHeight());
 		SetInternalWidth(mTextVisual->GetWidth());
 		auto margin = GetMargin();

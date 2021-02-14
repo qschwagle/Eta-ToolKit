@@ -58,6 +58,10 @@ public:
 
 	void SetFontSize(DimensionalUnit u) {
 		GetStyle().lock()->SetFontSize(u);
+		if (mTextVisual) {
+			mTextVisual->SetSize(u);
+		}
+
 	}
 
 	void SetTextColor(Color c) {
