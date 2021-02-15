@@ -34,6 +34,15 @@ public:
 	/// </summary>
 	virtual ~Character() {}
 
+	/// <summary>
+	/// Used by FontRendering to set the provided values
+	/// </summary>
+	/// <param name="adv">advance to next character</param>
+	/// <param name="width">width of character(glyph)</param>
+	/// <param name="height">height of character(glyph)</param>
+	/// <param name="bearingX">x bearing</param>
+	/// <param name="bearingY">y bearing</param>
+	/// <param name="data">glyph</param>
 	virtual void LoadGlyph(unsigned int adv, unsigned int width, unsigned int height, int bearingX, int bearingY, unsigned char* data) = 0;
 
 
