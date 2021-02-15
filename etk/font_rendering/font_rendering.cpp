@@ -1,12 +1,16 @@
 #include "font_rendering.h"
 
-
 #include <iostream>
-
 
 #include <locale>
 #include <codecvt>
 
+/// <summary>
+/// Constructs the FontRendering Object
+/// 
+/// Setups of Freetype library and face along with loading fontPath
+/// </summary>
+/// <param name="fontPath">path to font</param>
 etk::font_rendering::FontRendering::FontRendering(std::wstring fontPath)
 {
     mLibrary = new FT_Library;
@@ -40,24 +44,41 @@ etk::font_rendering::FontRendering::FontRendering(std::wstring fontPath)
     error = FT_Set_Char_Size(mFace, 0, mPtHeight * 64, mHor, mVert);
 }
 
+/// <summary>
+/// Frees the face and the freetype lirbary
+/// </summary>
 etk::font_rendering::FontRendering::~FontRendering()
 {
     FT_Done_Face(mFace);
     delete mLibrary;
 }
 
+/// <summary>
+/// Set the horizontal and vertical screen dpi
+/// </summary>
+/// <param name="hor">horizontal dpi</param>
+/// <param name="vert">vertical dpi</param>
 void etk::font_rendering::FontRendering::SetDpi(float hor, float vert) {
 	mHor = hor;
 	mVert = vert;
     int error = FT_Set_Char_Size(mFace, 0, mPtHeight * 64, mHor, mVert);
 }
 
+/// <summary>
+/// Set the Point size of the font being rendered
+/// </summary>
+/// <param name="pt">font size</param>
 void etk::font_rendering::FontRendering::SetPt(unsigned int pt) {
 	mPtHeight = pt;
     int error = FT_Set_Char_Size(mFace, 0, mPtHeight * 64, mHor, mVert);
 }
 
 
+/// <summary>
+/// Configure the provided character with required properties.
+/// </summary>
+/// <param name="character">character structure being configured</param>
+/// <param name="c">unicode character value</param>
 void etk::font_rendering::FontRendering::SetCharacter(std::weak_ptr<etk::renderer::Character> character, unsigned int c)
 {
     auto characterLock = character.lock();
