@@ -13,6 +13,17 @@ namespace font_rendering {
 class FontRendering {
 public:
 	FontRendering(std::wstring fontPath);
+
+	/// <summary>
+	/// Copy Constructor not needed. Deleted.
+	/// </summary>
+	FontRendering(const FontRendering&) = delete;
+
+	/// <summary>
+	/// Assignment operator not needed. Deleted.
+	/// </summary>
+	FontRendering& operator=(const FontRendering&) = delete;
+
 	~FontRendering();
 
 	void SetCharacter(std::weak_ptr<etk::renderer::Character> character, unsigned int c);
