@@ -184,9 +184,3 @@ std::weak_ptr<etk::renderer::ScreenBox> etk::Scene::GetBox()
 		return box;
 	}
 }
-
-std::shared_ptr<etk::Widget> etk::Scene::Clone()
-{
-	auto out = std::dynamic_pointer_cast<etk::Scene>(SingleContainer::Clone());
-	return out;
-}
