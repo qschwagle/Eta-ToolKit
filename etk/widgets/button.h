@@ -21,13 +21,19 @@ public:
 	void SetText(std::wstring text) {
 		mText = text;
 		if (!GetDrawableFactory().expired()) {
-			mTextVisual->UpdateText(text);
-			SetInternalWidth(mTextVisual->GetWidth());
-			SetInternalHeight(mTextVisual->GetHeight());
-			mBackgroundRenderer->SetPos(GetPadding()[3] + GetPosition()[0], GetPadding()[0] + GetPosition()[1]);
-			mBackgroundRenderer->SetHeight(GetMargin()[0] + GetMargin()[2] + GetInternalHeight());
-			mBackgroundRenderer->SetWidth(GetMargin()[1] + GetMargin()[3] + GetInternalWidth());
+			UpdateText();
 		}
+	}
+
+	void UpdateText() {
+   		mTextVisual->UpdateText(mText);
+		auto margin = GetMargin();
+		mTextVisual->SetPos(GetPadding()[3] + margin[3] + GetPosition()[0], GetPadding()[0] + GetPosition()[1] + margin[0]);
+   		SetInternalWidth(mTextVisual->GetWidth());
+   		SetInternalHeight(mTextVisual->GetHeight());
+		mBackgroundRenderer->SetPos(GetPadding()[3] + GetPosition()[0], GetPadding()[0] + GetPosition()[1]);
+		mBackgroundRenderer->SetHeight(margin[0] + margin[2] + GetInternalHeight());
+		mBackgroundRenderer->SetWidth(margin[1] + margin[3] + GetInternalWidth());
 		InvalidateOwner();
 	}
 
