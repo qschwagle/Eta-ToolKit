@@ -282,19 +282,6 @@ public:
 		mOwner = o;
 	}
 
-	virtual std::shared_ptr<Widget> Clone() {
-		auto copy = std::make_shared<Widget>();
-		copy->SetInternalHeight(GetInternalHeight());
-		copy->SetInternalWidth(GetInternalWidth());
-		copy->mScroller = std::make_unique<Scroller>(*this->mScroller);
-		copy->mLeftClickCallback = std::make_unique<std::function<void()>>(*mLeftClickCallback);
-		copy->mRightClickCallback = std::make_unique<std::function<void()>>(*mRightClickCallback);
-		copy->mDrawableFactory = this->mDrawableFactory;
-		copy->mOwner = std::weak_ptr<etk::Widget>();
-		copy->mStyle = std::make_shared<etk::Style>();
-		return copy;
-	}
-
 protected:
 	/// <summary>
 	/// Set the screen box of the overarching factory's context

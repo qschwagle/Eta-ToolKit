@@ -104,6 +104,7 @@ public:
 		auto i = mModel->FetchFirst();
 		mBaseIndex = 0;
 		long index = mBaseIndex;
+		mItems.clear();
 		while (!i->IsEnd()) {
 			auto item = std::make_shared<ListViewItem>();
 			item->SetOwner(shared_from_this());

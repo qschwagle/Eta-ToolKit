@@ -22,7 +22,7 @@ set(SOURCE_FILES
 	widgets/linear_layout.cpp
 	widgets/single_container.cpp "widgets/list_view.cpp" "widgets/list_view_item.cpp")
 
-add_library(${PROJECT_NAME} STATIC ${SOURCE_FILES})
+add_library(${PROJECT_NAME} STATIC ${SOURCE_FILES} "widgets/text_field.cpp")
 
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 17)
 

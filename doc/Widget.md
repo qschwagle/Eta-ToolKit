@@ -8,9 +8,9 @@ All widgets are constructed as make_shared pointers and placed on a scene graph,
 
 The basic life cycles are as follows
 
-1. The Widget is constructed
+1. The Widget is constructed ( std::make_shared\<Widget>())
 2. The Widget is added to a scene (through the ways above).
-3. The Widget is initialized
+3. The Widget is attached to a Window ( which gives it a factory and initializes it)
 4. The Widget is drawn.
 5. The Widget is updated ( mutated in some way )
 6. The Wdiget is deconstructed
@@ -19,39 +19,17 @@ The basic life cycles are as follows
 
 ## Properties of a Widget
 
-Every Widget must have a width and a height. This is exposed by GetExternalWidth() and GetExternalHeight() respectively.
+### Positioning
 
-The width and the height of a widget must be available after the widget is initialized, and will always be accurate for the duration of a widgets lifetime after initialzied to deconstruction
+Widgets must never be given a position directly. A widget is positioned by inserting into a container. 
 
-Once a Widget is associated with a DrawableFactory, the widget will never be associated with a different DrawableFactory.
+A container maybe a window or maybe another widget.
 
-When a widget's data or behavior is changed such that the UI dimensions changes, all widgets that contain it must be updated and any other widgets with itself that is dependent on it, must be updated
+If the container which recieves a widget is initializes, it will attempt to place the widget appropriately. 
 
-### A Widget's Eye
+If the container is not initialized, the placement will be defered to initialization.
 
-The Eye of a widget is the top left point by which the drawable renders the object to screen. The Eye moves to shift the window around the screen. It is used for Scrolling a widget.
+The Position of every widget is the cached position assigned by the container. 
 
-The Eye should not be modified by a widget. It should be modified only by A Scroller.
-
-During Drawing, the widgets bound to the current widget should have an eye passed, that eye being the sum of the previously passed eye and the eye of the current widget
-
-Any events coming from screen coordinate space must be adjusted with the current Eye as the Eye shifts the screen coordinate space when drawing.
-
-### A Widget's Scroller
-
-The Scroller of a widget defines the behavior of reacting to a OnScroll Event.
-
-By Default, the scroller scroller will not respond to the current event.
-
-If the Scroller is set to Horizontal or Vertical, it will adjust the eye accordingly. 
-
-OnScroll must look for children objects reacting to the event then itself.
-
-### OnRightClick and OnLeftClick
-
-OnRightClick and OnLeftClick are pointers to callbacks for the associated event.
-
-A Widget will check for children objects responding to the above events before itself.
-
-If the callbacks are nullptrs, the events will be ignored
+If the dimensions of a widget is changed, it must update the containing widget to update the positions.
 
