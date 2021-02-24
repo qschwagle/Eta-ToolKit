@@ -25,7 +25,7 @@ uniform sampler2D ourTexture;\n\
 uniform vec4 boundary;\n\
 void main() \n\
 { \n\
-	FragColor = texture(ourTexture, outTex); //* float (boundary.x < pos.x && pos.x < (boundary.x + boundary.z) && boundary.y < pos.y && pos.y < (boundary.y + boundary.w));\n\
+	FragColor = texture(ourTexture, outTex);\n\
 }\
 ";
 
