@@ -12,30 +12,28 @@ etk::font_rendering::FontRendering::FontRendering(std::wstring fontPath)
     mLibrary = new FT_Library;
     int error = FT_Init_FreeType(mLibrary);
     if(error) {
-        std::cout << "QSLabel::Init Error occurred trying to initialize FT_Library" << std::endl;
-        exit(1);
+        throw std::exception("Error occurred trying to initialize FT_Library");
     }
     setlocale(LC_ALL, "");
     auto converter = std::wstring_convert<std::codecvt_utf8<wchar_t>>();
     std::string mbs = converter.to_bytes(fontPath);
 	error = FT_New_Face(*mLibrary, mbs.c_str(), 0, &mFace);
     if (error == FT_Err_Unknown_File_Format) {
-        std::cout << "QSLabel::Init Error occurred trying to initializing Face: unknown file format" << std::endl;
-        exit(1);
+        throw std::exception("Error occurred trying to initializing Face: unknown file format");
     }
     else if (error) {
         const char* error_message = FT_Error_String(error);
         if (!error_message) {
-            std::cout << "QSLabel::Init Error occurred trying to initializing Face: " << error << std::endl;
+            auto message = std::string("Error occurred trying to initializing Face: ") + std::to_string(error);
+            throw std::exception(message.c_str());
         }
         else {
-            std::cout << "QSLabel::Init Error occurred trying to initializing Face: " << FT_Error_String(error) << std::endl;
+            auto message = std::string("Error occurred trying to initializing Face: ") + std::string(FT_Error_String(error));
+            throw std::exception(message.c_str());
         }
-        exit(1);
     }
     if(error) {
-       std::cout << "QSLabel::Init Error occurred trying to initialize FT_Library" << std::endl;
-       exit(1);
+        throw std::exception("Error occurred trying to initialize FT_Library");
     }
     error = FT_Set_Char_Size(mFace, 0, mPtHeight * 64, mHor, mVert);
 }
