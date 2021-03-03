@@ -6,7 +6,7 @@
 
 static void glfw_on_scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
-	etk::Window* win = reinterpret_cast<etk::Window*>(glfwGetWindowUserPointer(window));
+	etk::Window* win = static_cast<etk::Window*>(glfwGetWindowUserPointer(window));
 	double x;
 	double y;
 	glfwGetCursorPos(window, &x, &y);
@@ -16,7 +16,7 @@ static void glfw_on_scroll_callback(GLFWwindow* window, double xoffset, double y
 
 static void glfw_mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
-	etk::Window* win = reinterpret_cast<etk::Window*>(glfwGetWindowUserPointer(window));
+	etk::Window* win = static_cast<etk::Window*>(glfwGetWindowUserPointer(window));
 	double x;
 	double y;
 	glfwGetCursorPos(window, &x, &y);
@@ -31,13 +31,13 @@ static void glfw_mouse_button_callback(GLFWwindow* window, int button, int actio
 
 static void glfw_framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
-	etk::Window* win = reinterpret_cast<etk::Window*>(glfwGetWindowUserPointer(window));
+	etk::Window* win = static_cast<etk::Window*>(glfwGetWindowUserPointer(window));
 	win->FrameBufferChanged(width, height);
 }
 
 static void glfw_content_scale_changed_callback(GLFWwindow* window, float xScale, float yScale)
 {
-	etk::Window* win = reinterpret_cast<etk::Window*>(glfwGetWindowUserPointer(window));
+	etk::Window* win = static_cast<etk::Window*>(glfwGetWindowUserPointer(window));
 	win->ContentScaleChanged(xScale, yScale);
 }
 
