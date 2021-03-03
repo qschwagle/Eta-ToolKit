@@ -9,6 +9,10 @@ developed on windows using visual studio 2019.
 
 ## Project Structure
 
+### work in progress
+
+ETK is currently less than 0.0.1 release. It is a work in progress that will slowly become usable toolkit.
+
 ### eta
 
 eta contains the toolkit itself as a buildable library.
