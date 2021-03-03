@@ -18,3 +18,7 @@ FETCHCONTENT_MAKEAVAILABLE(googletest)
 # https://github.com/google/googletest/issues/2157
 #target_link_libraries(tests PRIVATE GTest::gtest GTest::gtest_main ${PROJECT_NAME})
 target_link_libraries(tests PRIVATE gmock_main ${PROJECT_NAME})
+
+include(GoogleTest)
+
+gtest_discover_tests(tests)
