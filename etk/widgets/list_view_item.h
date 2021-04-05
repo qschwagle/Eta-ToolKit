@@ -20,7 +20,7 @@ public:
 		mScene = scene; 
 		scene->SetOwner(shared_from_this());
 		if(!GetDrawableFactory().expired()) mScene->SetDrawableFactory(GetDrawableFactory());
-		Invalidate();
+		//Invalidate();
 	} 
 	void Draw() override {
 		mScene->Draw();
@@ -72,15 +72,7 @@ public:
 		return false;
 	}
 
-	void Invalidate() override {
-		if (mScene) {
-			SetInternalWidth(mScene->GetExternalWidth());
-			SetInternalHeight(mScene->GetExternalHeight());
-		}
-		if (!GetOwner().expired()) {
-			GetOwner().lock()->Invalidate();
-		}
-	}
+	void Update() override;
 
 	void SetPosition(glm::vec2 pos) override {
 		Widget::SetPosition(pos);

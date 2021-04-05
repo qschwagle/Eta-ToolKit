@@ -73,3 +73,8 @@ void etk::Image::FromFileData::FreeImage()
 	if (GetCurrentData()) stbi_image_free(GetCurrentData());
 	SetData(nullptr);
 }
+
+void etk::Image::Update()
+{
+
+}

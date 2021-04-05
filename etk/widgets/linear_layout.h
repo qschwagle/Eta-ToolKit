@@ -14,7 +14,7 @@ public:
 	
 	void SetPosition(const glm::vec2 pos) override;
 
-	void Invalidate() override;
+	void Update() override;
 
 	enum class Direction {
 		HORIZONTAL = 0,

@@ -139,6 +139,8 @@ bool etk::Window::Run()
 	}
 	auto context = mDrawableFactory->GetContext().lock();
 	context->Clear();
+	if (mDrawableFactory->IsInvalidated()) 
+		mScene->Update();
 	mBackground->Draw();
 	if (mScene) mScene->Draw();
 	glfwSwapBuffers(mWin);

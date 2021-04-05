@@ -31,7 +31,12 @@ public:
 
 	void SetWindow(std::weak_ptr<Window> w);
 
+	void Update() override {
+		SingleContainer::Update();
+	}
+
 	std::weak_ptr <etk::renderer::ScreenBox> GetBox();
+
 private:
 	std::wstring mSelfIdentifier;
 	std::unordered_map<std::wstring, std::weak_ptr<etk::Widget>> mWidgetTable;

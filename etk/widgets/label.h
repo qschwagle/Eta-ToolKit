@@ -23,7 +23,7 @@ public:
 			mData->AddObserver(ptr);
 		}
 		mData->SetText(t);
-		InvalidateOwner();
+		Widget::Invalidate();
 	}
 
 	class Data {
@@ -48,7 +48,7 @@ public:
 		std::wstring mText;
 	};
 
-	void Update() {
+	void Update() override {
 		if (mTextVisual) {
 			mTextVisual->UpdateText(mData->GetText());
 			SetInternalHeight(mTextVisual->GetHeight());

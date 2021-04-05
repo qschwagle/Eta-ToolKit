@@ -69,7 +69,6 @@ public:
 
 	Color GetColor(void) const {
 		return mBackgroundColor;
-
 	}
 
 private:

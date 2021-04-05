@@ -94,8 +94,8 @@ bool OpenFilePickerAndUpdateAdapter(std::shared_ptr<std::vector<std::wstring>> f
 					fileList->push_back(hack);
 
 					// notify the adapter that the data structure has changed
-					adapter->Notify();
                 } while (FindNextFileW(hFind, &FindFileData) != 0);
+				adapter->Notify();
 			}
 			pItem->Release();
 		}

@@ -14,12 +14,6 @@ void etk::LinearLayout::SetPosition(const glm::vec2 pos)
 	UpdateChildrenPositions();
 }
 
-void etk::LinearLayout::Invalidate()
-{
-	UpdateChildrenPositions();
-	InvalidateOwner();
-}
-
 void etk::LinearLayout::UpdateChildrenPositions()
 {
 	switch (mDirection) {
@@ -29,6 +23,7 @@ void etk::LinearLayout::UpdateChildrenPositions()
 		float greatestWidth = 0.0f;
 		for (auto& i : GetWidgetList()) {
 			i->SetPosition(glm::vec2(mNextLocation[0], mNextLocation[1]));
+			i->Update();
 			mNextLocation[1] += i->GetExternalHeight();
 			greatestWidth = i->GetExternalWidth() > greatestWidth ? i->GetExternalWidth() : greatestWidth;
 		}
@@ -45,6 +40,7 @@ void etk::LinearLayout::UpdateChildrenPositions()
 		float greatestHeight = 0.0f;
 		for (auto& i : GetWidgetList()) {
 			i->SetPosition(glm::vec2(mNextLocation[0], mNextLocation[1]));
+			i->Update();
 			mNextLocation[0] += i->GetExternalWidth();
 			greatestHeight = i->GetExternalHeight() > greatestHeight ? i->GetExternalHeight() : greatestHeight;
 		}
@@ -55,4 +51,9 @@ void etk::LinearLayout::UpdateChildrenPositions()
 		break;
 	}
 	}
+}
+
+void etk::LinearLayout::Update()
+{
+	UpdateChildrenPositions();
 }
