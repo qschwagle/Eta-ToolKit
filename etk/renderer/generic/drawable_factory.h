@@ -29,8 +29,20 @@ public:
 	virtual std::unique_ptr<Text> CreateText() = 0;
 	virtual std::unique_ptr<WindowBackground> CreateBackground() = 0;
 	virtual std::weak_ptr<DrawableContext> GetContext() = 0;
+
+	void Invalidate() { mInvalidated = true;  }
+	bool IsInvalidated() { 
+		if (mInvalidated) {
+			mInvalidated = false;
+			return true;
+		}
+		return false;
+	}
+
+
 private:
 	std::shared_ptr<UIThreadScheduler> mThreadSchedueler;
+	bool mInvalidated = true;
 };
 }
 }

@@ -12,7 +12,7 @@ namespace etk {
 namespace font_rendering {
 class FontRendering {
 public:
-	FontRendering(std::wstring fontPath);
+	FontRendering(std::string fontPath);
 
 	/// <summary>
 	/// Copy Constructor not needed. Deleted.
