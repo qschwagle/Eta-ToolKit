@@ -31,13 +31,14 @@ public:
 	virtual std::weak_ptr<DrawableContext> GetContext() = 0;
 
 	void Invalidate() { mInvalidated = true;  }
-	bool IsInvalidated() { 
-		if (mInvalidated) {
-			mInvalidated = false;
-			return true;
-		}
-		return false;
+	bool IsInvalidated() const { 
+		return mInvalidated;
 	}
+
+	void ClearInvalidated() {
+		mInvalidated = false;
+	}
+
 
 
 private:

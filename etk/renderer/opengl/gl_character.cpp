@@ -16,12 +16,12 @@
 etk::renderer::opengl::GLCharacter::GLCharacter(std::weak_ptr<GLDrawableContext> context) : GLObject(context)
 {
     auto c = context.lock();
-    auto weakProgram = c->GetProgramHolder(GLCharacterProgram::GetId());
-    if (weakProgram.expired()) {
+    mProgramCache = c->GetProgramHolder(GLCharacterProgram::GetId());
+    if (mProgramCache.expired()) {
         c->SetProgram(GLCharacterProgram::GetId(), std::make_shared<GLCharacterProgram>(context));
-        weakProgram = c->GetProgramHolder(GLCharacterProgram::GetId());
+        mProgramCache = c->GetProgramHolder(GLCharacterProgram::GetId());
     }
-    auto program = weakProgram.lock();
+    auto program = mProgramCache.lock();
     program->GetProgram()->Use();
 
     glGenVertexArrays(1, &mVAO);
@@ -61,7 +61,7 @@ void etk::renderer::opengl::GLCharacter::Draw(std::weak_ptr<ScreenBox> box)
     }
 
     auto context = GetContext().lock();
-    auto p = std::dynamic_pointer_cast<GLCharacterProgram>(context->GetProgramHolder(GLCharacterProgram::GetId()).lock());
+    auto p = std::dynamic_pointer_cast<GLCharacterProgram>(mProgramCache.lock());
     auto program = p->GetProgram();
     program->Use();
 

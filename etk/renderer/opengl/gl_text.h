@@ -14,6 +14,8 @@ public:
 	GLText(std::weak_ptr<GLDrawableContext> context) : GLObject(context) {}
 
 	void UpdateText(const std::wstring& text) override;
+	void UpdateColor() override;
+	void UpdatePosition() override;
 	void Draw(std::weak_ptr<ScreenBox> box) override;
 
 private:

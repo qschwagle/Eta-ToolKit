@@ -16,11 +16,11 @@ public:
 	void LoadImage(unsigned char* data, int width, int height, int channels) override;
 
 	void SetWidth(int w) override {
-
+		mExWidth = w;
 	}
 
 	void SetHeight(int h) override {
-
+		mExHeight = h;
 	}
 private:
 	int mExWidth{ -1 };

@@ -5,7 +5,7 @@
 #include <etk/widgets/button.h>
 #include <etk/widgets/image.h>
 #include <etk/widgets/label.h>
-#include <etk/widgets/linear_layout.h>
+#include <etk/widgets/linear_container.h>
 #include <etk/widgets/scene_builder_func.h>
 
 #include <windows.h>
@@ -24,7 +24,7 @@ std::vector<std::wstring> supported_image_types = {L"png", L"jpeg", L"jpg", L"bm
 /// <returns>List View Item Scene</returns>
 std::shared_ptr<etk::Scene> CreateSceneBuilder() {
 	auto scene = std::make_shared<etk::Scene>(L"ITEM_SCENE");
-	auto layout = std::make_shared<etk::LinearLayout>();
+	auto layout = std::make_shared<etk::LinearContainer>();
 	auto title = std::make_shared<etk::Label>();
 	title->SetMargin(glm::vec4(0.0f, 0.0f, 10.0f, 0.0f));
 	title->SetTextColor(etk::colors::RED);
@@ -123,7 +123,7 @@ int main(int argc, char** argv)
 	window->SetScene(scene);
 
 	// main layout used to hold the configuration buttons and ListView 
-	auto mainLayout = std::make_shared<etk::LinearLayout>();
+	auto mainLayout = std::make_shared<etk::LinearContainer>();
 
 	// Insert the listview into the main scene
 	scene->SetWidget(L"MAIN_LAYOUT", L"MAIN_SCENE", std::static_pointer_cast<etk::MultiContainer>(mainLayout));
@@ -138,7 +138,7 @@ int main(int argc, char** argv)
 	auto imageList = std::make_shared<etk::ListView<std::wstring>>();
 
 	// List View needs to be scrollable
-	imageList->SetScroller(std::make_unique<etk::LinearLayout::VerticalScroller>());
+	imageList->SetScroller(std::make_unique<etk::LinearContainer::VerticalScroller>());
 
 	// set the model adapter
 	imageList->SetModel(adapter);

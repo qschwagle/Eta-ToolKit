@@ -18,15 +18,29 @@ void etk::renderer::opengl::GLText::UpdateText(const std::wstring& text)
 	}
 	SetWidth(fontEngine.GetWidth());
 	SetHeight(fontEngine.GetHeight());
+	UpdateColor();
+	UpdatePosition();
+}
+
+void etk::renderer::opengl::GLText::UpdateColor()
+{
+	for (auto& i : mGLText) {
+		i->SetColor(GetColor());
+	}
+}
+
+void etk::renderer::opengl::GLText::UpdatePosition()
+{
+	float x = GetPos().x, y = -1.0f*(GetHeight() + GetPos().y);
+	for (auto& i : mGLText) {
+		i->SetPos(x, y);
+		x += i->GetAdvance();
+	}
 }
 
 void etk::renderer::opengl::GLText::Draw(std::weak_ptr<ScreenBox> box)
 {
-	float x = GetPos().x, y = -1.0f*(GetHeight() + GetPos().y);
 	for (auto& i : mGLText) {
-		i->SetColor(GetColor());
-		i->SetPos(x, y);
 		i->Draw(box);
-		x += i->GetAdvance();
 	}
 }

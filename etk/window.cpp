@@ -94,7 +94,7 @@ void etk::Window::FrameBufferChanged(int width, int height)
 void etk::Window::ContentScaleChanged(float xScale, float yScale)
 {
 	mDrawableFactory->GetContext().lock()->UpdateContentScale(xScale, yScale);
-	// this should invalidate all render cache and trigger a rerender of all objects
+	mDrawableFactory->Invalidate();
 }
 
 
@@ -139,11 +139,15 @@ bool etk::Window::Run()
 	}
 	auto context = mDrawableFactory->GetContext().lock();
 	context->Clear();
-	if (mDrawableFactory->IsInvalidated()) 
+	if (mDrawableFactory->IsInvalidated()) {
 		mScene->Update();
+		mDrawableFactory->ClearInvalidated();
+	}
 	mBackground->Draw();
 	if (mScene) mScene->Draw();
 	glfwSwapBuffers(mWin);
+	if (mDrawableFactory->IsInvalidated())
+		glfwPostEmptyEvent();
 	if (!mScheduler->AnimationQueued() && mScheduler->UIActionQueued()) WaitEventsTimeout(100);
 	else if (mScheduler->AnimationQueued()) PollEvents();
 	else WaitEvents();

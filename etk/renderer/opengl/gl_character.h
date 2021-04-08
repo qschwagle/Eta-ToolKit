@@ -63,6 +63,8 @@ private:
 	/// Texture
 	/// </summary>
 	unsigned int mTexture{ 0 };
+
+	std::weak_ptr<etk::renderer::opengl::GLProgramHolder> mProgramCache;
 };
 }
 }
