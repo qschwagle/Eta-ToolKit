@@ -83,6 +83,19 @@ void etk::renderer::opengl::GLCharacter::Draw(std::weak_ptr<ScreenBox> box)
     glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
+/**
+* Used for drawing a block of text. It assumes everything is setup besides the arrays and texture.
+*/
+void etk::renderer::opengl::GLCharacter::DrawBlock()
+{
+    glBindTexture(GL_TEXTURE_2D, mTexture);
+    glBindVertexArray(mVAO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, mVBO);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, mVertices.size()*sizeof(float), mVertices.data());
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+}
+
 /// <summary>
 /// Loads the Glyph and associated properties
 /// </summary>

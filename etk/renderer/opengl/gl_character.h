@@ -15,6 +15,7 @@ public:
 	GLCharacter(std::weak_ptr<GLDrawableContext> context);
 	virtual ~GLCharacter();
 	void Draw(std::weak_ptr<ScreenBox> box) override;
+	void DrawBlock();
 
 	void LoadGlyph(unsigned int adv, unsigned int width, unsigned int height, int bearingX, int bearingY, unsigned char* data) override;
 

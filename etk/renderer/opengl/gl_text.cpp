@@ -40,7 +40,11 @@ void etk::renderer::opengl::GLText::UpdatePosition()
 
 void etk::renderer::opengl::GLText::Draw(std::weak_ptr<ScreenBox> box)
 {
-	for (auto& i : mGLText) {
-		i->Draw(box);
+	auto i = mGLText.begin();
+	if (i != mGLText.end()) {
+		(*i)->Draw(box);
+	}
+	for (; i != mGLText.end(); ++i) {
+		(*i)->DrawBlock();
 	}
 }
