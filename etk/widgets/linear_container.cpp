@@ -1,20 +1,20 @@
-#include "linear_layout.h"
+#include "linear_container.h"
 
-void etk::LinearLayout::AddWidget(std::shared_ptr<Widget> widget)
+void etk::LinearContainer::AddWidget(std::shared_ptr<Widget> widget)
 {
 	etk::MultiContainer::AddWidget(widget);
 	widget->SetPosition(glm::vec2(mNextLocation[0], mNextLocation[1]));
 	mNextLocation[1] += widget->GetExternalHeight();
 }
 
-void etk::LinearLayout::SetPosition(const glm::vec2 pos)
+void etk::LinearContainer::SetPosition(const glm::vec2 pos)
 {
 	etk::Widget::SetPosition(pos);
 	mNextLocation = { pos.x, pos.y };
 	UpdateChildrenPositions();
 }
 
-void etk::LinearLayout::UpdateChildrenPositions()
+void etk::LinearContainer::UpdateChildrenPositions()
 {
 	switch (mDirection) {
 	case Direction::VERTICAL: 
@@ -53,7 +53,7 @@ void etk::LinearLayout::UpdateChildrenPositions()
 	}
 }
 
-void etk::LinearLayout::Update()
+void etk::LinearContainer::Update()
 {
 	UpdateChildrenPositions();
 }

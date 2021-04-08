@@ -19,7 +19,7 @@ set(SOURCE_FILES
 	widgets/image.cpp 
 	font_rendering/font_rendering.cpp
 	widgets/label.cpp 
-	widgets/linear_layout.cpp
+	"widgets/linear_container.cpp"
 	widgets/single_container.cpp "widgets/list_view.cpp" "widgets/list_view_item.cpp" "font_rendering/atlas.cpp" "renderer/opengl/gl_string_character.cpp")
 
 add_library(${PROJECT_NAME} STATIC ${SOURCE_FILES} "widgets/text_field.cpp" "font_rendering/atlas.h" "font_rendering/book.cpp")

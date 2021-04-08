@@ -3,11 +3,11 @@
 #include "multi_container.h"
 
 namespace etk {
-class LinearLayout : public MultiContainer {
+class LinearContainer : public MultiContainer {
 public:
-	LinearLayout() = default;
-	LinearLayout(const LinearLayout&) = delete;
-	LinearLayout& operator=(const LinearLayout&) = delete;
+	LinearContainer() = default;
+	LinearContainer(const LinearContainer&) = delete;
+	LinearContainer& operator=(const LinearContainer&) = delete;
 	
 
 	void AddWidget(std::shared_ptr<Widget> widget) override;
