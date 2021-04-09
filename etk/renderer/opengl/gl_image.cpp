@@ -27,9 +27,8 @@ etk::renderer::opengl::GLImage::GLImage(std::weak_ptr<GLDrawableContext> context
 		con->SetProgram(etk::renderer::opengl::GLImageProgram::GetId(), std::make_shared<GLImageProgram>(GetContext()));
 		weakProgram = con->GetProgramHolder(etk::renderer::opengl::GLImageProgram::GetId());
 	}
-	auto program = weakProgram.lock()->GetProgram();
-
-	program->Use();
+	mProgramCache = std::dynamic_pointer_cast<GLImageProgram>(weakProgram.lock()).get();
+	mProgramCache->GetProgram()->Use();
 
 	glGenTextures(1, &mTexture);
 	glGenVertexArrays(1, &mVAO);
@@ -61,8 +60,7 @@ void etk::renderer::opengl::GLImage::Draw(std::weak_ptr<ScreenBox> box)
         return;
     }
 	auto context = GetContext().lock();
-	auto p = context->GetProgramHolder(etk::renderer::opengl::GLImageProgram::GetId()).lock();
-	auto program = p->GetProgram();
+	auto program = mProgramCache->GetProgram();
 
     const glm::vec2& pos = GetPos();
 
@@ -83,7 +81,7 @@ void etk::renderer::opengl::GLImage::Draw(std::weak_ptr<ScreenBox> box)
 	model = glm::scale(model, my_scale);
 
 	GLint uniModel = program->GetUniformLoc(std::string("model"));
-	GLint uniProjView = p->GetProjId();
+	GLint uniProjView = mProgramCache->GetProjId();
 	program->SetUniformMat4fv(uniModel, glm::value_ptr(model));
 	auto proj = CreateOrtho(box.lock()->GetShift(), context->GetWidth(), context->GetHeight());
 	auto lbox = box.lock();

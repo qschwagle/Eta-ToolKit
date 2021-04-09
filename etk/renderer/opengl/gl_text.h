@@ -20,6 +20,8 @@ public:
 
 private:
 	std::vector<std::shared_ptr<etk::renderer::opengl::GLCharacter>> mGLText;
+
+	std::vector<float> mBlockCache;
 };
 }
 }

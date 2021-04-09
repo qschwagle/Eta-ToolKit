@@ -4,6 +4,8 @@
 
 #include "gl_object.h"
 
+#include "gl_image_program.h"
+
 namespace etk {
 namespace renderer {
 namespace opengl {
@@ -31,6 +33,8 @@ private:
 	unsigned int mTexture;
 	unsigned int mVAO;
 	unsigned int mVBO;
+
+	GLImageProgram* mProgramCache;
 };
 }
 }

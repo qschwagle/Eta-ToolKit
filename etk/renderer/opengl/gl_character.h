@@ -2,11 +2,13 @@
 
 #include "../generic/character.h"
 #include "gl_object.h"
+#include "gl_character_program.h"
 #include <array>
 
 namespace etk {
 namespace renderer {
 namespace opengl {
+class GLText;
 /// <summary>
 /// A GLCharacter drawable object which draws the provided character using the static position and dynamic eye
 /// </summary>
@@ -16,6 +18,8 @@ public:
 	virtual ~GLCharacter();
 	void Draw(std::weak_ptr<ScreenBox> box) override;
 	void DrawBlock();
+
+	void DrawBlockCall(std::vector<float> block);
 
 	void LoadGlyph(unsigned int adv, unsigned int width, unsigned int height, int bearingX, int bearingY, unsigned char* data) override;
 
@@ -65,7 +69,9 @@ private:
 	/// </summary>
 	unsigned int mTexture{ 0 };
 
-	std::weak_ptr<etk::renderer::opengl::GLProgramHolder> mProgramCache;
+	etk::renderer::opengl::GLCharacterProgram* mProgramCache{ nullptr };
+
+	friend class GLText;
 };
 }
 }

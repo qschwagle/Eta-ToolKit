@@ -47,4 +47,5 @@ void etk::renderer::opengl::GLText::Draw(std::weak_ptr<ScreenBox> box)
 	for (; i != mGLText.end(); ++i) {
 		(*i)->DrawBlock();
 	}
+
 }

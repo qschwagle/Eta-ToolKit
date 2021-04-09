@@ -9,6 +9,8 @@
 
 #include "helpers.h"
 
+#include <iterator>
+
 /// <summary>
 /// Allocates the Character resources such as vertex array and vertex bufffer
 /// </summary>
@@ -16,13 +18,13 @@
 etk::renderer::opengl::GLCharacter::GLCharacter(std::weak_ptr<GLDrawableContext> context) : GLObject(context)
 {
     auto c = context.lock();
-    mProgramCache = c->GetProgramHolder(GLCharacterProgram::GetId());
-    if (mProgramCache.expired()) {
+    auto program = c->GetProgramHolder(GLCharacterProgram::GetId());
+    if (program.expired()) {
         c->SetProgram(GLCharacterProgram::GetId(), std::make_shared<GLCharacterProgram>(context));
-        mProgramCache = c->GetProgramHolder(GLCharacterProgram::GetId());
+        program = c->GetProgramHolder(GLCharacterProgram::GetId());
     }
-    auto program = mProgramCache.lock();
-    program->GetProgram()->Use();
+    mProgramCache = std::dynamic_pointer_cast<GLCharacterProgram>(program.lock()).get();
+    mProgramCache->GetProgram()->Use();
 
     glGenVertexArrays(1, &mVAO);
     glBindVertexArray(mVAO);
@@ -61,7 +63,7 @@ void etk::renderer::opengl::GLCharacter::Draw(std::weak_ptr<ScreenBox> box)
     }
 
     auto context = GetContext().lock();
-    auto p = std::dynamic_pointer_cast<GLCharacterProgram>(mProgramCache.lock());
+    auto p = mProgramCache;
     auto program = p->GetProgram();
     program->Use();
 
@@ -94,6 +96,11 @@ void etk::renderer::opengl::GLCharacter::DrawBlock()
     glBindBuffer(GL_ARRAY_BUFFER, mVBO);
     glBufferSubData(GL_ARRAY_BUFFER, 0, mVertices.size()*sizeof(float), mVertices.data());
     glDrawArrays(GL_TRIANGLES, 0, 6);
+}
+
+void etk::renderer::opengl::GLCharacter::DrawBlockCall(std::vector<float> block)
+{
+    std::copy(mVertices.begin(), mVertices.end(), std::back_inserter(block));
 }
 
 /// <summary>
