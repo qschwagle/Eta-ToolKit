@@ -20,6 +20,16 @@ public:
 		mAdvance = advance;
 	}
 
+	int GetWidth() const { return mWidth;  }
+
+	int GetHeight() const { return mHeight;  }
+
+	int GetBearingX() const { return mBearingX; }
+
+	int GetBearingY() const { return mBearingY; }
+
+	int GetAdvance() const { return mAdvance;  }
+
 private:
 	/// <summary>
 	/// pointer to the atlas which contains the glyph
