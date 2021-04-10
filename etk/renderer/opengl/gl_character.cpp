@@ -37,8 +37,6 @@ etk::renderer::opengl::GLCharacter::GLCharacter(std::weak_ptr<GLDrawableContext>
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
 
     glGenTextures(1, &mTexture);
-
-    GenerateVertices();
 }
 
 /// <summary>
@@ -70,6 +68,11 @@ void etk::renderer::opengl::GLCharacter::Draw(std::weak_ptr<ScreenBox> box)
     GLint textColorId = p->GetTextColorId();
     program->SetUniform3fv(textColorId, GetColor().GetFloatPtr());
 
+    glm::mat4 view(1.0f);
+    GLint viewId = p->GetViewId();
+    view = glm::translate(view, glm::vec3(GetPos().x, GetPos().y, 0.0f));
+    program->SetUniformMat4fv(viewId, glm::value_ptr(view));
+
     GLint uniProjView = p->GetProjId();
     glm::mat4 proj = etk::renderer::opengl::CreateOrtho(box.lock()->GetShift(), context->GetWidth(), context->GetHeight());
     program->SetUniformMat4fv(uniProjView, glm::value_ptr(proj));
@@ -77,30 +80,70 @@ void etk::renderer::opengl::GLCharacter::Draw(std::weak_ptr<ScreenBox> box)
     glBindTexture(GL_TEXTURE_2D, mTexture);
     glBindVertexArray(mVAO);
 
-	auto lbox = box.lock();
-	//glViewport(lbox->GetPosAnchor().x, lbox->GetPosAnchor().y, lbox->GetDimensions().x - lbox->GetPosAnchor().x, lbox->GetDimensions().y + lbox->GetPosAnchor().y);
-
     glBindBuffer(GL_ARRAY_BUFFER, mVBO);
     glBufferSubData(GL_ARRAY_BUFFER, 0, mVertices.size()*sizeof(float), mVertices.data());
     glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
-/**
-* Used for drawing a block of text. It assumes everything is setup besides the arrays and texture.
-*/
-void etk::renderer::opengl::GLCharacter::DrawBlock()
+void etk::renderer::opengl::GLCharacter::DrawBlockCall(std::vector<float>::iterator& begin)
 {
-    glBindTexture(GL_TEXTURE_2D, mTexture);
-    glBindVertexArray(mVAO);
+    const float x = GetPos().x;
+    const float y = 0;
+    const float xW = x + GetGlyphWidth();
+    const float yH = y + GetBearingY();
+    *begin = x;
+    begin += 1;
+    *begin = yH;
+    begin += 1;
+    *begin = 0.0f;
+    begin += 1;
+    *begin = 0.0f;
+    begin += 1;
 
-    glBindBuffer(GL_ARRAY_BUFFER, mVBO);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, mVertices.size()*sizeof(float), mVertices.data());
-    glDrawArrays(GL_TRIANGLES, 0, 6);
-}
+    *begin = x;
+    begin += 1;
+    *begin = y;
+    begin += 1;
+    *begin = 0.0f;
+    begin += 1;
+    *begin = 1.0f;
+    begin += 1;
 
-void etk::renderer::opengl::GLCharacter::DrawBlockCall(std::vector<float> block)
-{
-    std::copy(mVertices.begin(), mVertices.end(), std::back_inserter(block));
+    *begin = xW;
+    begin += 1;
+    *begin = y;
+    begin += 1;
+    *begin = 1.0f;
+    begin += 1;
+    *begin = 1.0f;
+    begin += 1;
+
+    *begin = x;
+    begin += 1;
+    *begin = yH;
+    begin += 1;
+    *begin = 0.0f;
+    begin += 1;
+    *begin = 0.0f;
+    begin += 1;
+
+    *begin = xW;
+    begin += 1;
+    *begin = y;
+    begin += 1;
+    *begin = 1.0f;
+    begin += 1;
+    *begin = 1.0f;
+    begin += 1;
+
+    *begin = xW;
+    begin += 1;
+    *begin = yH;
+    begin += 1;
+    *begin = 1.0f;
+    begin += 1;
+    *begin = 0.0f;
+    begin += 1;
 }
 
 /// <summary>
@@ -127,44 +170,4 @@ void etk::renderer::opengl::GLCharacter::LoadGlyph(unsigned int adv, unsigned in
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-}
-
-/// <summary>
-/// Generate the Vertices for a given character
-/// </summary>
-void etk::renderer::opengl::GLCharacter::GenerateVertices()
-{
-    const float x = GetPos().x; 
-    const float y = GetPos().y;
-    const float xW = x + GetGlyphWidth();
-    const float yH = GetPos().y + GetGlyphHeight() - GetGlyphHeight() + GetBearingY();
-    mVertices[0] = x;
-    mVertices[1] = yH;
-    mVertices[2] = 0.0f;
-    mVertices[3] = 0.0f;
-
-    mVertices[4] = x;
-    mVertices[5] = y;
-    mVertices[6] = 0.0f;
-    mVertices[7] = 1.0f;
-
-    mVertices[8] = xW;
-    mVertices[9] = y;
-    mVertices[10] = 1.0f;
-    mVertices[11] = 1.0f;
-
-    mVertices[12] = x;
-    mVertices[13] = yH;
-    mVertices[14] = 0.0f;
-    mVertices[15] = 0.0f;
-
-    mVertices[16] = xW;
-    mVertices[17] = y;
-    mVertices[18] = 1.0f;
-    mVertices[19] = 1.0f;
-
-    mVertices[20] = xW;
-    mVertices[21] = yH;
-    mVertices[22] = 1.0f;
-    mVertices[23] = 0.0f;
 }

@@ -20,6 +20,11 @@ void etk::renderer::opengl::GLText::UpdateText(const std::wstring& text)
 	SetHeight(fontEngine.GetHeight());
 	UpdateColor();
 	UpdatePosition();
+	mBlockCache.resize(mGLText.size() * 24);
+	auto iter = mBlockCache.begin();
+	for (auto i : mGLText) {
+		i->DrawBlockCall(iter);
+	}
 }
 
 void etk::renderer::opengl::GLText::UpdateColor()
@@ -44,8 +49,8 @@ void etk::renderer::opengl::GLText::Draw(std::weak_ptr<ScreenBox> box)
 	if (i != mGLText.end()) {
 		(*i)->Draw(box);
 	}
-	for (; i != mGLText.end(); ++i) {
-		(*i)->DrawBlock();
-	}
-
+    glBindTexture(GL_TEXTURE_2D, (*i)->mTexture);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mBlockCache.size(), NULL, GL_DYNAMIC_DRAW);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, mBlockCache.size()*sizeof(float), mBlockCache.data());
+    glDrawArrays(GL_TRIANGLES, 0, mBlockCache.size()/4);
 }

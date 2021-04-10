@@ -17,9 +17,8 @@ public:
 	GLCharacter(std::weak_ptr<GLDrawableContext> context);
 	virtual ~GLCharacter();
 	void Draw(std::weak_ptr<ScreenBox> box) override;
-	void DrawBlock();
 
-	void DrawBlockCall(std::vector<float> block);
+	void DrawBlockCall(std::vector<float>::iterator& begin);
 
 	void LoadGlyph(unsigned int adv, unsigned int width, unsigned int height, int bearingX, int bearingY, unsigned char* data) override;
 
@@ -38,12 +37,9 @@ public:
 	/// <param name="y">y position</param>
 	void SetPos(float x, float y) override {
 		DrawableObject::SetPos(x, y);
-		GenerateVertices();
 	}
 
 private:
-	void GenerateVertices();
-
 	/// <summary>
 	/// character being drawn
 	/// </summary>
