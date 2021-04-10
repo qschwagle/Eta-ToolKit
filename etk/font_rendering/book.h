@@ -13,6 +13,8 @@ namespace font_rendering {
 /// <summary>
 /// A FontBook is an object containing all font atlases
 /// for the library. 
+/// 
+/// The purpose of the fontbook is to create and make available for the atlases.
 /// </summary>
 class FontBook {
 public:
