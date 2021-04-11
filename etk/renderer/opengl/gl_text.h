@@ -16,6 +16,7 @@ namespace opengl {
 class GLText : public etk::renderer::Text, public GLObject {
 public:
 	GLText(std::weak_ptr<GLDrawableContext> context) : GLObject(context) {}
+	~GLText();
 
 	void UpdateText(const std::wstring& text) override;
 	void UpdateColor() override;
