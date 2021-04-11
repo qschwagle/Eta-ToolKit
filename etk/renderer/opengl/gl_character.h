@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../generic/character.h"
+#include "etk/renderer/generic/character.h"
 #include "gl_object.h"
 #include "gl_character_program.h"
 #include <array>

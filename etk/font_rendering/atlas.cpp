@@ -1,16 +1,36 @@
 #include "atlas.h"
 
+#include "ft2build.h"
+
+#include FT_FREETYPE_H  
+
+#include<string>
+
+struct etk::font_rendering::FreeFont 
+{
+	/// <summary>
+	/// freetype library
+	/// </summary>
+	FT_Library* mLibrary;
+
+	/// <summary>
+	/// Freetype face
+	/// </summary>
+	FT_Face mFace;
+};
+
 etk::font_rendering::FontAtlas::FontAtlas(int width, int height, std::string fontPath, DimensionalUnit pt) :
     mWidth{ width },
     mHeight{ height },
-    mAtlas{ new unsigned char[mWidth*mHeight] }
+    mAtlas{ new unsigned char[mWidth*mHeight] },
+    mFreeFont { new FreeFont }
 {
-    mLibrary = new FT_Library;
-    int error = FT_Init_FreeType(mLibrary);
+    mFreeFont->mLibrary = new FT_Library;
+    int error = FT_Init_FreeType(mFreeFont->mLibrary);
     if(error) {
         throw std::exception("Error occurred trying to initialize FT_Library");
     }
-	error = FT_New_Face(*mLibrary, fontPath.c_str(), 0, &mFace);
+	error = FT_New_Face(*mFreeFont->mLibrary, fontPath.c_str(), 0, &mFreeFont->mFace);
     if (error == FT_Err_Unknown_File_Format) {
         throw std::exception("Error occurred trying to initializing Face: unknown file format");
     }
@@ -28,20 +48,21 @@ etk::font_rendering::FontAtlas::FontAtlas(int width, int height, std::string fon
     if(error) {
         throw std::exception("Error occurred trying to initialize FT_Library");
     }
-    error = FT_Set_Char_Size(mFace, 0, mPt.GetPt(0,0,0,0) * 64, mHorizontalDensity, mVerticalDensity);
+    error = FT_Set_Char_Size(mFreeFont->mFace, 0, mPt.GetPt(0,0,0,0) * 64, mHorizontalDensity, mVerticalDensity);
 }
 
 etk::font_rendering::FontAtlas::~FontAtlas()
 {
-    FT_Done_Face(mFace);
-    delete mLibrary;
+    FT_Done_Face(mFreeFont->mFace);
+    delete mFreeFont->mLibrary;
     delete mAtlas;
+    delete mFreeFont;
 }
 
 etk::font_rendering::FontGlyph* etk::font_rendering::FontAtlas::GetGlyph(unsigned int character)
 {
     FontGlyph* glyph = new FontGlyph;
-    FT_GlyphSlot slot = mFace->glyph;
+    FT_GlyphSlot slot = mFreeFont->mFace->glyph;
     FT_UInt glyph_index;
 
     mCharacterHeight = slot->bitmap.rows;
@@ -57,7 +78,7 @@ etk::font_rendering::FontGlyph* etk::font_rendering::FontAtlas::GetGlyph(unsigne
         std::copy(slot->bitmap.buffer + static_cast<size_t>(i)*slot->bitmap.width, slot->bitmap.buffer + (static_cast<size_t>(i)+1)*slot->bitmap.width, &mAtlas[mPositionX+mPositionY*mWidth+i*mWidth]);
     }
 
-    int error = FT_Load_Char(mFace, character, FT_LOAD_RENDER);
+    int error = FT_Load_Char(mFreeFont->mFace, character, FT_LOAD_RENDER);
     if (error) throw std::exception("etk::font_rendering::FontRendering::SetCharacter::FT_Load_Char Error");
     glyph->SetGlyph(
         slot->bitmap.width,

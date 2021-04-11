@@ -1,5 +1,7 @@
 #include "font_rendering.h"
 
+#include "etk/renderer/generic/character.h"
+
 #include <iostream>
 
 #include <locale>

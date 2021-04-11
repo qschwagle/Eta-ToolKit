@@ -2,7 +2,7 @@
 
 #include "gl_character.h"
 
-#include "../../font_rendering/font_rendering.h"
+#include "etk/font_rendering/font_rendering.h"
 
 
 void etk::renderer::opengl::GLText::UpdateText(const std::wstring& text)

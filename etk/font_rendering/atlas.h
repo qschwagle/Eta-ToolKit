@@ -1,13 +1,15 @@
-#ifndef _ETK_FONT_ATLAS_H_
-#define _ETK_FONT_ATLAS_H_
+#pragma once
 
 #include <unordered_map>
 
-#include "font_rendering.h"
 #include "glyph.h"
+
+#include <etk/style/dimensional_unit.h>
 
 namespace etk {
 namespace font_rendering {
+
+struct FreeFont;
 
 /// <summary>
 /// A font atlas
@@ -44,15 +46,8 @@ private:
 	/// </summary>
 	int mHeight;
 
-	/// <summary>
-	/// freetype library
-	/// </summary>
-	FT_Library* mLibrary;
+	FreeFont* mFreeFont;
 
-	/// <summary>
-	/// Freetype face
-	/// </summary>
-	FT_Face mFace;
 
 	/// <summary>
 	/// pt size of the font
@@ -68,6 +63,3 @@ private:
 };
 }
 }
-
-
-#endif

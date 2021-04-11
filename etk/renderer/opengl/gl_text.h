@@ -6,6 +6,10 @@
 
 #include <vector>
 
+#include "etk/font_rendering/glyph.h"
+
+#include "etk/renderer/opengl/gl_character_program.h"
+
 namespace etk {
 namespace renderer {
 namespace opengl {
@@ -20,6 +24,24 @@ public:
 
 private:
 	std::vector<std::shared_ptr<etk::renderer::opengl::GLCharacter>> mGLText;
+	std::vector<std::unique_ptr<etk::font_rendering::FontGlyph>> mGLGlyphs;
+
+	/// <summary>
+	/// Vertex Buffer Object
+	/// </summary>
+	unsigned int mVBO{ 0 };
+
+	/// <summary>
+	/// Vertex Array Object
+	/// </summary>
+	unsigned int mVAO{ 0 };
+
+	/// <summary>
+	/// Texture
+	/// </summary>
+	unsigned int mTexture{ 0 };
+
+	etk::renderer::opengl::GLCharacterProgram* mProgramCache{ nullptr };
 
 	std::vector<float> mBlockCache;
 };

@@ -1,11 +1,9 @@
-#ifndef _ETK_FONT_BOOK_H_
-#define _ETK_FONT_BOOK_H_
+#pragma once
 
 #include<unordered_map>
 #include<string>
 
 #include "atlas.h"
-#include "etk/style/dimensional_unit.h"
 
 namespace etk {
 namespace font_rendering {
@@ -43,4 +41,3 @@ private:
 };
 }
 }
-#endif 

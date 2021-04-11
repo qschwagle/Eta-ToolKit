@@ -7,7 +7,7 @@
 
 #include "gl_character.h"
 
-etk::renderer::opengl::GLDrawableContext::GLDrawableContext()
+etk::renderer::opengl::GLDrawableContext::GLDrawableContext() : mFontBook {std::make_unique<etk::font_rendering::FontBook>()}
 {
 }
 
@@ -48,6 +48,10 @@ void etk::renderer::opengl::GLDrawableContext::UpdateDimensions(const int width,
 	etk::renderer::DrawableContext::UpdateDimensions(width, height);
 }
 
+/// <summary>
+/// Provides an interface for getting characters with context
+/// </summary>
+/// <returns></returns>
 std::shared_ptr<etk::renderer::opengl::GLCharacter> etk::renderer::opengl::GLDrawableContext::GetCharacter()
 {
 	return std::make_shared<etk::renderer::opengl::GLCharacter>(shared_from_this());

@@ -1,9 +1,20 @@
 #pragma once
 
 #include "ft2build.h"
-#include FT_FREETYPE_H
 
-#include "../renderer/generic/character.h"
+#include FT_FREETYPE_H  
+
+#include <memory>
+#include <string>
+
+
+namespace etk 
+{
+namespace renderer {
+class Character;
+}
+
+}
 
 namespace etk {
 /// <summary>
