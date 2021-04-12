@@ -53,7 +53,7 @@ etk::renderer::opengl::GLImage::~GLImage()
 	glDeleteVertexArrays(1, &mVAO);
 }
 
-void etk::renderer::opengl::GLImage::Draw(std::weak_ptr<ScreenBox> box)
+void etk::renderer::opengl::GLImage::Draw(std::weak_ptr<ScreenBox> box) noexcept 
 {
     if (GetContext().expired()) {
         throw std::exception("etk::renderer::opengl::GLFilledRectangle::Draw(): Tried to draw object without context");
@@ -97,7 +97,7 @@ void etk::renderer::opengl::GLImage::Draw(std::weak_ptr<ScreenBox> box)
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
-void etk::renderer::opengl::GLImage::LoadImage(unsigned char* data, int width, int height, int channels)
+void etk::renderer::opengl::GLImage::LoadImage(unsigned char* data, int width, int height, int channels) noexcept
 {
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	glBindTexture(GL_TEXTURE_2D, mTexture);

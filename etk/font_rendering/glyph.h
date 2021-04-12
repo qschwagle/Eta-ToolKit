@@ -11,7 +11,7 @@ class FontGlyph {
 public:
 	FontGlyph() = default;
 
-	void SetGlyph(int width, int height, int aX, int aY, FontAtlas* atlas, int bX, int bY, int advance) {
+	void SetGlyph(int width, int height, int aX, int aY, FontAtlas* atlas, int bX, int bY, int advance) noexcept {
 		mWidth = width;
 		mHeight = height;
 		mAtlasX = aX;
@@ -22,20 +22,20 @@ public:
 		mAdvance = advance;
 	}
 
-	int GetWidth() const { return mWidth;  }
+	int GetWidth() const noexcept { return mWidth;  }
 
-	int GetHeight() const { return mHeight;  }
+	int GetHeight() const noexcept { return mHeight;  }
 
-	int GetBearingX() const { return mBearingX; }
+	int GetBearingX() const noexcept { return mBearingX; }
 
-	int GetBearingY() const { return mBearingY; }
+	int GetBearingY() const noexcept { return mBearingY; }
 
-	int GetAdvance() const { return mAdvance;  }
+	int GetAdvance() const noexcept { return mAdvance;  }
 
 
-	void LoadVertices(std::vector<float>::iterator& begin, float& x);
+	void LoadVertices(std::vector<float>::iterator& begin, float& x) noexcept;
 
-	etk::font_rendering::FontAtlas* GetFontAtlas() { return mAtlas; }
+	etk::font_rendering::FontAtlas* GetFontAtlas() noexcept { return mAtlas; }
 
 private:
 	/// <summary>

@@ -1,16 +1,10 @@
 #include "gl_text.h"
-
 #include "gl_character.h"
-
 #include "etk/font_rendering/font_rendering.h"
-
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-
 #include "helpers.h"
-
 #include <iterator>
-
 
 etk::renderer::opengl::GLText::~GLText()
 {
@@ -36,8 +30,6 @@ void etk::renderer::opengl::GLText::UpdateText(const std::wstring& text)
     }
     SetWidth(max_width);
     SetHeight(max_height);
-	UpdateColor();
-	UpdatePosition();
 
     float x = GetPos().x;
 	mBlockCache.resize(mGlyphs.size() * 24);
@@ -86,7 +78,7 @@ void etk::renderer::opengl::GLText::UpdatePosition()
 
 }
 
-void etk::renderer::opengl::GLText::Draw(std::weak_ptr<ScreenBox> box)
+void etk::renderer::opengl::GLText::Draw(std::weak_ptr<ScreenBox> box) noexcept
 {
     auto context = GetContext().lock();
     auto p = mProgramCache;

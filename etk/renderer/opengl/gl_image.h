@@ -13,15 +13,15 @@ class GLImage : public etk::renderer::Image, public GLObject {
 public:
 	GLImage(std::weak_ptr<GLDrawableContext> context);
 	virtual ~GLImage();
-	void Draw(std::weak_ptr<ScreenBox> box) override;
+	void Draw(std::weak_ptr<ScreenBox> box) noexcept override;
 
-	void LoadImage(unsigned char* data, int width, int height, int channels) override;
+	void LoadImage(unsigned char* data, int width, int height, int channels) noexcept override;
 
-	void SetWidth(int w) override {
+	void SetWidth(int w) noexcept override {
 		mExWidth = w;
 	}
 
-	void SetHeight(int h) override {
+	void SetHeight(int h) noexcept override {
 		mExHeight = h;
 	}
 private:

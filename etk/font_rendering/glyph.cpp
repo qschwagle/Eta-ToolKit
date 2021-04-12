@@ -3,7 +3,7 @@
 #include "atlas.h"
 
 
-void etk::font_rendering::FontGlyph::LoadVertices(std::vector<float>::iterator& begin, float& x)
+void etk::font_rendering::FontGlyph::LoadVertices(std::vector<float>::iterator& begin, float& x) noexcept
 {
     const float y = 0;
     const float xW = x + GetWidth();

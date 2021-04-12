@@ -21,7 +21,7 @@ public:
 	void UpdateText(const std::wstring& text) override;
 	void UpdateColor() override;
 	void UpdatePosition() override;
-	void Draw(std::weak_ptr<ScreenBox> box) override;
+	void Draw(std::weak_ptr<ScreenBox> box) noexcept override;
 
 private:
 	std::vector<std::shared_ptr<etk::renderer::opengl::GLCharacter>> mGLText;
