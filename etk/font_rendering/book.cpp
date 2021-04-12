@@ -18,7 +18,7 @@ etk::font_rendering::FontAtlas* etk::font_rendering::FontBook::GetAtlas(std::str
 		return found->second;
 	}
 	else {
-		auto atlas = new FontAtlas(4096, 4096, fontPath, pt);
+		auto atlas = new FontAtlas(1024, 1024, fontPath, pt);
 		mFontAtlases.insert(std::pair<std::string, FontAtlas*>(fontName + std::to_string(pt.GetPt(0, 0, 0, 0)), atlas));
 		return atlas;
 	}

@@ -25,7 +25,7 @@ public:
 
 private:
 	std::vector<std::shared_ptr<etk::renderer::opengl::GLCharacter>> mGLText;
-	std::vector<std::unique_ptr<etk::font_rendering::FontGlyph>> mGLGlyphs;
+	std::vector<etk::font_rendering::FontGlyph*> mGlyphs;
 
 	/// <summary>
 	/// Vertex Buffer Object

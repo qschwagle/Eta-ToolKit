@@ -22,7 +22,8 @@ struct etk::font_rendering::FreeFont
 etk::font_rendering::FontAtlas::FontAtlas(int width, int height, std::string fontPath, DimensionalUnit pt) :
     mWidth{ width },
     mHeight{ height },
-    mAtlas{ new unsigned char[mWidth*mHeight] },
+    mPt {pt},
+    mAtlas{ static_cast<unsigned char*>(calloc(sizeof(unsigned char), width*height)) },
     mFreeFont { new FreeFont }
 {
     mFreeFont->mLibrary = new FT_Library;
@@ -61,7 +62,15 @@ etk::font_rendering::FontAtlas::~FontAtlas()
 
 etk::font_rendering::FontGlyph* etk::font_rendering::FontAtlas::GetGlyph(unsigned int character)
 {
-    FontGlyph* glyph = new FontGlyph;
+    auto found = mMap.find(character);
+    if (found != mMap.end()) {
+        return found->second.get();
+    }
+
+    int error = FT_Load_Char(mFreeFont->mFace, character, FT_LOAD_RENDER);
+    if (error) throw std::exception("etk::font_rendering::FontRendering::SetCharacter::FT_Load_Char Error");
+
+    auto glyph = std::make_unique<FontGlyph>();
     FT_GlyphSlot slot = mFreeFont->mFace->glyph;
     FT_UInt glyph_index;
 
@@ -78,8 +87,6 @@ etk::font_rendering::FontGlyph* etk::font_rendering::FontAtlas::GetGlyph(unsigne
         std::copy(slot->bitmap.buffer + static_cast<size_t>(i)*slot->bitmap.width, slot->bitmap.buffer + (static_cast<size_t>(i)+1)*slot->bitmap.width, &mAtlas[mPositionX+mPositionY*mWidth+i*mWidth]);
     }
 
-    int error = FT_Load_Char(mFreeFont->mFace, character, FT_LOAD_RENDER);
-    if (error) throw std::exception("etk::font_rendering::FontRendering::SetCharacter::FT_Load_Char Error");
     glyph->SetGlyph(
         slot->bitmap.width,
         slot->bitmap.rows,
@@ -91,7 +98,7 @@ etk::font_rendering::FontGlyph* etk::font_rendering::FontAtlas::GetGlyph(unsigne
         slot->advance.x >> 6
     );
     mPositionX += slot->bitmap.width;
-    mWidth += slot->bitmap.width + slot->advance.x >> 6;
+    //mWidth += slot->bitmap.width + slot->advance.x >> 6;
 
     //if (mHeight < slot->bitmap.rows) {
     //    mHeight = slot->bitmap.rows;
@@ -99,5 +106,6 @@ etk::font_rendering::FontGlyph* etk::font_rendering::FontAtlas::GetGlyph(unsigne
     //if (mShift < (slot->bitmap.rows - slot->bitmap_top)) {
     //    mShift = (slot->bitmap.rows - slot->bitmap_top);
     //}
-    return glyph;
+    mMap.insert({ character, std::move(glyph) });
+    return mMap[character].get();
 }

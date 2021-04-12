@@ -1,6 +1,7 @@
 #pragma once
 
 #include <unordered_map>
+#include <memory>
 
 #include "glyph.h"
 
@@ -25,6 +26,19 @@ public:
 
 	FontGlyph* GetGlyph(unsigned int character);
 
+
+	unsigned char* GetAtlas() {
+		return mAtlas;
+	}
+
+	int GetWidth() {
+		return mWidth;
+	}
+
+	int GetHeight() {
+		return mHeight;
+	}
+
 private:
 	/// <summary>
 	/// The raw block of the atlas
@@ -34,7 +48,7 @@ private:
 	/// <summary>
 	// mapping from unicode to glyph
 	/// </summary>
-	std::unordered_map<unsigned int, FontGlyph> mMap;
+	std::unordered_map<unsigned int, std::unique_ptr<FontGlyph>> mMap;
 
 	/// <summary>
 	/// width of the atlas

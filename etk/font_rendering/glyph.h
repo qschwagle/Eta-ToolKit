@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 
 namespace etk {
 namespace font_rendering {
@@ -29,6 +31,11 @@ public:
 	int GetBearingY() const { return mBearingY; }
 
 	int GetAdvance() const { return mAdvance;  }
+
+
+	void LoadVertices(std::vector<float>::iterator& begin, float& x);
+
+	etk::font_rendering::FontAtlas* GetFontAtlas() { return mAtlas; }
 
 private:
 	/// <summary>

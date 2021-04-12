@@ -20,25 +20,45 @@ etk::renderer::opengl::GLText::~GLText()
 
 void etk::renderer::opengl::GLText::UpdateText(const std::wstring& text)
 {
-	mGLText.clear();
-	etk::font_rendering::FontRendering fontEngine("C:\\Windows\\Fonts\\Arial.ttf");
+    
+	//mGLText.clear();
+	//etk::font_rendering::FontRendering fontEngine("C:\\Windows\\Fonts\\Arial.ttf");
 	auto context = GetContext().lock();
-	for (auto& i : text) {
-		mGLText.emplace_back(context->GetCharacter());
-		std::shared_ptr<etk::renderer::Character> tempShared = std::static_pointer_cast<etk::renderer::Character>(mGLText.back());
-		fontEngine.SetPt(static_cast<unsigned int>(GetSize().GetPt(0,0,0,0)));
-		fontEngine.SetCharacter(tempShared, static_cast<unsigned int>(i));
-	}
-	SetWidth(fontEngine.GetWidth());
-	SetHeight(fontEngine.GetHeight());
+	//for (auto& i : text) {
+	//	mGLText.emplace_back(context->GetCharacter());
+	//	std::shared_ptr<etk::renderer::Character> tempShared = std::static_pointer_cast<etk::renderer::Character>(mGLText.back());
+	//	fontEngine.SetPt(static_cast<unsigned int>(GetSize().GetPt(0,0,0,0)));
+	//	fontEngine.SetCharacter(tempShared, static_cast<unsigned int>(i));
+	//}
+
+    auto book = context->GetFontBook();
+    auto atlas = book->GetAtlas("Arial", GetSize().GetPt(0,0,0,0), "C:\\Windows\\Fonts\\Arial.ttf");
+
+    mGlyphs.clear();
+    auto max_height = 0;
+    auto max_width = 0;
+    for (auto& i : text) {
+        auto glyph = atlas->GetGlyph(i);
+        mGlyphs.emplace_back(glyph);
+        max_width += glyph->GetWidth() + glyph->GetAdvance();
+        if (glyph->GetHeight() + glyph->GetBearingY() > max_height) max_height = glyph->GetHeight() + glyph->GetBearingY();
+    }
+    SetWidth(max_width);
+    SetHeight(max_height);
 	UpdateColor();
 	UpdatePosition();
 
-	float x = GetPos().x, y = -1.0f*(GetHeight() + GetPos().y);
-	for (auto& i : mGLText) {
-		i->SetPos(x, y);
-		x += i->GetAdvance();
-	}
+    float x = GetPos().x; // , y = -1.0f * (GetHeight() + GetPos().y);
+	//for (auto& i : mGLText) {
+	//	i->SetPos(x, y);
+	//	x += i->GetAdvance();
+	//}
+
+	mBlockCache.resize(mGlyphs.size() * 24);
+    auto begin = mBlockCache.begin();
+    for (auto& i : mGlyphs) {
+        i->LoadVertices(begin, x);
+    }
 
     auto program = context->GetProgramHolder(GLCharacterProgram::GetId());
     if (program.expired()) {
@@ -58,11 +78,21 @@ void etk::renderer::opengl::GLText::UpdateText(const std::wstring& text)
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
 
-	mBlockCache.resize(mGLText.size() * 24);
-	auto iter = mBlockCache.begin();
-	for (auto i : mGLText) {
-		i->DrawBlockCall(iter);
-	}
+    glGenTextures(1, &mTexture);
+
+    glBindTexture(GL_TEXTURE_2D, mTexture);
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, 1024, 1024, 0, GL_RED, GL_UNSIGNED_BYTE, atlas->GetAtlas());
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	//mBlockCache.resize(mGLText.size() * 24);
+	//auto iter = mBlockCache.begin();
+	//for (auto i : mGLText) {
+	//	i->DrawBlockCall(iter);
+	//}
 }
 
 void etk::renderer::opengl::GLText::UpdateColor()
@@ -79,11 +109,6 @@ void etk::renderer::opengl::GLText::UpdatePosition()
 
 void etk::renderer::opengl::GLText::Draw(std::weak_ptr<ScreenBox> box)
 {
-	auto i = mGLText.begin();
-	if (i != mGLText.end()) {
-	//	(*i)->Draw(box);
-	}
-
     auto context = GetContext().lock();
     auto p = mProgramCache;
     auto program = p->GetProgram();
@@ -101,7 +126,7 @@ void etk::renderer::opengl::GLText::Draw(std::weak_ptr<ScreenBox> box)
     glm::mat4 proj = etk::renderer::opengl::CreateOrtho(box.lock()->GetShift(), context->GetWidth(), context->GetHeight());
     program->SetUniformMat4fv(uniProjView, glm::value_ptr(proj));
 
-    glBindTexture(GL_TEXTURE_2D, (*i)->mTexture);
+    //glBindTexture(GL_TEXTURE_2D, mTexture);
     glBindVertexArray(mVAO);
     glBindBuffer(GL_ARRAY_BUFFER, mVBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mBlockCache.size(), NULL, GL_DYNAMIC_DRAW);
