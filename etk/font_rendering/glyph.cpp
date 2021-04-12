@@ -61,6 +61,6 @@ void etk::font_rendering::FontGlyph::LoadVertices(std::vector<float>::iterator& 
     begin += 1;
     *begin = mAtlasY / static_cast<float>(mAtlas->GetHeight());
     begin += 1;
-    
-    x += mWidth + mAdvance;
+
+    x += mWidth;
 }

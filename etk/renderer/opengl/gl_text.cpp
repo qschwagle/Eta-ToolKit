@@ -48,12 +48,7 @@ void etk::renderer::opengl::GLText::UpdateText(const std::wstring& text)
 	UpdateColor();
 	UpdatePosition();
 
-    float x = GetPos().x; // , y = -1.0f * (GetHeight() + GetPos().y);
-	//for (auto& i : mGLText) {
-	//	i->SetPos(x, y);
-	//	x += i->GetAdvance();
-	//}
-
+    float x = GetPos().x;
 	mBlockCache.resize(mGlyphs.size() * 24);
     auto begin = mBlockCache.begin();
     for (auto& i : mGlyphs) {
@@ -78,28 +73,20 @@ void etk::renderer::opengl::GLText::UpdateText(const std::wstring& text)
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
 
+    glDeleteTextures(1, &mTexture);
     glGenTextures(1, &mTexture);
 
     glBindTexture(GL_TEXTURE_2D, mTexture);
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, 1024, 1024, 0, GL_RED, GL_UNSIGNED_BYTE, atlas->GetAtlas());
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, atlas->GetWidth(), atlas->GetHeight(), 0, GL_RED, GL_UNSIGNED_BYTE, atlas->GetAtlas());
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	//mBlockCache.resize(mGLText.size() * 24);
-	//auto iter = mBlockCache.begin();
-	//for (auto i : mGLText) {
-	//	i->DrawBlockCall(iter);
-	//}
 }
 
 void etk::renderer::opengl::GLText::UpdateColor()
 {
-	//for (auto& i : mGLText) {
-	//	i->SetColor(GetColor());
-	//}
 }
 
 void etk::renderer::opengl::GLText::UpdatePosition()
@@ -126,7 +113,7 @@ void etk::renderer::opengl::GLText::Draw(std::weak_ptr<ScreenBox> box)
     glm::mat4 proj = etk::renderer::opengl::CreateOrtho(box.lock()->GetShift(), context->GetWidth(), context->GetHeight());
     program->SetUniformMat4fv(uniProjView, glm::value_ptr(proj));
 
-    //glBindTexture(GL_TEXTURE_2D, mTexture);
+    glBindTexture(GL_TEXTURE_2D, mTexture);
     glBindVertexArray(mVAO);
     glBindBuffer(GL_ARRAY_BUFFER, mVBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mBlockCache.size(), NULL, GL_DYNAMIC_DRAW);

@@ -23,7 +23,7 @@ etk::font_rendering::FontAtlas::FontAtlas(int width, int height, std::string fon
     mWidth{ width },
     mHeight{ height },
     mPt {pt},
-    mAtlas{ static_cast<unsigned char*>(calloc(sizeof(unsigned char), width*height)) },
+    mAtlas{ static_cast<unsigned char*>(calloc(sizeof(unsigned char), width*static_cast<long>(height))) },
     mFreeFont { new FreeFont }
 {
     mFreeFont->mLibrary = new FT_Library;
@@ -56,7 +56,7 @@ etk::font_rendering::FontAtlas::~FontAtlas()
 {
     FT_Done_Face(mFreeFont->mFace);
     delete mFreeFont->mLibrary;
-    delete mAtlas;
+    free(mAtlas);
     delete mFreeFont;
 }
 
@@ -74,17 +74,21 @@ etk::font_rendering::FontGlyph* etk::font_rendering::FontAtlas::GetGlyph(unsigne
     FT_GlyphSlot slot = mFreeFont->mFace->glyph;
     FT_UInt glyph_index;
 
-    mCharacterHeight = slot->bitmap.rows;
+    auto characterHeight = slot->bitmap.rows;
 
     if (slot->bitmap.width + mPositionX < mWidth) {
     }
     else {
         mPositionX = 0;
-        mPositionY += mCharacterHeight;
+        mPositionY += characterHeight + 5;
     }
 
-    for (int i = 0; i < slot->bitmap.rows; i++) {
-        std::copy(slot->bitmap.buffer + static_cast<size_t>(i)*slot->bitmap.width, slot->bitmap.buffer + (static_cast<size_t>(i)+1)*slot->bitmap.width, &mAtlas[mPositionX+mPositionY*mWidth+i*mWidth]);
+    for (size_t i = 0; i < slot->bitmap.rows; i++) {
+        std::copy(
+            slot->bitmap.buffer + i * slot->bitmap.width, 
+            slot->bitmap.buffer + (i + 1) * slot->bitmap.width, 
+            mAtlas+(mPositionX + mPositionY * mWidth+i*mWidth)
+        );
     }
 
     glyph->SetGlyph(
@@ -98,14 +102,6 @@ etk::font_rendering::FontGlyph* etk::font_rendering::FontAtlas::GetGlyph(unsigne
         slot->advance.x >> 6
     );
     mPositionX += slot->bitmap.width;
-    //mWidth += slot->bitmap.width + slot->advance.x >> 6;
-
-    //if (mHeight < slot->bitmap.rows) {
-    //    mHeight = slot->bitmap.rows;
-    //}
-    //if (mShift < (slot->bitmap.rows - slot->bitmap_top)) {
-    //    mShift = (slot->bitmap.rows - slot->bitmap_top);
-    //}
     mMap.insert({ character, std::move(glyph) });
     return mMap[character].get();
 }
