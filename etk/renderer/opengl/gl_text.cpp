@@ -72,6 +72,7 @@ void etk::renderer::opengl::GLText::UpdateText(const std::wstring& text)
 
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mBlockCache.size(), NULL, GL_DYNAMIC_DRAW);
 
     glDeleteTextures(1, &mTexture);
     glGenTextures(1, &mTexture);
@@ -116,7 +117,6 @@ void etk::renderer::opengl::GLText::Draw(std::weak_ptr<ScreenBox> box)
     glBindTexture(GL_TEXTURE_2D, mTexture);
     glBindVertexArray(mVAO);
     glBindBuffer(GL_ARRAY_BUFFER, mVBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mBlockCache.size(), NULL, GL_DYNAMIC_DRAW);
     glBufferSubData(GL_ARRAY_BUFFER, 0, mBlockCache.size()*sizeof(float), mBlockCache.data());
     glDrawArrays(GL_TRIANGLES, 0, mBlockCache.size()/4);
 }
