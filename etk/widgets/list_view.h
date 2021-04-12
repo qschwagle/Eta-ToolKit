@@ -56,7 +56,7 @@ public:
 		virtual T* GetData() { return nullptr; }
 	
 		virtual void Notify() {
-			mView.lock()->Update();
+			mView.lock()->UpdateView();
 		}
 	
 		virtual void SetListView(std::weak_ptr<ListView<T>> view) {
@@ -100,7 +100,7 @@ public:
 		mBuilder = builder;
 	}
 
-	virtual void Update() {
+	virtual void UpdateView() {
 		auto i = mModel->FetchFirst();
 		mBaseIndex = 0;
 		long index = mBaseIndex;
@@ -116,6 +116,10 @@ public:
 			++index;
 			i = i->Fetch(1);
 		}
+		Invalidate();
+	}
+
+	void Update() override {
 		UpdateChildrenPositions();
 	}
 
@@ -142,12 +146,9 @@ public:
 		UpdateChildrenPositions();
 	}
 
-	void Invalidate()
-	{
-		UpdateChildrenPositions();
-		InvalidateOwner();
-	}
-
+	/**
+	* This should be a a O(n) function which iterates through the children setting positions and setting the internal dimensions of the box.
+	*/
 	void UpdateChildrenPositions()
 	{
 		switch (mDirection) {
@@ -157,6 +158,7 @@ public:
 			float greatestWidth = 0.0f;
 			for (auto& i : mItems) {
 				i.second->SetPosition(glm::vec2(mNextLocation[0], mNextLocation[1]));
+				i.second->Update();
 				mNextLocation[1] += i.second->GetExternalHeight();
 				greatestWidth = i.second->GetExternalWidth() > greatestWidth ? i.second->GetExternalWidth() : greatestWidth;
 			}
@@ -173,6 +175,7 @@ public:
 			float greatestHeight = 0.0f;
 			for (auto& i : mItems) {
 				i.second->SetPosition(glm::vec2(mNextLocation[0], mNextLocation[1]));
+				i.second->Update();
 				mNextLocation[0] += i.second->GetExternalWidth();
 				greatestHeight = i.second->GetExternalHeight() > greatestHeight ? i.second->GetExternalHeight() : greatestHeight;
 			}

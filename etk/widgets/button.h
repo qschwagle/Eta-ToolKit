@@ -13,16 +13,18 @@ public:
 
 	void Invalidate() override {
 		mBackgroundRenderer = nullptr;
-		InvalidateOwner();
+		Widget::Invalidate();
 	}
 
 	void SetDrawableFactory(std::weak_ptr<etk::renderer::DrawableFactory> factory) override; 
 
 	void SetText(std::wstring text) {
 		mText = text;
-		if (!GetDrawableFactory().expired()) {
-			UpdateText();
-		}
+		Invalidate();
+	}
+
+	void Update() override {
+		UpdateText();
 	}
 
 	void UpdateText() {
@@ -34,7 +36,6 @@ public:
 		mBackgroundRenderer->SetPos(GetPadding()[3] + GetPosition()[0], GetPadding()[0] + GetPosition()[1]);
 		mBackgroundRenderer->SetHeight(margin[0] + margin[2] + GetInternalHeight());
 		mBackgroundRenderer->SetWidth(margin[1] + margin[3] + GetInternalWidth());
-		InvalidateOwner();
 	}
 
 	void SetFontSize(DimensionalUnit u) {
@@ -42,7 +43,7 @@ public:
 		if (mTextVisual) {
 			mTextVisual->SetSize(u);
 		}
-
+		Invalidate();
 	}
 
 	void SetTextColor(Color c) {
@@ -50,6 +51,7 @@ public:
 		if (mTextVisual) {
 			mTextVisual->SetColor(c);
 		}
+		Invalidate();
 	}
 
 private:

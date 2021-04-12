@@ -1,12 +1,14 @@
 #pragma once
 
-#include "../generic/character.h"
+#include "etk/renderer/generic/character.h"
 #include "gl_object.h"
+#include "gl_character_program.h"
 #include <array>
 
 namespace etk {
 namespace renderer {
 namespace opengl {
+class GLText;
 /// <summary>
 /// A GLCharacter drawable object which draws the provided character using the static position and dynamic eye
 /// </summary>
@@ -15,6 +17,8 @@ public:
 	GLCharacter(std::weak_ptr<GLDrawableContext> context);
 	virtual ~GLCharacter();
 	void Draw(std::weak_ptr<ScreenBox> box) override;
+
+	void DrawBlockCall(std::vector<float>::iterator& begin);
 
 	void LoadGlyph(unsigned int adv, unsigned int width, unsigned int height, int bearingX, int bearingY, unsigned char* data) override;
 
@@ -33,12 +37,9 @@ public:
 	/// <param name="y">y position</param>
 	void SetPos(float x, float y) override {
 		DrawableObject::SetPos(x, y);
-		GenerateVertices();
 	}
 
 private:
-	void GenerateVertices();
-
 	/// <summary>
 	/// character being drawn
 	/// </summary>
@@ -63,6 +64,10 @@ private:
 	/// Texture
 	/// </summary>
 	unsigned int mTexture{ 0 };
+
+	etk::renderer::opengl::GLCharacterProgram* mProgramCache{ nullptr };
+
+	friend class GLText;
 };
 }
 }

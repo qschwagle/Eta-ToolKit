@@ -25,10 +25,21 @@ public:
 
 	void SetColor(etk::Color c) {
 		mColor = c;
+		UpdateColor();
 	}
 
 	etk::Color GetColor(void) const {
 		return mColor;
+	}
+
+	virtual void UpdateColor() {}
+
+	virtual void UpdatePosition() {}
+
+
+	void SetPos(float x, float y) override {
+		DrawableObject::SetPos(x, y);
+		UpdatePosition();
 	}
 
 protected:

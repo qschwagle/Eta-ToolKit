@@ -1,5 +1,7 @@
 #include "font_rendering.h"
 
+#include "etk/renderer/generic/character.h"
+
 #include <iostream>
 
 #include <locale>
@@ -11,17 +13,14 @@
 /// Setups of Freetype library and face along with loading fontPath
 /// </summary>
 /// <param name="fontPath">path to font</param>
-etk::font_rendering::FontRendering::FontRendering(std::wstring fontPath)
+etk::font_rendering::FontRendering::FontRendering(std::string fontPath)
 {
     mLibrary = new FT_Library;
     int error = FT_Init_FreeType(mLibrary);
     if(error) {
         throw std::exception("Error occurred trying to initialize FT_Library");
     }
-    setlocale(LC_ALL, "");
-    auto converter = std::wstring_convert<std::codecvt_utf8<wchar_t>>();
-    std::string mbs = converter.to_bytes(fontPath);
-	error = FT_New_Face(*mLibrary, mbs.c_str(), 0, &mFace);
+	error = FT_New_Face(*mLibrary, fontPath.c_str(), 0, &mFace);
     if (error == FT_Err_Unknown_File_Format) {
         throw std::exception("Error occurred trying to initializing Face: unknown file format");
     }

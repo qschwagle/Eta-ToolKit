@@ -1,9 +1,20 @@
 #pragma once
 
 #include "ft2build.h"
-#include FT_FREETYPE_H
 
-#include "../renderer/generic/character.h"
+#include FT_FREETYPE_H  
+
+#include <memory>
+#include <string>
+
+
+namespace etk 
+{
+namespace renderer {
+class Character;
+}
+
+}
 
 namespace etk {
 /// <summary>
@@ -12,7 +23,7 @@ namespace etk {
 namespace font_rendering {
 class FontRendering {
 public:
-	FontRendering(std::wstring fontPath);
+	FontRendering(std::string fontPath);
 
 	/// <summary>
 	/// Copy Constructor not needed. Deleted.

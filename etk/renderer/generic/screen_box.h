@@ -81,6 +81,10 @@ public:
 		return out;
 	}
 
+	bool OnScreen(float x, float y, float width, float height) const {
+		return true;
+	}
+
 private:
 	/// <summary>
 	/// the position anchor (top left corner)

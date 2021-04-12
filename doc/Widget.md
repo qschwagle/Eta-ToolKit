@@ -13,9 +13,14 @@ The basic life cycles are as follows
 3. The Widget is attached to a Window ( which gives it a factory and initializes it)
 4. The Widget is drawn.
 5. The Widget is updated ( mutated in some way )
-6. The Wdiget is deconstructed
+6. The Widget is deconstructed
 
 4 and 5 are repeated in that order for the duration of the lifetime of the Widget.
+
+
+## Invalidation and Update
+
+If a widget's dimensions or position is changed, the widget must notify the application by marking invalidation within the Factory. The widget will then Update the main widget and 
 
 ## Properties of a Widget
 

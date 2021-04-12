@@ -1,26 +1,20 @@
-#include "linear_layout.h"
+#include "linear_container.h"
 
-void etk::LinearLayout::AddWidget(std::shared_ptr<Widget> widget)
+void etk::LinearContainer::AddWidget(std::shared_ptr<Widget> widget)
 {
 	etk::MultiContainer::AddWidget(widget);
 	widget->SetPosition(glm::vec2(mNextLocation[0], mNextLocation[1]));
 	mNextLocation[1] += widget->GetExternalHeight();
 }
 
-void etk::LinearLayout::SetPosition(const glm::vec2 pos)
+void etk::LinearContainer::SetPosition(const glm::vec2 pos)
 {
 	etk::Widget::SetPosition(pos);
 	mNextLocation = { pos.x, pos.y };
 	UpdateChildrenPositions();
 }
 
-void etk::LinearLayout::Invalidate()
-{
-	UpdateChildrenPositions();
-	InvalidateOwner();
-}
-
-void etk::LinearLayout::UpdateChildrenPositions()
+void etk::LinearContainer::UpdateChildrenPositions()
 {
 	switch (mDirection) {
 	case Direction::VERTICAL: 
@@ -29,6 +23,7 @@ void etk::LinearLayout::UpdateChildrenPositions()
 		float greatestWidth = 0.0f;
 		for (auto& i : GetWidgetList()) {
 			i->SetPosition(glm::vec2(mNextLocation[0], mNextLocation[1]));
+			i->Update();
 			mNextLocation[1] += i->GetExternalHeight();
 			greatestWidth = i->GetExternalWidth() > greatestWidth ? i->GetExternalWidth() : greatestWidth;
 		}
@@ -45,6 +40,7 @@ void etk::LinearLayout::UpdateChildrenPositions()
 		float greatestHeight = 0.0f;
 		for (auto& i : GetWidgetList()) {
 			i->SetPosition(glm::vec2(mNextLocation[0], mNextLocation[1]));
+			i->Update();
 			mNextLocation[0] += i->GetExternalWidth();
 			greatestHeight = i->GetExternalHeight() > greatestHeight ? i->GetExternalHeight() : greatestHeight;
 		}
@@ -55,4 +51,9 @@ void etk::LinearLayout::UpdateChildrenPositions()
 		break;
 	}
 	}
+}
+
+void etk::LinearContainer::Update()
+{
+	UpdateChildrenPositions();
 }

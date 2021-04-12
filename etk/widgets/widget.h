@@ -141,12 +141,10 @@ public:
 	}
 
 	virtual void Invalidate() {
-		InvalidateOwner();
+		if (!GetDrawableFactory().expired()) GetDrawableFactory().lock()->Invalidate();
 	};
 
-	virtual void InvalidateOwner() {
-		if(!mOwner.expired()) mOwner.lock()->Invalidate();
-	}
+	virtual void Update() { }
 
 	/// <summary>
 	/// Internal Width + border + margin + padding

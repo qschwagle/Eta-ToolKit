@@ -4,6 +4,8 @@
 
 #include "gl_drawable_context.h"
 
+#include "etk/font_rendering/book.h"
+
 namespace etk {
 namespace renderer {
 namespace opengl {
@@ -27,8 +29,10 @@ protected:
 	void SetContext(std::shared_ptr<GLDrawableContext> context) {
 		mContext = context;
 	}
+
 private:
 	std::shared_ptr<GLDrawableContext> mContext;
+
 
 };
 }

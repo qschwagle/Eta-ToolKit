@@ -6,6 +6,8 @@
 
 #include<memory>
 
+#include "etk/font_rendering/book.h"
+
 
 namespace etk {
 namespace renderer {
@@ -38,8 +40,14 @@ public:
 
 	std::shared_ptr<etk::renderer::opengl::GLCharacter> GetCharacter();
 
+	etk::font_rendering::FontBook* GetFontBook() {
+		return mFontBook.get();
+	}
+
 private:
 	std::unordered_map <std::wstring, std::shared_ptr<GLProgramHolder>> mGLProgramHolders;
+
+	std::unique_ptr<etk::font_rendering::FontBook> mFontBook;
 };
 }
 }

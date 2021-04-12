@@ -69,12 +69,12 @@ public:
 		return false;
 	}
 
-	void Invalidate() override {
+	void Update() override {
 		if (mWidget) {
+			mWidget->Update();
 			SetInternalWidth(mWidget->GetExternalWidth());
 			SetInternalHeight(mWidget->GetExternalHeight());
 		}
-		if (!GetOwner().expired()) GetOwner().lock()->Invalidate();
 	}
 
 	void SetPosition(glm::vec2 pos) override {

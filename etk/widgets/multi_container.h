@@ -31,6 +31,11 @@ public:
 		Invalidate();
 	}
 
+	void Update() override {
+		// we should get the max external width and height and set it as our own here.
+		for (auto i : mWidgetList) i->Update();
+	}
+
 	bool OnScroll(const glm::vec2 point, float xOffset, float yOffset)
 	{
 		if (HitInsideBox(point)) {
@@ -42,6 +47,8 @@ public:
 			return etk::Widget::OnScroll(point, xOffset, yOffset);
 		}
 	}
+
+
 
 	bool OnLeftClick(float x, float y) override {
 		if (HitInsideBox(glm::vec2{ x,y })) {

@@ -31,8 +31,16 @@ public:
 		return mTextColorId;
 	}
 
+	GLint GetViewId() {
+		if (mView == -1) {
+			mView = mProgram.GetUniformLoc(std::string("view"));
+		}
+		return mView;
+	}
+
 private:
 	GLint mTextColorId{ -1 };
+	GLint mView{ -1 };
 	GLShaderProgram mProgram;
 };
 }

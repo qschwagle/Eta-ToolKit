@@ -21,9 +21,12 @@ namespace etk {
 
 		void Invalidate() override {
 			mImageRenderer = nullptr;
+			Widget::Invalidate();
 		}
 
 		void SetPosition(const glm::vec2 position) override;
+
+		void Update() override;
 
 		class Data {
 		public:

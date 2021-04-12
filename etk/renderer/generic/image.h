@@ -10,6 +10,9 @@ public:
 	virtual	~Image() {}
 
 	virtual void LoadImage(unsigned char* data, int width, int height, int channels) = 0;
+
+	virtual void SetWidth(int width)=0;
+	virtual void SetHeight(int height)=0;
 private:
 };
 }
