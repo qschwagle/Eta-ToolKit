@@ -4,17 +4,21 @@
 #include <string>
 
 #include "gl_shader_program.h"
-
 #include "gl_program_holder.h"
-
 #include "gl_object.h"
 
 namespace etk {
 namespace renderer {
 namespace opengl {
+
+/// <summary>
+/// Holds the Program and related Ids for Character Program
+/// </summary>
 class GLCharacterProgram: public etk::renderer::opengl::GLProgramHolder, public GLObject {
 public:
 	GLCharacterProgram(std::weak_ptr<GLDrawableContext> context);
+	GLCharacterProgram(const GLCharacterProgram&) = delete;
+	GLCharacterProgram& operator=(const GLCharacterProgram&) = delete;
 	virtual ~GLCharacterProgram();
 	inline static std::wstring GetId() {
 		return L"GL_CHARACTER_PROGRAM";
