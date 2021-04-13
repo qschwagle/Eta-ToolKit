@@ -42,6 +42,10 @@ public:
 		mScene = scene;
 	}
 
+	std::shared_ptr<Scene> GetScene() {
+		return mScene;
+	}
+
 	void ScheduleFunc(std::function<bool()> func) {
 		mScheduler->Schedule(func);
 	}

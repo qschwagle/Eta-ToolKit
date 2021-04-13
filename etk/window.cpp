@@ -140,7 +140,7 @@ bool etk::Window::Run()
 	auto context = mDrawableFactory->GetContext().lock();
 	context->Clear();
 	if (mDrawableFactory->IsInvalidated()) {
-		mScene->Update();
+		if (mScene) mScene->Update();
 		mDrawableFactory->ClearInvalidated();
 	}
 	mBackground->Draw();
