@@ -6,6 +6,9 @@
 
 #include<string>
 
+/// <summary>
+/// Container for Freefont data structures
+/// </summary>
 struct etk::font_rendering::FreeFont 
 {
 	/// <summary>
@@ -19,6 +22,15 @@ struct etk::font_rendering::FreeFont
 	FT_Face mFace;
 };
 
+/// <summary>
+/// Constructor 
+/// 
+/// Creates the Texture atlas and initializes FreeFont with a font and font size
+/// </summary>
+/// <param name="width">pixel width of atlas</param>
+/// <param name="height">pixel height of atlas</param>
+/// <param name="fontPath">font used for rendering</param>
+/// <param name="pt">font size</param>
 etk::font_rendering::FontAtlas::FontAtlas(int width, int height, std::string fontPath, DimensionalUnit pt) :
     mWidth{ width },
     mHeight{ height },
@@ -27,10 +39,12 @@ etk::font_rendering::FontAtlas::FontAtlas(int width, int height, std::string fon
     mFreeFont { new FreeFont }
 {
     mFreeFont->mLibrary = new FT_Library;
+
     int error = FT_Init_FreeType(mFreeFont->mLibrary);
     if(error) {
         throw std::exception("Error occurred trying to initialize FT_Library");
     }
+
 	error = FT_New_Face(*mFreeFont->mLibrary, fontPath.c_str(), 0, &mFreeFont->mFace);
     if (error == FT_Err_Unknown_File_Format) {
         throw std::exception("Error occurred trying to initializing Face: unknown file format");
@@ -46,12 +60,18 @@ etk::font_rendering::FontAtlas::FontAtlas(int width, int height, std::string fon
             throw std::exception(message.c_str());
         }
     }
+
+    error = FT_Set_Char_Size(mFreeFont->mFace, 0, mPt.GetPt(0,0,0,0) * 64, mHorizontalDensity, mVerticalDensity);
     if(error) {
         throw std::exception("Error occurred trying to initialize FT_Library");
     }
-    error = FT_Set_Char_Size(mFreeFont->mFace, 0, mPt.GetPt(0,0,0,0) * 64, mHorizontalDensity, mVerticalDensity);
 }
 
+/// <summary>
+/// Deconstructor
+/// 
+/// Cleans up Freefont and the atlas
+/// </summary>
 etk::font_rendering::FontAtlas::~FontAtlas()
 {
     FT_Done_Face(mFreeFont->mFace);
@@ -60,6 +80,11 @@ etk::font_rendering::FontAtlas::~FontAtlas()
     delete mFreeFont;
 }
 
+/// <summary>
+/// Retrieves and caches glyphs into the texture atlas
+/// </summary>
+/// <param name="character">character whose glyph is being retrieved</param>
+/// <returns>glyph</returns>
 etk::font_rendering::FontGlyph* etk::font_rendering::FontAtlas::GetGlyph(unsigned int character)
 {
     auto found = mMap.find(character);
@@ -76,13 +101,12 @@ etk::font_rendering::FontGlyph* etk::font_rendering::FontAtlas::GetGlyph(unsigne
 
     auto characterHeight = slot->bitmap.rows;
 
-    if (slot->bitmap.width + mPositionX < mWidth) {
-    }
-    else {
+    if (slot->bitmap.width + mPositionX >= mWidth) {
         mPositionX = 0;
         mPositionY += characterHeight + 5;
     }
 
+    // copy the bitmap to the texture atlas
     for (size_t i = 0; i < slot->bitmap.rows; i++) {
         std::copy(
             slot->bitmap.buffer + i * slot->bitmap.width, 
@@ -101,7 +125,10 @@ etk::font_rendering::FontGlyph* etk::font_rendering::FontAtlas::GetGlyph(unsigne
         slot->bitmap_top,
         slot->advance.x >> 6
     );
+
     mPositionX += slot->bitmap.width;
+
     mMap.insert({ character, std::move(glyph) });
+
     return mMap[character].get();
 }

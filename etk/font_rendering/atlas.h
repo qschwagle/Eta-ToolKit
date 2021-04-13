@@ -27,14 +27,26 @@ public:
 	FontGlyph* GetGlyph(unsigned int character);
 
 
+	/// <summary>
+	/// Retrieves the texture atlas
+	/// </summary>
+	/// <returns>texture atlas</returns>
 	unsigned char* GetAtlas() {
 		return mAtlas;
 	}
 
+	/// <summary>
+	/// Width of the texture atlas in pixels
+	/// </summary>
+	/// <returns>width of atlas</returns>
 	int GetWidth() {
 		return mWidth;
 	}
 
+	/// <summary>
+	/// height of the texture atlas in pixels
+	/// </summary>
+	/// <returns>height in pixels</returns>
 	int GetHeight() {
 		return mHeight;
 	}
@@ -60,19 +72,34 @@ private:
 	/// </summary>
 	int mHeight;
 
+	/// <summary>
+	/// Pointer to container holding Freefont data strctures
+	/// </summary>
 	FreeFont* mFreeFont;
-
 
 	/// <summary>
 	/// pt size of the font
 	/// </summary>
 	DimensionalUnit mPt;
 
+	/// <summary>
+	/// Next point for character in texture atlas in the x direction
+	/// </summary>
 	int mPositionX{ 0 };
-	int mPositionY{ 0 };
-	int mCharacterHeight{ 0 };
 
+	/// <summary>
+	/// Next point in top corner for character in the texture atlas in the y direction
+	/// </summary>
+	int mPositionY{ 0 };
+
+	/// <summary>
+	/// horizontal screen pixel density
+	/// </summary>
 	int mHorizontalDensity{ 200 };
+
+	/// <summary>
+	/// vertical screen pixel density
+	/// </summary>
 	int mVerticalDensity{ 200 };
 };
 }

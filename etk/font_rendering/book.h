@@ -2,6 +2,7 @@
 
 #include<unordered_map>
 #include<string>
+#include<memory>
 
 #include "atlas.h"
 
@@ -16,12 +17,10 @@ namespace font_rendering {
 /// </summary>
 class FontBook {
 public:
-	FontBook();
+	FontBook() = default;
 	FontBook(const FontBook&) = delete;
 	FontBook(const FontBook&&) = delete;
 	FontBook& operator=(const FontBook&) = delete;
-
-	virtual ~FontBook();
 
 	/// <summary>
 	/// Retrieves the atlas for a given fontName. If the font is not loaded,
@@ -37,7 +36,7 @@ private:
 	/// <summary>
 	/// atlases mapping
 	/// </summary>
-	std::unordered_map<std::string, FontAtlas*> mFontAtlases;
+	std::unordered_map<std::string, std::unique_ptr<FontAtlas>> mFontAtlases;
 };
 }
 }
