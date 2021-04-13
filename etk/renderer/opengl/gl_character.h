@@ -15,10 +15,11 @@ class GLText;
 class GLCharacter : public etk::renderer::Character, public GLObject {
 public:
 	GLCharacter(std::weak_ptr<GLDrawableContext> context);
+	GLCharacter(const GLCharacter&) = delete;
+	GLCharacter& operator=(const GLCharacter&) = delete;
 	virtual ~GLCharacter();
-	void Draw(std::weak_ptr<ScreenBox> box) override;
 
-	void DrawBlockCall(std::vector<float>::iterator& begin);
+	void Draw(std::weak_ptr<ScreenBox> box) override;
 
 	void LoadGlyph(unsigned int adv, unsigned int width, unsigned int height, int bearingX, int bearingY, unsigned char* data) override;
 
@@ -65,9 +66,10 @@ private:
 	/// </summary>
 	unsigned int mTexture{ 0 };
 
+	/// <summary>
+	/// Local cache for gl character program
+	/// </summary>
 	etk::renderer::opengl::GLCharacterProgram* mProgramCache{ nullptr };
-
-	friend class GLText;
 };
 }
 }

@@ -85,67 +85,6 @@ void etk::renderer::opengl::GLCharacter::Draw(std::weak_ptr<ScreenBox> box)
     glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
-void etk::renderer::opengl::GLCharacter::DrawBlockCall(std::vector<float>::iterator& begin)
-{
-    const float x = GetPos().x;
-    const float y = 0;
-    const float xW = x + GetGlyphWidth();
-    const float yH = y + GetBearingY();
-    *begin = x;
-    begin += 1;
-    *begin = yH;
-    begin += 1;
-    *begin = 0.0f;
-    begin += 1;
-    *begin = 0.0f;
-    begin += 1;
-
-    *begin = x;
-    begin += 1;
-    *begin = y;
-    begin += 1;
-    *begin = 0.0f;
-    begin += 1;
-    *begin = 1.0f;
-    begin += 1;
-
-    *begin = xW;
-    begin += 1;
-    *begin = y;
-    begin += 1;
-    *begin = 1.0f;
-    begin += 1;
-    *begin = 1.0f;
-    begin += 1;
-
-    *begin = x;
-    begin += 1;
-    *begin = yH;
-    begin += 1;
-    *begin = 0.0f;
-    begin += 1;
-    *begin = 0.0f;
-    begin += 1;
-
-    *begin = xW;
-    begin += 1;
-    *begin = y;
-    begin += 1;
-    *begin = 1.0f;
-    begin += 1;
-    *begin = 1.0f;
-    begin += 1;
-
-    *begin = xW;
-    begin += 1;
-    *begin = yH;
-    begin += 1;
-    *begin = 1.0f;
-    begin += 1;
-    *begin = 0.0f;
-    begin += 1;
-}
-
 /// <summary>
 /// Loads the Glyph and associated properties
 /// </summary>
