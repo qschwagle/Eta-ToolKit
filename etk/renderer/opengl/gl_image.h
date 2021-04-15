@@ -24,6 +24,37 @@ public:
 	void SetHeight(int h) noexcept override {
 		mExHeight = h;
 	}
+
+	float GetWidth() override {
+		if (mExHeight == -1 && mExWidth == -1) {
+			return mWidth;
+		}
+		else if (mExHeight == -1) {
+			return mExWidth;
+		}
+		else if (mExWidth == -1) {
+			return  mHeight / static_cast<float>(mWidth) * mExHeight;
+		}
+		else {
+			return mExWidth;
+
+		}
+	}
+
+	float GetHeight() override {
+		if (mExHeight == -1 && mExWidth == -1) {
+			return mHeight;
+		}
+		else if (mExHeight == -1) {
+			return mWidth / static_cast<float>(mHeight) * mExWidth;
+		}
+		else if (mExWidth == -1) {
+			return  mHeight;
+		}
+		else {
+			return mExHeight;
+		}
+	}
 private:
 	int mExWidth{ -1 };
 	int mExHeight{ -1 };

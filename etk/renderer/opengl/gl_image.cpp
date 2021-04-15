@@ -68,16 +68,7 @@ void etk::renderer::opengl::GLImage::Draw(std::weak_ptr<ScreenBox> box) noexcept
 
 	glm::mat4 model(1.0f);
 	model = glm::translate(model, glm::vec3(GetPos().x, -1.0*GetPos().y, 0.0f));
-	glm::vec3 my_scale;
-	if (mExHeight == -1 && mExWidth == -1) {
-		my_scale = { mWidth, mHeight*-1.0f, 1.0 };
-	}
-	else if (mExHeight == -1) {
-		my_scale = { mWidth/mHeight*mExWidth, -1.0f*mExWidth, 1.0 };
-	}
-	else if (mExWidth == -1) {
-		my_scale = { mExHeight, mHeight/mWidth*-1.0f* mExHeight, 1.0 };
-	}
+	glm::vec3 my_scale{ GetWidth(), -1.0f*GetHeight(), 1.0f };
 	model = glm::scale(model, my_scale);
 
 	GLint uniModel = program->GetUniformLoc(std::string("model"));

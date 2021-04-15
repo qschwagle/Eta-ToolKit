@@ -13,6 +13,8 @@ public:
 
 	virtual void SetWidth(int width)=0;
 	virtual void SetHeight(int height)=0;
+	virtual float GetHeight() = 0;
+	virtual float GetWidth() = 0;
 private:
 };
 }

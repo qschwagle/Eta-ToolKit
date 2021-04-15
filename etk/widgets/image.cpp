@@ -30,6 +30,9 @@ void etk::Image::Draw()
 	if (!mImageRenderer) {
 		mImageRenderer = GetDrawableFactory().lock()->CreateImage();
 		mImageRenderer->LoadImage(mData->GetData(), mData->GetImageWidth(), mData->GetImageHeight(), mData->GetImageChannels());
+		SetInternalWidth(mImageRenderer->GetWidth());
+		SetInternalHeight(mImageRenderer->GetHeight());
+		Widget::Invalidate();
 	}
 
 	if (true) {
