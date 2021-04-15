@@ -3,6 +3,7 @@
 #include "GLFW/glfw3.h"
 
 #include <exception>
+#include <iostream>
 
 static void glfw_on_scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
@@ -132,6 +133,8 @@ void etk::Window::PostEmptyEvent()
 
 bool etk::Window::Run()
 {
+
+	auto start = std::chrono::system_clock::now();
 	glfwMakeContextCurrent(mWin);
 	mScheduler->Execute();
 	if (glfwWindowShouldClose(mWin)) {
@@ -146,6 +149,11 @@ bool etk::Window::Run()
 	mBackground->Draw();
 	if (mScene) mScene->Draw();
 	glfwSwapBuffers(mWin);
+
+	auto end = std::chrono::system_clock::now();
+	std::chrono::duration<double> duration = end - start;
+	std::cout << "draw duration: " << duration.count() << "s" << std::endl;
+	std::cout << "draw fps: " << 1.0 / duration.count() << "fps" << std::endl;
 	if (mDrawableFactory->IsInvalidated())
 		glfwPostEmptyEvent();
 	if (!mScheduler->AnimationQueued() && mScheduler->UIActionQueued()) WaitEventsTimeout(100);
