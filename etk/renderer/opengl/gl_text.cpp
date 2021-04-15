@@ -25,7 +25,7 @@ void etk::renderer::opengl::GLText::UpdateText(const std::wstring& text)
     for (auto& i : text) {
         auto glyph = atlas->GetGlyph(i);
         mGlyphs.emplace_back(glyph);
-        max_width += glyph->GetWidth();
+        max_width += glyph->GetAdvance();
         if (glyph->GetHeight() > max_height) max_height = glyph->GetHeight();
     }
     SetWidth(max_width);
