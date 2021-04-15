@@ -44,4 +44,5 @@ add_subdirectory(extern/glew-2.2.0/build/cmake)
 
 add_subdirectory(etk)
 add_subdirectory(imageviewer2)
+add_subdirectory(calculator)
 add_subdirectory(tests)
