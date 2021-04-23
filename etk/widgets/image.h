@@ -2,7 +2,8 @@
 
 #include "widget.h"
 
-#include "../renderer/generic/image.h"
+#include "etk/renderer/generic/image.h"
+#include "etk/renderer/generic/text.h"
 
 namespace etk {
 	class Image : public Widget {

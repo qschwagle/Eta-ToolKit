@@ -7,6 +7,7 @@
 
 #include <locale>
 #include <codecvt>
+#include <sstream>
 
 etk::Image::~Image()
 {

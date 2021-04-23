@@ -22,8 +22,8 @@ void etk::renderer::opengl::GLText::UpdateText(const std::wstring& text)
     mGlyphs.clear();
     auto max_height = 0;
     auto max_width = 0;
-    for (auto& i : text) {
-        auto glyph = atlas->GetGlyph(i);
+    for (auto i = text.cbegin(); i != text.cend(); ++i) {
+        auto glyph = atlas->GetGlyph(*i);
         mGlyphs.emplace_back(glyph);
         max_width += glyph->GetAdvance();
         if (glyph->GetHeight() > max_height) max_height = glyph->GetHeight();
@@ -56,6 +56,7 @@ void etk::renderer::opengl::GLText::UpdateText(const std::wstring& text)
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), nullptr);
     glBufferData(GL_ARRAY_BUFFER, sizeof(float) * mBlockCache.size(), NULL, GL_DYNAMIC_DRAW);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, mBlockCache.size()*sizeof(float), mBlockCache.data());
 
     glDeleteTextures(1, &mTexture);
     glGenTextures(1, &mTexture);
@@ -99,7 +100,5 @@ void etk::renderer::opengl::GLText::Draw(std::weak_ptr<ScreenBox> box) noexcept
 
     glBindTexture(GL_TEXTURE_2D, mTexture);
     glBindVertexArray(mVAO);
-    glBindBuffer(GL_ARRAY_BUFFER, mVBO);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, mBlockCache.size()*sizeof(float), mBlockCache.data());
     glDrawArrays(GL_TRIANGLES, 0, mBlockCache.size()/4);
 }
